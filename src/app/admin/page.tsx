@@ -84,11 +84,11 @@ export default async function AdminDashboard() {
         {stats.map((stat) => (
           <div
             key={stat.name}
-            className={`bg-white border-t-4 ${stat.borderColor} border-x border-b border-gray-200 shadow-sm p-6 flex flex-col`}
+            className={`bg-white border-t-4 ${stat.borderColor} border-x border-b border-gray-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-6 flex flex-col group cursor-default`}
           >
             <div className="flex items-center justify-between mb-4">
-              <p className="text-[12px] font-bold text-gray-500 uppercase tracking-wider">{stat.name}</p>
-              <div className={`w-10 h-10 rounded flex items-center justify-center ${stat.bgColor} ${stat.color}`}>
+               <p className={`text-[12px] font-bold uppercase tracking-wider group-hover:${stat.color} transition-colors text-gray-500`}>{stat.name}</p>
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${stat.bgColor} ${stat.color} group-hover:scale-110 transition-transform duration-300 shadow-inner`}>
                 <stat.icon className="w-5 h-5" strokeWidth={2.5} />
               </div>
             </div>
@@ -106,7 +106,7 @@ export default async function AdminDashboard() {
       
       {/* Corporate Notice Board */}
       <h2 className="text-[15px] font-bold text-[#0B2E59] uppercase tracking-wider mb-4 border-b-2 border-gray-300 pb-2">
-        System Bulletins
+        System Bulletins (सूचना पट्ट)
       </h2>
 
       <div className="bg-white border border-gray-200 shadow-sm">
@@ -115,14 +115,14 @@ export default async function AdminDashboard() {
          </div>
          <div className="p-6">
             <ul className="space-y-4">
-               <li className="flex gap-4 p-4 bg-blue-50 border border-blue-100 rounded">
+               <li className="flex gap-4 p-4 bg-blue-50 border border-blue-100 rounded hover:bg-blue-100 transition-colors">
                   <div className="w-2 h-2 rounded-full bg-blue-500 mt-2 shrink-0" />
                   <div>
                      <p className="text-sm font-bold text-[#0B2E59] uppercase">Advanced Analytics Module</p>
                      <p className="text-sm text-gray-700 mt-1">Detailed financial reports, growth charts, and collection trends are currently under development and will be deployed in the next core banking update.</p>
                   </div>
                </li>
-               <li className="flex gap-4 p-4 bg-gray-50 border border-gray-200 rounded">
+               <li className="flex gap-4 p-4 bg-gray-50 border border-gray-200 rounded hover:bg-gray-100 transition-colors">
                   <div className="w-2 h-2 rounded-full bg-gray-400 mt-2 shrink-0" />
                   <div>
                      <p className="text-sm font-bold text-gray-700 uppercase">System Maintenance</p>

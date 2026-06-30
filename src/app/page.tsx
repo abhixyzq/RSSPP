@@ -10,10 +10,8 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-[#0B2E59] rounded flex items-center justify-center">
-                <Building className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-2xl font-extrabold text-[#0B2E59] tracking-tight">RSSPP</span>
+              <img src="/logo.png" alt="Logo" className="w-12 h-12 object-contain" />
+              <span className="text-xl md:text-2xl font-extrabold text-[#0B2E59] tracking-tight leading-tight">Apna Sang<br className="md:hidden" /> Sahayata Samuh</span>
             </div>
             <div className="hidden md:flex space-x-8">
               <a href="#features" className="text-sm font-bold text-gray-600 hover:text-[#0099CC] uppercase tracking-wide transition-colors">Features</a>
@@ -161,11 +159,11 @@ export default function LandingPage() {
       <footer className="bg-gray-900 py-12 border-t border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-3">
-            <Building className="w-6 h-6 text-gray-500" />
-            <span className="text-xl font-bold text-gray-400 tracking-widest">RSSPP</span>
+            <img src="/logo.png" alt="Logo" className="w-8 h-8 object-contain grayscale opacity-70" />
+            <span className="text-xl font-bold text-gray-400 tracking-widest">Apna Sang Sahayata Samuh</span>
           </div>
           <p className="text-gray-500 text-sm font-medium text-center md:text-left">
-            &copy; {new Date().getFullYear()} Rashtriya Sahara Sahkarita Prabandhan Pranali. All rights reserved. <br className="hidden sm:block" />
+            &copy; {new Date().getFullYear()} Apna Sang Sahayata Samuh, Pirapur. All rights reserved. <br className="hidden sm:block" />
             Core Banking Software Infrastructure.
           </p>
         </div>

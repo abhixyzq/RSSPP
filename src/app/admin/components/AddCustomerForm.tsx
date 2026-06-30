@@ -11,7 +11,7 @@ function SubmitBtn() {
     <button
       type="submit"
       disabled={pending}
-      className="bg-[#0B2E59] hover:bg-[#071f3e] text-white font-bold py-3 px-10 rounded shadow-sm transition-all disabled:opacity-70 disabled:cursor-not-allowed uppercase tracking-wide"
+      className="w-full bg-[#0B2E59] hover:bg-[#071f3e] text-white font-bold py-4 px-10 rounded-xl shadow-lg shadow-blue-900/20 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed uppercase tracking-widest text-sm"
     >
       {pending ? 'Processing...' : 'Authorize & Open Account'}
     </button>
@@ -21,6 +21,23 @@ function SubmitBtn() {
 export default function AddCustomerForm() {
   const [state, formAction] = useActionState(createCustomer, null)
   const formRef = useRef<HTMLFormElement>(null)
+
+  const handleTransliterate = async (text: string, targetId: string) => {
+    if (!text.trim()) return
+    try {
+      const response = await fetch(`https://inputtools.google.com/request?text=${encodeURIComponent(text)}&itc=hi-t-i0-und&num=1&cp=0&cs=1&ie=utf-8&oe=utf-8&app=demopage`)
+      const data = await response.json()
+      if (data[0] === 'SUCCESS' && data[1] && data[1][0] && data[1][0][1] && data[1][0][1][0]) {
+        const hindiText = data[1][0][1][0]
+        const targetEl = document.getElementById(targetId) as HTMLInputElement
+        if (targetEl && !targetEl.value) {
+           targetEl.value = hindiText
+        }
+      }
+    } catch (e) {
+      console.error('Transliteration failed', e)
+    }
+  }
 
   useEffect(() => {
     if (state?.success) {
@@ -84,33 +101,65 @@ export default function AddCustomerForm() {
             <div className="border border-gray-200 rounded">
                <div className="bg-gray-100 p-3 border-b border-gray-200">
                   <h3 className="text-[13px] font-bold text-[#0B2E59] uppercase tracking-wider flex items-center gap-2">
-                    <User className="w-4 h-4" /> 1. Personal Details
+                    <User className="w-4 h-4" /> 1. Personal Details (व्यक्तिगत जानकारी)
                   </h3>
                </div>
                <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Full Name <span className="text-red-500">*</span></label>
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Full Name (English) <span className="text-red-500">*</span></label>
                     <input 
                       type="text" 
                       name="fullName" 
                       required 
-                      className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 uppercase"
+                      onBlur={(e) => handleTransliterate(e.target.value, 'fullNameHi')}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 transition-all shadow-sm"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Occupation</label>
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">पूरा नाम (Hindi)</label>
                     <input 
                       type="text" 
-                      name="occupation" 
-                      className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 uppercase"
+                      id="fullNameHi"
+                      name="fullNameHi" 
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 transition-all shadow-sm"
                     />
                   </div>
-                  <div className="md:col-span-2">
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Guardian Name</label>
+                  
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Guardian Name (English)</label>
                     <input 
                       type="text" 
                       name="guardianName" 
-                      className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 uppercase"
+                      onBlur={(e) => handleTransliterate(e.target.value, 'guardianNameHi')}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 transition-all shadow-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">अभिभावक का नाम (Hindi)</label>
+                    <input 
+                      type="text" 
+                      id="guardianNameHi"
+                      name="guardianNameHi" 
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 transition-all shadow-sm"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Occupation (English)</label>
+                    <input 
+                      type="text" 
+                      name="occupation" 
+                      onBlur={(e) => handleTransliterate(e.target.value, 'occupationHi')}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 transition-all shadow-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">पेशा (Hindi)</label>
+                    <input 
+                      type="text" 
+                      id="occupationHi"
+                      name="occupationHi" 
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 transition-all shadow-sm"
                     />
                   </div>
                </div>
@@ -120,7 +169,7 @@ export default function AddCustomerForm() {
             <div className="border border-gray-200 rounded">
                <div className="bg-gray-100 p-3 border-b border-gray-200">
                   <h3 className="text-[13px] font-bold text-[#0B2E59] uppercase tracking-wider flex items-center gap-2">
-                    <Phone className="w-4 h-4" /> 2. Contact Information
+                    <Phone className="w-4 h-4" /> 2. Contact Information (संपर्क जानकारी)
                   </h3>
                </div>
                <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -133,7 +182,7 @@ export default function AddCustomerForm() {
                       pattern="[0-9]{10}"
                       maxLength={10}
                       placeholder="10-digit mobile number"
-                      className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 transition-all shadow-sm"
                     />
                   </div>
                   <div>
@@ -143,15 +192,25 @@ export default function AddCustomerForm() {
                       name="secondaryMobile" 
                       pattern="[0-9]{10}"
                       maxLength={10}
-                      className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 transition-all shadow-sm"
                     />
                   </div>
-                  <div className="md:col-span-2">
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Full Address</label>
+                  <div className="md:col-span-1">
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Full Address (English)</label>
                     <input 
                       type="text" 
                       name="address" 
-                      className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 uppercase"
+                      onBlur={(e) => handleTransliterate(e.target.value, 'addressHi')}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 transition-all shadow-sm"
+                    />
+                  </div>
+                  <div className="md:col-span-1">
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">पूरा पता (Hindi)</label>
+                    <input 
+                      type="text" 
+                      id="addressHi"
+                      name="addressHi" 
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 transition-all shadow-sm"
                     />
                   </div>
                </div>
@@ -161,7 +220,7 @@ export default function AddCustomerForm() {
             <div className="border border-gray-200 rounded">
                <div className="bg-gray-100 p-3 border-b border-gray-200">
                   <h3 className="text-[13px] font-bold text-[#0B2E59] uppercase tracking-wider flex items-center gap-2">
-                    <Lock className="w-4 h-4" /> 3. Account Security
+                    <Lock className="w-4 h-4" /> 3. Account Security (सुरक्षा पिन)
                   </h3>
                </div>
                <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -188,7 +247,7 @@ export default function AddCustomerForm() {
                       required 
                       pattern="[0-9]{4}"
                       maxLength={4}
-                      className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-xl tracking-[0.5em] font-bold text-gray-900"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-xl tracking-[0.5em] font-black text-gray-900 transition-all shadow-sm"
                     />
                   </div>
                </div>

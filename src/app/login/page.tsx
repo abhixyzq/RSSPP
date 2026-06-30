@@ -33,10 +33,8 @@ export default function LoginPage() {
         
         {/* Brand / Logo */}
         <div className="flex flex-col items-center mb-8">
-          <div className="w-12 h-12 bg-gray-900 text-white rounded-xl flex items-center justify-center shadow-md mb-4">
-            <BookOpen className="w-6 h-6" />
-          </div>
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900">Sign in to RSSPP</h1>
+          <img src="/logo.png" alt="Logo" className="w-16 h-16 object-contain mb-4" />
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900 text-center">Apna Sang Sahayata Samuh</h1>
           <p className="text-gray-500 text-sm mt-1.5 font-medium">Micro-Finance Digital Ledger</p>
         </div>
 
@@ -111,7 +109,7 @@ export default function LoginPage() {
       {/* Brand Watermark Footer */}
       <div className="mt-8 text-center">
         <p className="text-[12px] text-gray-400 font-semibold tracking-wider uppercase">
-          RSSPP Micro-Finance
+          Apna Sang Sahayata Samuh
         </p>
       </div>
 

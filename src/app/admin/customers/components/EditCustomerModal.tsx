@@ -7,6 +7,23 @@ import { Edit, X, User, Phone, MapPin, Briefcase, FileText, Users, AlertCircle, 
 export default function EditCustomerModal({ profile }: { profile: any }) {
   const [isOpen, setIsOpen] = useState(false)
   const [state, formAction] = useActionState(updateCustomerDetails, null)
+  
+  const handleTransliterate = async (text: string, targetId: string) => {
+    if (!text.trim()) return
+    try {
+      const response = await fetch(`https://inputtools.google.com/request?text=${encodeURIComponent(text)}&itc=hi-t-i0-und&num=1&cp=0&cs=1&ie=utf-8&oe=utf-8&app=demopage`)
+      const data = await response.json()
+      if (data[0] === 'SUCCESS' && data[1] && data[1][0] && data[1][0][1] && data[1][0][1][0]) {
+        const hindiText = data[1][0][1][0]
+        const targetEl = document.getElementById(targetId) as HTMLInputElement
+        if (targetEl && !targetEl.value) {
+           targetEl.value = hindiText
+        }
+      }
+    } catch (e) {
+      console.error('Transliteration failed', e)
+    }
+  }
 
   // Close modal automatically on success after a short delay
   useEffect(() => {
@@ -75,7 +92,7 @@ export default function EditCustomerModal({ profile }: { profile: any }) {
                </div>
 
                <div>
-                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">Full Name *</label>
+                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">Full Name (English) *</label>
                   <div className="relative">
                     <User className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                     <input 
@@ -83,6 +100,21 @@ export default function EditCustomerModal({ profile }: { profile: any }) {
                       name="fullName" 
                       defaultValue={profile.full_name} 
                       required 
+                      onBlur={(e) => handleTransliterate(e.target.value, 'editFullNameHi')}
+                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 uppercase"
+                    />
+                  </div>
+               </div>
+
+               <div>
+                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">पूरा नाम (Hindi)</label>
+                  <div className="relative">
+                    <User className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                    <input 
+                      type="text" 
+                      id="editFullNameHi"
+                      name="fullNameHi" 
+                      defaultValue={profile.full_name_hi || ''} 
                       className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900"
                     />
                   </div>
@@ -101,28 +133,58 @@ export default function EditCustomerModal({ profile }: { profile: any }) {
                   </div>
                </div>
 
-               <div className="sm:col-span-2">
-                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">Full Address</label>
+               <div className="sm:col-span-1">
+                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">Full Address (English)</label>
                   <div className="relative">
                     <MapPin className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                     <input 
                       type="text" 
                       name="address" 
                       defaultValue={profile.address || ''} 
+                      onBlur={(e) => handleTransliterate(e.target.value, 'editAddressHi')}
                       className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 uppercase"
                     />
                   </div>
                </div>
 
+               <div className="sm:col-span-1">
+                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">पूरा पता (Hindi)</label>
+                  <div className="relative">
+                    <MapPin className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                    <input 
+                      type="text" 
+                      id="editAddressHi"
+                      name="addressHi" 
+                      defaultValue={profile.address_hi || ''} 
+                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900"
+                    />
+                  </div>
+               </div>
+
                <div>
-                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">Occupation</label>
+                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">Occupation (English)</label>
                   <div className="relative">
                     <Briefcase className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                     <input 
                       type="text" 
                       name="occupation" 
                       defaultValue={profile.occupation || ''} 
+                      onBlur={(e) => handleTransliterate(e.target.value, 'editOccupationHi')}
                       className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 uppercase"
+                    />
+                  </div>
+               </div>
+
+               <div>
+                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">पेशा (Hindi)</label>
+                  <div className="relative">
+                    <Briefcase className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                    <input 
+                      type="text" 
+                      id="editOccupationHi"
+                      name="occupationHi" 
+                      defaultValue={profile.occupation_hi || ''} 
+                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900"
                     />
                   </div>
                </div>
@@ -142,14 +204,29 @@ export default function EditCustomerModal({ profile }: { profile: any }) {
                </div>
 
                <div>
-                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">Guardian Name</label>
+                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">Guardian Name (English)</label>
                   <div className="relative">
                     <User className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                     <input 
                       type="text" 
                       name="guardianName" 
                       defaultValue={profile.guardian_name || ''} 
+                      onBlur={(e) => handleTransliterate(e.target.value, 'editGuardianNameHi')}
                       className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 uppercase"
+                    />
+                  </div>
+               </div>
+
+               <div>
+                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">अभिभावक का नाम (Hindi)</label>
+                  <div className="relative">
+                    <User className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                    <input 
+                      type="text" 
+                      id="editGuardianNameHi"
+                      name="guardianNameHi" 
+                      defaultValue={profile.guardian_name_hi || ''} 
+                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900"
                     />
                   </div>
                </div>

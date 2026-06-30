@@ -40,14 +40,39 @@ export default async function CustomerDashboard() {
   const validTransactions = transactions || []
   let totalJama = 0
   let totalNikasi = 0
+  let totalInterestPaid = 0
+  let totalEarnedInterest = 0
 
-  validTransactions.forEach((tx) => {
+  // To calculate earned interest properly, we need to process chronologically
+  const chronologicalTx = [...validTransactions].reverse()
+  let runningJamaBalance = 0
+
+  chronologicalTx.forEach((tx) => {
+    const amt = Number(tx.amount)
+    
+    // Jama Calculations
     if (tx.transaction_type.startsWith('JAMA')) {
-      totalJama += Number(tx.amount)
-    } else if (tx.transaction_type.startsWith('NIKASI')) {
-      totalNikasi += Number(tx.amount)
+      if (tx.transaction_type === 'JAMA_DEPOSIT' || tx.transaction_type === 'JAMA_PRINCIPAL') {
+        runningJamaBalance += amt
+      } else if (tx.transaction_type === 'JAMA_WITHDRAWAL') {
+        runningJamaBalance -= amt
+      } else if (tx.transaction_type === 'JAMA_EARNED_INTEREST') {
+        totalEarnedInterest += amt
+      }
+    }
+    
+    // Nikasi Calculations
+    else if (tx.transaction_type === 'NIKASI_LOAN' || tx.transaction_type === 'NIKASI_PRINCIPAL') {
+      totalNikasi += amt
+    } else if (tx.transaction_type === 'NIKASI_REPAY_PRINCIPAL') {
+      totalNikasi -= amt
+    } else if (tx.transaction_type === 'NIKASI_REPAY_INTEREST') {
+      totalInterestPaid += amt
     }
   })
+  
+  // Update totalJama from the final running balance
+  totalJama = runningJamaBalance
 
   return (
     <DashboardClientUI
@@ -55,6 +80,8 @@ export default async function CustomerDashboard() {
       transactions={validTransactions}
       totalJama={totalJama}
       totalNikasi={totalNikasi}
+      totalInterestPaid={totalInterestPaid}
+      totalEarnedInterest={totalEarnedInterest}
     />
   )
 }

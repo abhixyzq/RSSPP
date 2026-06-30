@@ -13,11 +13,15 @@ export async function createCustomer(prevState: any, formData: FormData) {
   // New fields
   const secondaryMobile = formData.get('secondaryMobile') as string
   const guardianName = formData.get('guardianName') as string
+  const guardianNameHi = formData.get('guardianNameHi') as string
   const address = formData.get('address') as string
+  const addressHi = formData.get('addressHi') as string
   const kycDocument = formData.get('kycDocument') as string
   const nomineeDetails = formData.get('nomineeDetails') as string
   const guarantorOptional = formData.get('guarantorOptional') as string
   const occupation = formData.get('occupation') as string
+  const occupationHi = formData.get('occupationHi') as string
+  const fullNameHi = formData.get('fullNameHi') as string
 
   if (!mobile || mobile.length !== 10 || !pin || pin.length !== 4 || !fullName) {
     return { error: 'Please provide a valid 10-digit mobile, 4-digit PIN, and full name.' }
@@ -49,15 +53,19 @@ export async function createCustomer(prevState: any, formData: FormData) {
     .insert({
       id: authData.user.id,
       full_name: fullName,
+      full_name_hi: fullNameHi || null,
       mobile_number: mobile,
       role: 'customer',
       secondary_mobile: secondaryMobile || null,
       guardian_name: guardianName || null,
+      guardian_name_hi: guardianNameHi || null,
       address: address || null,
+      address_hi: addressHi || null,
       kyc_document: kycDocument || null,
       nominee_details: nomineeDetails || null,
       guarantor_details: guarantorOptional || null,
       occupation: occupation || null,
+      occupation_hi: occupationHi || null,
     })
 
   if (profileError) {
@@ -87,7 +95,15 @@ export async function addTransaction(prevState: any, formData: FormData) {
     return { error: 'Amount must be a positive number.' }
   }
 
-  if (type !== 'JAMA_PRINCIPAL' && type !== 'NIKASI_PRINCIPAL') {
+  const validTypes = [
+    'JAMA_DEPOSIT', 
+    'JAMA_WITHDRAWAL', 
+    'JAMA_EARNED_INTEREST',
+    'NIKASI_LOAN', 
+    'NIKASI_REPAY_PRINCIPAL', 
+    'NIKASI_REPAY_INTEREST'
+  ]
+  if (!validTypes.includes(type)) {
     return { error: 'Invalid transaction type.' }
   }
 
@@ -143,17 +159,24 @@ export async function getVillageTotals() {
 
   transactions?.forEach(tx => {
     const amount = Number(tx.amount)
-    if (tx.transaction_type.startsWith('JAMA')) {
+    
+    // Deposit Account (JAMA)
+    if (tx.transaction_type === 'JAMA_DEPOSIT') {
       totalJama += amount
-      
-      // Check if it was deposited today
       const txDate = new Date(tx.transaction_date)
-      if (txDate >= today) {
-        todaysCollection += amount
-      }
-    } else if (tx.transaction_type.startsWith('NIKASI')) {
-      totalNikasi += amount
+      if (txDate >= today) todaysCollection += amount
+    } else if (tx.transaction_type === 'JAMA_WITHDRAWAL') {
+      totalJama -= amount
+      const txDate = new Date(tx.transaction_date)
+      if (txDate >= today) todaysCollection -= amount
     }
+    // Loan Account (NIKASI)
+    else if (tx.transaction_type === 'NIKASI_LOAN') {
+      totalNikasi += amount
+    } else if (tx.transaction_type === 'NIKASI_REPAY_PRINCIPAL') {
+      totalNikasi -= amount
+    }
+    // Note: NIKASI_REPAY_INTEREST does not affect totalNikasi (Principal)
   })
 
   return {
@@ -207,38 +230,40 @@ export async function deleteCustomer(customerId: string) {
   const supabaseAdmin = createAdminClient()
   
   try {
-    // 1. Delete Transactions
-    const { error: txError } = await supabaseAdmin
-      .from('transactions')
-      .delete()
-      .eq('user_id', customerId)
+    // 1. Fetch current profile to get mobile number
+    const { data: profile } = await supabaseAdmin
+      .from('users_profile')
+      .select('mobile_number')
+      .eq('id', customerId)
+      .single()
       
-    if (txError) {
-      console.error('Error deleting transactions:', txError)
-      return { error: 'Failed to delete customer transactions.' }
+    if (!profile) return { error: 'Customer not found.' }
+
+    // 2. Scramble Email in Auth
+    const newEmail = `${profile.mobile_number}_closed_${Date.now()}@rsspp.local`
+    const { error: authError } = await supabaseAdmin.auth.admin.updateUserById(customerId, {
+      email: newEmail
+    })
+    
+    if (authError) {
+      console.error('Error updating auth email:', authError)
+      return { error: 'Failed to update authentication record.' }
     }
     
-    // 2. Delete Profile
+    // 3. Soft Delete Profile (Change Role)
     const { error: profileError } = await supabaseAdmin
       .from('users_profile')
-      .delete()
+      .update({ role: 'closed' })
       .eq('id', customerId)
       
     if (profileError) {
-      console.error('Error deleting profile:', profileError)
-      return { error: 'Failed to delete customer profile.' }
-    }
-    
-    // 3. Delete Auth User
-    const { error: authError } = await supabaseAdmin.auth.admin.deleteUser(customerId)
-    
-    if (authError) {
-      console.error('Error deleting auth user:', authError)
-      return { error: 'Failed to delete authentication record.' }
+      console.error('Error soft deleting profile:', profileError)
+      return { error: 'Failed to close customer account.' }
     }
     
     revalidatePath('/admin', 'layout')
-    return { success: 'Customer deleted successfully.' }
+    return { success: 'Customer account closed successfully.' }
+
     
   } catch (err: any) {
     console.error('Delete Exception:', err)
@@ -251,13 +276,17 @@ export async function updateCustomerDetails(prevState: any, formData: FormData) 
   
   const customerId = formData.get('customerId') as string
   const fullName = formData.get('fullName') as string
+  const fullNameHi = formData.get('fullNameHi') as string
   const secondaryMobile = formData.get('secondaryMobile') as string
   const guardianName = formData.get('guardianName') as string
+  const guardianNameHi = formData.get('guardianNameHi') as string
   const address = formData.get('address') as string
+  const addressHi = formData.get('addressHi') as string
   const kycDocument = formData.get('kycDocument') as string
   const nomineeDetails = formData.get('nomineeDetails') as string
   const guarantorOptional = formData.get('guarantorOptional') as string
   const occupation = formData.get('occupation') as string
+  const occupationHi = formData.get('occupationHi') as string
   
   if (!customerId || !fullName) {
     return { error: 'Customer ID and Full Name are required.' }
@@ -267,13 +296,17 @@ export async function updateCustomerDetails(prevState: any, formData: FormData) 
     .from('users_profile')
     .update({
       full_name: fullName,
+      full_name_hi: fullNameHi || null,
       secondary_mobile: secondaryMobile || null,
       guardian_name: guardianName || null,
+      guardian_name_hi: guardianNameHi || null,
       address: address || null,
+      address_hi: addressHi || null,
       kyc_document: kycDocument || null,
       nominee_details: nomineeDetails || null,
       guarantor_details: guarantorOptional || null,
       occupation: occupation || null,
+      occupation_hi: occupationHi || null,
     })
     .eq('id', customerId)
     
@@ -285,5 +318,138 @@ export async function updateCustomerDetails(prevState: any, formData: FormData) 
   revalidatePath('/admin', 'layout')
   revalidatePath(`/admin/customers/${customerId}`)
   return { success: 'Customer details updated successfully!' }
+}
+
+export async function bulkCreditInterest(payouts: { userId: string, amount: number, description?: string }[]) {
+  const supabaseAdmin = createAdminClient()
+
+  if (!payouts || payouts.length === 0) {
+    return { error: 'No payouts provided.' }
+  }
+
+  // Validate all amounts
+  for (const p of payouts) {
+    if (isNaN(p.amount) || p.amount <= 0) {
+      return { error: `Invalid amount for user ${p.userId}. Must be greater than zero.` }
+    }
+  }
+
+  // Insert all transactions at once
+  const { error: txError } = await supabaseAdmin
+    .from('transactions')
+    .insert(
+      payouts.map(p => ({
+        user_id: p.userId,
+        transaction_type: 'JAMA_EARNED_INTEREST',
+        amount: p.amount,
+        description: p.description || 'Monthly Interest',
+        transaction_date: new Date().toISOString()
+      }))
+    )
+
+  if (txError) {
+    console.error('Bulk Interest Error:', txError)
+    return { error: `Failed to credit interest: ${txError.message}` }
+  }
+
+  revalidatePath('/admin', 'layout')
+  return { success: `Successfully credited interest to ${payouts.length} accounts!` }
+}
+
+export async function getClosedCustomers() {
+  const supabaseAdmin = createAdminClient()
+  
+  const { data, error } = await supabaseAdmin
+    .from('users_profile')
+    .select('id, full_name, mobile_number')
+    .eq('role', 'closed')
+    .order('full_name', { ascending: true })
+    
+  if (error) {
+    console.error('Error fetching closed customers', error)
+    return []
+  }
+  
+  return data || []
+}
+
+export async function restoreCustomer(customerId: string) {
+  const supabaseAdmin = createAdminClient()
+  
+  try {
+    const { data: profile } = await supabaseAdmin
+      .from('users_profile')
+      .select('mobile_number')
+      .eq('id', customerId)
+      .single()
+      
+    if (!profile) return { error: 'Customer not found.' }
+
+    // Restore original email
+    const originalEmail = `${profile.mobile_number}@rsspp.local`
+    const { error: authError } = await supabaseAdmin.auth.admin.updateUserById(customerId, {
+      email: originalEmail
+    })
+    
+    if (authError) {
+      console.error('Error restoring auth email:', authError)
+      return { error: 'Failed to restore authentication record. The mobile number might be in use by another account.' }
+    }
+    
+    const { error: profileError } = await supabaseAdmin
+      .from('users_profile')
+      .update({ role: 'customer' })
+      .eq('id', customerId)
+      
+    if (profileError) {
+      console.error('Error restoring profile:', profileError)
+      return { error: 'Failed to restore customer account.' }
+    }
+    
+    revalidatePath('/admin', 'layout')
+    return { success: 'Customer restored successfully.' }
+  } catch (err: any) {
+    console.error('Restore Exception:', err)
+    return { error: err.message || 'An unexpected error occurred.' }
+  }
+}
+
+export async function permanentDeleteCustomer(customerId: string) {
+  const supabaseAdmin = createAdminClient()
+  
+  try {
+    const { error: txError } = await supabaseAdmin
+      .from('transactions')
+      .delete()
+      .eq('user_id', customerId)
+      
+    if (txError) {
+      console.error('Error deleting transactions:', txError)
+      return { error: 'Failed to delete customer transactions.' }
+    }
+    
+    const { error: profileError } = await supabaseAdmin
+      .from('users_profile')
+      .delete()
+      .eq('id', customerId)
+      
+    if (profileError) {
+      console.error('Error deleting profile:', profileError)
+      return { error: 'Failed to delete customer profile.' }
+    }
+    
+    const { error: authError } = await supabaseAdmin.auth.admin.deleteUser(customerId)
+    
+    if (authError) {
+      console.error('Error deleting auth user:', authError)
+      return { error: 'Failed to delete authentication record.' }
+    }
+    
+    revalidatePath('/admin', 'layout')
+    return { success: 'Customer permanently deleted.' }
+  } catch (err: any) {
+    console.error('Permanent Delete Exception:', err)
+    return { error: err.message || 'An unexpected error occurred.' }
+  }
 }
 

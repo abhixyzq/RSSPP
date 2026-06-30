@@ -3,7 +3,7 @@
 import { useActionState, useEffect, useRef, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import { addTransaction } from '@/actions/admin'
-import { ArrowDownToLine, ArrowUpFromLine, FileText, AlertCircle, CheckCircle2, Search, Check, Building, ShieldCheck, IndianRupee } from 'lucide-react'
+import { ArrowDownToLine, ArrowUpFromLine, FileText, AlertCircle, CheckCircle2, Search, Check, Building, ShieldCheck, IndianRupee, ArrowRight } from 'lucide-react'
 
 type Customer = {
   id: string
@@ -16,22 +16,33 @@ function SubmitBtn({ typeSelected, customerId, amount }: { typeSelected: string,
   
   const isReady = typeSelected && customerId && amount && Number(amount) > 0;
   
-  let btnClass = "bg-[#0B2E59] hover:bg-[#071f3e] text-white" // Default disabled state
-  let text = "AUTHORIZE TRANSACTION"
+  let btnClass = "bg-blue-600 hover:bg-blue-700 text-white"
   
-  if (isReady && typeSelected === 'JAMA_PRINCIPAL') {
+  if (isReady && typeSelected.startsWith('JAMA_')) {
     btnClass = "bg-green-700 hover:bg-green-800 text-white shadow-lg shadow-green-700/30 ring-4 ring-green-700/20"
-  } else if (isReady && typeSelected === 'NIKASI_PRINCIPAL') {
+  } else if (isReady && typeSelected.startsWith('NIKASI_')) {
     btnClass = "bg-red-700 hover:bg-red-800 text-white shadow-lg shadow-red-700/30 ring-4 ring-red-700/20"
   }
   
   return (
-    <button
-      type="submit"
-      disabled={pending || !isReady}
-      className={`w-full font-bold py-4 px-10 rounded shadow-sm transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-lg tracking-widest uppercase ${btnClass}`}
+    <button 
+      type="submit" 
+      disabled={pending || !isReady} 
+      className={`w-full font-bold uppercase tracking-widest text-[13px] py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed ${
+        pending ? 'bg-gray-400' : btnClass
+      }`}
     >
-      {pending ? 'PROCESSING...' : text}
+      {pending ? 'Processing...' : (
+        <>
+          {typeSelected.startsWith('JAMA_') ? (
+            <>Save to Passbook (पासबुक में लिखें) <ArrowRight className="w-5 h-5" /></>
+          ) : typeSelected.startsWith('NIKASI_') ? (
+            <>Record in Loan Ledger (खाता बही में लिखें) <ArrowRight className="w-5 h-5" /></>
+          ) : (
+            'Save Transaction'
+          )}
+        </>
+      )}
     </button>
   )
 }
@@ -43,13 +54,12 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
   const [searchQuery, setSearchQuery] = useState('')
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [selectedCustomerId, setSelectedCustomerId] = useState('')
-  const [txType, setTxType] = useState('JAMA_PRINCIPAL') 
+  const [txType, setTxType] = useState('JAMA_DEPOSIT') 
   const [amountInput, setAmountInput] = useState('')
   const [showSuccessOverlay, setShowSuccessOverlay] = useState(false)
 
   useEffect(() => {
     if (state?.success) {
-      // Play Paytm-style chime using Web Audio API
       try {
         const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
         if (AudioContextClass) {
@@ -71,21 +81,24 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
           osc.stop(ctx.currentTime + 0.5);
         }
         
-        // Haptic Feedback
         if (navigator.vibrate) {
-          navigator.vibrate([100, 50, 100]); // Double tap vibration
+          navigator.vibrate([100, 50, 100]);
         }
       } catch (e) {
         console.error('Audio/Haptic failed', e);
       }
 
       formRef.current?.reset()
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSearchQuery('')
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSelectedCustomerId('')
-      setTxType('JAMA_PRINCIPAL')
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setTxType('JAMA_DEPOSIT')
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setAmountInput('')
       
-      // Trigger full screen success animation
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowSuccessOverlay(true)
       setTimeout(() => setShowSuccessOverlay(false), 3500)
     }
@@ -98,23 +111,23 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
 
   const selectedCustomer = customers.find(c => c.id === selectedCustomerId)
 
-  const isDeposit = txType === 'JAMA_PRINCIPAL'
+  const isDepositAccount = txType.startsWith('JAMA')
+  const isCredit = ['JAMA_DEPOSIT', 'JAMA_EARNED_INTEREST', 'NIKASI_REPAY_PRINCIPAL', 'NIKASI_REPAY_INTEREST'].includes(txType)
+
 
   return (
     <div className="bg-[#F4F6F9] min-h-screen w-full p-4 sm:p-8 font-sans pb-20">
       
-      {/* Header */}
       <div className="max-w-4xl mx-auto mb-6">
         <h1 className="text-2xl font-bold text-[#0B2E59] uppercase">Ledger Entry</h1>
       </div>
 
       <div className="max-w-4xl mx-auto bg-white shadow-xl border border-gray-300">
         
-        {/* Gateway Header */}
-        <div className={`p-6 border-b-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors duration-500 ${isDeposit ? 'bg-[#0B2E59] border-green-500' : 'bg-[#310A14] border-red-500'}`}>
+        <div className={`p-6 border-b-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors duration-500 ${isDepositAccount ? 'bg-[#0B2E59] border-green-500' : 'bg-[#310A14] border-red-500'}`}>
           <div className="flex items-center gap-4">
              <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shrink-0">
-                <Building className={`w-8 h-8 ${isDeposit ? 'text-[#0B2E59]' : 'text-[#310A14]'}`} />
+                <Building className={`w-8 h-8 ${isDepositAccount ? 'text-[#0B2E59]' : 'text-[#310A14]'}`} />
              </div>
              <div>
                 <h1 className="text-2xl font-bold uppercase tracking-wide text-white">Transaction Gateway</h1>
@@ -151,42 +164,60 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
 
           <form ref={formRef} action={formAction} className="space-y-10">
             
-            {/* Step 1: Transaction Type */}
             <div>
                <h3 className="text-[13px] font-bold text-gray-500 uppercase tracking-wider mb-4 border-b border-gray-200 pb-2">
                  1. Select Transaction Type
                </h3>
                
-               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <label className={`
-                    relative flex flex-col items-center p-6 cursor-pointer border-2 rounded transition-all
-                    ${isDeposit ? 'bg-green-50 border-green-600 shadow-md' : 'bg-white border-gray-200 hover:border-green-300'}
-                  `}>
-                    <input type="radio" name="type" value="JAMA_PRINCIPAL" checked={isDeposit} onChange={() => setTxType('JAMA_PRINCIPAL')} className="sr-only" />
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 ${isDeposit ? 'bg-green-600 text-white' : 'bg-green-100 text-green-600'}`}>
-                       <ArrowDownToLine className="w-6 h-6" />
-                    </div>
-                    <span className={`font-extrabold text-lg uppercase tracking-wide ${isDeposit ? 'text-green-800' : 'text-gray-700'}`}>CREDIT (DEPOSIT)</span>
-                    <span className="text-xs font-bold text-gray-500 mt-1 uppercase">Add funds to account</span>
-                    {isDeposit && <CheckCircle2 className="absolute top-4 right-4 w-6 h-6 text-green-600" />}
-                  </label>
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="border-2 border-green-200 rounded p-4 bg-green-50/20">
+                     <h4 className="text-green-800 font-bold uppercase tracking-wider mb-4 border-b border-green-200 pb-2 text-sm flex items-center gap-2">
+                        <ArrowDownToLine className="w-4 h-4" /> Deposit Account (Jama)
+                     </h4>
+                     <div className="space-y-3">
+                        <label className={`relative flex items-center p-3 cursor-pointer border rounded transition-all ${txType === 'JAMA_DEPOSIT' ? 'bg-green-100 border-green-600 shadow' : 'bg-white border-gray-200 hover:border-green-300'}`}>
+                           <input type="radio" name="type" value="JAMA_DEPOSIT" checked={txType === 'JAMA_DEPOSIT'} onChange={() => setTxType('JAMA_DEPOSIT')} className="mr-3 w-4 h-4 text-green-600 focus:ring-green-500" />
+                           <div>
+                              <span className="block font-bold text-green-900 uppercase text-sm">Deposit Funds</span>
+                           </div>
+                        </label>
+                        <label className={`relative flex items-center p-3 cursor-pointer border rounded transition-all ${txType === 'JAMA_WITHDRAWAL' ? 'bg-orange-100 border-orange-600 shadow' : 'bg-white border-gray-200 hover:border-orange-300'}`}>
+                           <input type="radio" name="type" value="JAMA_WITHDRAWAL" checked={txType === 'JAMA_WITHDRAWAL'} onChange={() => setTxType('JAMA_WITHDRAWAL')} className="mr-3 w-4 h-4 text-orange-600 focus:ring-orange-500" />
+                           <div>
+                              <span className="block font-bold text-orange-900 uppercase text-sm">Withdraw Funds</span>
+                           </div>
+                        </label>
+                     </div>
+                  </div>
 
-                  <label className={`
-                    relative flex flex-col items-center p-6 cursor-pointer border-2 rounded transition-all
-                    ${!isDeposit ? 'bg-red-50 border-red-600 shadow-md' : 'bg-white border-gray-200 hover:border-red-300'}
-                  `}>
-                    <input type="radio" name="type" value="NIKASI_PRINCIPAL" checked={!isDeposit} onChange={() => setTxType('NIKASI_PRINCIPAL')} className="sr-only" />
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 ${!isDeposit ? 'bg-red-600 text-white' : 'bg-red-100 text-red-600'}`}>
-                       <ArrowUpFromLine className="w-6 h-6" />
-                    </div>
-                    <span className={`font-extrabold text-lg uppercase tracking-wide ${!isDeposit ? 'text-red-800' : 'text-gray-700'}`}>DEBIT (LOAN OUT)</span>
-                    <span className="text-xs font-bold text-gray-500 mt-1 uppercase">Issue loan to account</span>
-                    {!isDeposit && <CheckCircle2 className="absolute top-4 right-4 w-6 h-6 text-red-600" />}
-                  </label>
+                  <div className="border-2 border-red-200 rounded p-4 bg-red-50/20">
+                     <h4 className="text-red-800 font-bold uppercase tracking-wider mb-4 border-b border-red-200 pb-2 text-sm flex items-center gap-2">
+                        <ArrowUpFromLine className="w-4 h-4" /> Loan Account (Nikasi)
+                     </h4>
+                     <div className="space-y-3">
+                        <label className={`relative flex items-center p-3 cursor-pointer border rounded transition-all ${txType === 'NIKASI_LOAN' ? 'bg-red-100 border-red-600 shadow' : 'bg-white border-gray-200 hover:border-red-300'}`}>
+                           <input type="radio" name="type" value="NIKASI_LOAN" checked={txType === 'NIKASI_LOAN'} onChange={() => setTxType('NIKASI_LOAN')} className="mr-3 w-4 h-4 text-red-600 focus:ring-red-500" />
+                           <div>
+                              <span className="block font-bold text-red-900 uppercase text-sm">Issue New Loan</span>
+                           </div>
+                        </label>
+                        <label className={`relative flex items-center p-3 cursor-pointer border rounded transition-all ${txType === 'NIKASI_REPAY_PRINCIPAL' ? 'bg-blue-100 border-blue-600 shadow' : 'bg-white border-gray-200 hover:border-blue-300'}`}>
+                           <input type="radio" name="type" value="NIKASI_REPAY_PRINCIPAL" checked={txType === 'NIKASI_REPAY_PRINCIPAL'} onChange={() => setTxType('NIKASI_REPAY_PRINCIPAL')} className="mr-3 w-4 h-4 text-blue-600 focus:ring-blue-500" />
+                           <div>
+                              <span className="block font-bold text-blue-900 uppercase text-sm">Repay Principal</span>
+                           </div>
+                        </label>
+                        <label className={`relative flex items-center p-3 cursor-pointer border rounded transition-all ${txType === 'NIKASI_REPAY_INTEREST' ? 'bg-purple-100 border-purple-600 shadow' : 'bg-white border-gray-200 hover:border-purple-300'}`}>
+                           <input type="radio" name="type" value="NIKASI_REPAY_INTEREST" checked={txType === 'NIKASI_REPAY_INTEREST'} onChange={() => setTxType('NIKASI_REPAY_INTEREST')} className="mr-3 w-4 h-4 text-purple-600 focus:ring-purple-500" />
+                           <div>
+                              <span className="block font-bold text-purple-900 uppercase text-sm">Pay Interest</span>
+                           </div>
+                        </label>
+                     </div>
+                  </div>
                </div>
             </div>
 
-            {/* Step 2: Target Account */}
             <div>
                <h3 className="text-[13px] font-bold text-gray-500 uppercase tracking-wider mb-4 border-b border-gray-200 pb-2">
                  2. Select Target Account
@@ -196,9 +227,9 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
                  <input type="hidden" name="userId" value={selectedCustomerId} required />
                  
                  {selectedCustomer ? (
-                   <div className={`flex items-center justify-between p-4 border-2 rounded bg-white ${isDeposit ? 'border-green-500' : 'border-red-500'}`}>
+                   <div className={`flex items-center justify-between p-4 border-2 rounded bg-white ${isDepositAccount ? 'border-green-500' : 'border-red-500'}`}>
                      <div className="flex items-center gap-4">
-                        <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg ${isDeposit ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                        <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg ${isDepositAccount ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                            {selectedCustomer.full_name.charAt(0)}
                         </div>
                         <div>
@@ -228,7 +259,7 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
                          setIsDropdownOpen(true)
                        }}
                        onFocus={() => setIsDropdownOpen(true)}
-                       className="w-full pl-11 pr-4 py-4 bg-white border border-gray-300 rounded text-gray-900 font-bold focus:ring-2 focus:ring-[#0B2E59] focus:outline-none"
+                       className="w-full pl-11 pr-4 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 font-bold focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition-all shadow-sm"
                      />
                      
                      {isDropdownOpen && searchQuery && (
@@ -262,7 +293,7 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
             </div>
 
             {/* Step 3: Transaction Details */}
-            <div className={`p-6 border-2 rounded ${isDeposit ? 'bg-green-50/30 border-green-200' : 'bg-red-50/30 border-red-200'}`}>
+            <div className={`p-6 border-2 rounded ${isDepositAccount ? 'bg-green-50/30 border-green-200' : 'bg-red-50/30 border-red-200'}`}>
                <h3 className="text-[13px] font-bold text-gray-500 uppercase tracking-wider mb-6 border-b border-gray-200 pb-2">
                  3. Transaction Details
                </h3>
@@ -270,12 +301,12 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {/* Amount Input (MASSIVE) */}
                   <div className="md:col-span-2">
-                    <label className={`block text-xs font-bold uppercase tracking-wide mb-3 ${isDeposit ? 'text-green-800' : 'text-red-800'}`}>
+                    <label className={`block text-xs font-bold uppercase tracking-wide mb-3 ${isCredit ? 'text-green-800' : 'text-red-800'}`}>
                       Transaction Amount (₹) <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
-                        <IndianRupee className={`h-8 w-8 ${isDeposit ? 'text-green-400' : 'text-red-400'}`} />
+                        <IndianRupee className={`h-8 w-8 ${isCredit ? 'text-green-400' : 'text-red-400'}`} />
                       </div>
                       <input 
                         type="number" 
@@ -286,7 +317,7 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
                         onChange={(e) => setAmountInput(e.target.value)}
                         onWheel={(e) => (e.target as HTMLInputElement).blur()}
                         placeholder="0.00"
-                        className={`w-full pl-16 pr-6 py-6 border-2 rounded focus:outline-none text-4xl font-extrabold tracking-wider [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${isDeposit ? 'bg-white border-green-300 focus:ring-2 focus:ring-green-500 text-green-900 placeholder-green-200' : 'bg-white border-red-300 focus:ring-2 focus:ring-red-500 text-red-900 placeholder-red-200'}`}
+                        className={`w-full pl-16 pr-6 py-6 border-2 rounded focus:outline-none text-4xl font-extrabold tracking-wider [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${isCredit ? 'bg-white border-green-300 focus:ring-2 focus:ring-green-500 text-green-900 placeholder-green-200' : 'bg-white border-red-300 focus:ring-2 focus:ring-red-500 text-red-900 placeholder-red-200'}`}
                       />
                     </div>
                   </div>
@@ -294,13 +325,13 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
                   {/* Description */}
                   <div className="md:col-span-2">
                     <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-2">Particulars (Remarks)</label>
-                    <div className="relative">
-                      <FileText className="absolute left-4 top-3.5 w-5 h-5 text-gray-400" />
+                    <div className="relative group">
+                      <FileText className="absolute left-4 top-3.5 w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors" />
                       <input 
                         type="text" 
                         name="description" 
                         placeholder="e.g. Cash Deposit, Bank Transfer, Loan Installment..."
-                        className="w-full pl-12 pr-4 py-3 bg-white border border-gray-300 rounded focus:ring-2 focus:ring-[#0B2E59] focus:outline-none text-[15px] font-bold text-gray-900 uppercase"
+                        className="w-full pl-12 pr-4 py-3 bg-white border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-[15px] font-bold text-gray-900 uppercase transition-all shadow-sm"
                       />
                     </div>
                   </div>

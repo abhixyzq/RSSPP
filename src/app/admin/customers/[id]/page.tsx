@@ -1,7 +1,7 @@
 import { getCustomerDetails } from '@/actions/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, Printer, Download, Building, CheckCircle, ArrowDownToLine, ArrowUpFromLine } from 'lucide-react'
+import { ArrowLeft, Printer, Download, Building, CheckCircle, ArrowDownToLine, ArrowUpFromLine, Wallet, CreditCard, Activity } from 'lucide-react'
 import EditCustomerModal from '../components/EditCustomerModal'
 
 export default async function CustomerProfilePage({
@@ -19,26 +19,41 @@ export default async function CustomerProfilePage({
   // Separate transactions into Deposit and Loan
   const allTx = [...(transactions || [])].reverse(); // Oldest first
   
-  let totalJama = 0;
   let currentJamaBalance = 0;
-  const jamaTransactions = allTx
-    .filter(tx => tx.transaction_type.startsWith('JAMA'))
-    .map(tx => {
-       const amt = Number(tx.amount);
-       totalJama += amt;
-       currentJamaBalance += amt;
-       return { ...tx, runningBalance: currentJamaBalance };
-    })
-    .reverse(); // Newest first for display
+  let totalJamaInterest = 0; // Total Interest Earned on Deposits
+
+  const jamaTransactions = allTx.filter(t => t.transaction_type.startsWith('JAMA')).map(tx => {
+    let earnedInterest = 0;
+
+    if (tx.transaction_type === 'JAMA_DEPOSIT' || tx.transaction_type === 'JAMA_PRINCIPAL') {
+      // eslint-disable-next-line react-hooks/immutability
+      currentJamaBalance += Number(tx.amount);
+    } else if (tx.transaction_type === 'JAMA_WITHDRAWAL') {
+      // eslint-disable-next-line react-hooks/immutability
+      currentJamaBalance -= Number(tx.amount);
+    } else if (tx.transaction_type === 'JAMA_EARNED_INTEREST') {
+      earnedInterest = Number(tx.amount);
+      totalJamaInterest += earnedInterest;
+    }
+    
+    return { ...tx, runningBalance: currentJamaBalance, earnedInterest };
+  }).reverse(); // Re-reverse to display newest first for display
 
   let totalNikasi = 0;
   let currentNikasiBalance = 0;
+  let totalInterestPaid = 0;
   const nikasiTransactions = allTx
     .filter(tx => tx.transaction_type.startsWith('NIKASI'))
     .map(tx => {
        const amt = Number(tx.amount);
-       totalNikasi += amt;
-       currentNikasiBalance += amt;
+       if (tx.transaction_type === 'NIKASI_LOAN' || tx.transaction_type === 'NIKASI_PRINCIPAL') { // Keep NIKASI_PRINCIPAL for legacy compat (it was disbursed loan)
+         totalNikasi += amt;
+         currentNikasiBalance += amt;
+       } else if (tx.transaction_type === 'NIKASI_REPAY_PRINCIPAL') {
+         currentNikasiBalance -= amt;
+       } else if (tx.transaction_type === 'NIKASI_REPAY_INTEREST') {
+         totalInterestPaid += amt;
+       }
        return { ...tx, runningBalance: currentNikasiBalance };
     })
     .reverse();
@@ -46,24 +61,19 @@ export default async function CustomerProfilePage({
   return (
     <div className="max-w-[1200px] mx-auto pb-20 bg-[#F4F6F9] min-h-screen -m-4 sm:-m-8 p-4 sm:p-8 font-sans">
       
-      {/* Top Navigation */}
-      <div className="flex items-center justify-between mb-6">
-        <Link 
-          href="/admin/customers" 
-          className="inline-flex items-center gap-2 text-sm font-bold text-[#0B2E59] hover:text-blue-700 transition-colors bg-white px-4 py-2 rounded-md shadow-sm border border-gray-200"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to Branch
-        </Link>
-        <div className="flex gap-3">
-           <EditCustomerModal profile={profile} />
-           <button className="flex items-center gap-2 text-sm font-bold text-gray-600 bg-white px-4 py-2 rounded-md shadow-sm border border-gray-200 hover:bg-gray-50">
+      {/* Header Actions */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+         <Link href="/admin/customers" className="flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors font-semibold bg-white px-4 py-2 rounded-lg border border-gray-200 shadow-sm">
+            <ArrowLeft className="w-5 h-5" />
+            Back to Directory (वापस जाएँ)
+         </Link>
+         
+         <div className="flex gap-3 w-full sm:w-auto">
+            <EditCustomerModal profile={profile} />
+            <button className="flex items-center gap-2 text-sm font-bold text-gray-600 bg-white px-4 py-2 rounded-md shadow-sm border border-gray-200 hover:bg-gray-50">
              <Printer className="w-4 h-4" /> Print
            </button>
-           <button className="flex items-center gap-2 text-sm font-bold text-white bg-[#0B2E59] px-4 py-2 rounded-md shadow-sm hover:bg-[#071f3e]">
-             <Download className="w-4 h-4" /> Download Statement
-           </button>
-        </div>
+         </div>
       </div>
 
       <div className="bg-white shadow-md border border-gray-300">
@@ -74,8 +84,8 @@ export default async function CustomerProfilePage({
                <Building className="w-8 h-8 text-[#0B2E59]" />
             </div>
             <div>
-               <h1 className="text-2xl font-bold uppercase tracking-wide">Dual Account Statement</h1>
-               <p className="text-blue-200 text-sm font-medium tracking-wide">Deposit A/c & Loan A/c (Strictly Separated)</p>
+               <h1 className="text-2xl font-bold uppercase tracking-wide">Customer Passbook</h1>
+               <p className="text-blue-200 text-sm font-medium tracking-wide">खाता विवरण एवं लेनदेन (Account Summary & Ledger)</p>
             </div>
          </div>
 
@@ -84,7 +94,10 @@ export default async function CustomerProfilePage({
             <div className="space-y-3">
                <div className="grid grid-cols-3">
                   <span className="text-sm text-gray-500 font-bold uppercase col-span-1">Account Name</span>
-                  <span className="text-sm font-bold text-[#0B2E59] col-span-2 uppercase">{profile.full_name}</span>
+                  <span className="text-sm font-bold text-[#0B2E59] col-span-2 uppercase">
+                    {profile.full_name}
+                    {profile.full_name_hi ? ` / ${profile.full_name_hi}` : ''}
+                  </span>
                </div>
                <div className="grid grid-cols-3">
                   <span className="text-sm text-gray-500 font-bold uppercase col-span-1">Account No.</span>
@@ -92,7 +105,10 @@ export default async function CustomerProfilePage({
                </div>
                <div className="grid grid-cols-3">
                   <span className="text-sm text-gray-500 font-bold uppercase col-span-1">Address</span>
-                  <span className="text-sm font-bold text-gray-900 col-span-2 uppercase">{profile.address || 'N/A'}</span>
+                  <span className="text-sm font-bold text-gray-900 col-span-2 uppercase">
+                    {profile.address || 'N/A'}
+                    {profile.address_hi ? ` / ${profile.address_hi}` : ''}
+                  </span>
                </div>
             </div>
 
@@ -109,47 +125,66 @@ export default async function CustomerProfilePage({
                </div>
                <div className="grid grid-cols-3">
                   <span className="text-sm text-gray-500 font-bold uppercase col-span-1">Occupation</span>
-                  <span className="text-sm font-bold text-gray-900 col-span-2 uppercase">{profile.occupation || 'N/A'}</span>
+                  <span className="text-sm font-bold text-gray-900 col-span-2 uppercase">
+                    {profile.occupation || 'N/A'}
+                    {profile.occupation_hi ? ` / ${profile.occupation_hi}` : ''}
+                  </span>
                </div>
             </div>
          </div>
 
-         {/* Financial Summary Strip */}
-         <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-gray-200 border-b-4 border-[#0B2E59] bg-white">
-            <div className="p-8 flex flex-col justify-center items-center bg-green-50/30">
-               <div className="flex items-center gap-2 text-green-700 mb-2">
-                  <ArrowDownToLine className="w-5 h-5" />
-                  <p className="text-sm font-bold uppercase tracking-wider">Total Deposit Balance</p>
+         {/* Financial Summary Cards */}
+         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-6 bg-transparent">
+            <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex items-center gap-4 group">
+               <div className="p-3.5 bg-gradient-to-br from-green-50 to-green-100 text-green-600 rounded-xl shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-inner">
+                  <Wallet className="w-7 h-7" />
                </div>
-               <p className="text-4xl font-extrabold text-green-700">₹{totalJama.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</p>
+               <div>
+                  <p className="text-xs font-bold text-gray-500 uppercase tracking-wider group-hover:text-green-600 transition-colors">Deposit Balance (कुल बचत)</p>
+                  <p className="text-2xl font-black text-gray-900 mt-0.5">₹{currentJamaBalance.toLocaleString('en-IN')}</p>
+               </div>
             </div>
-            <div className="p-8 flex flex-col justify-center items-center bg-red-50/30">
-               <div className="flex items-center gap-2 text-red-700 mb-2">
-                  <ArrowUpFromLine className="w-5 h-5" />
-                  <p className="text-sm font-bold uppercase tracking-wider">Total Loan Balance</p>
+            
+            <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex items-center gap-4 group">
+               <div className="p-3.5 bg-gradient-to-br from-red-50 to-red-100 text-red-600 rounded-xl shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-inner">
+                  <CreditCard className="w-7 h-7" />
                </div>
-               <p className="text-4xl font-extrabold text-red-700">₹{totalNikasi.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</p>
+               <div>
+                  <p className="text-xs font-bold text-gray-500 uppercase tracking-wider group-hover:text-red-600 transition-colors">Loan Balance (कुल ऋण)</p>
+                  <p className="text-2xl font-black text-gray-900 mt-0.5">₹{currentNikasiBalance.toLocaleString('en-IN')}</p>
+               </div>
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex items-center gap-4 group">
+               <div className="p-3.5 bg-gradient-to-br from-purple-50 to-purple-100 text-purple-600 rounded-xl shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-inner">
+                  <Activity className="w-7 h-7" />
+               </div>
+               <div>
+                  <p className="text-xs font-bold text-gray-500 uppercase tracking-wider group-hover:text-purple-600 transition-colors">Interest Earned (कुल ब्याज मिला)</p>
+                  <p className="text-2xl font-black text-gray-900 mt-0.5">₹{totalJamaInterest.toLocaleString('en-IN')}</p>
+               </div>
             </div>
          </div>
 
          {/* DEPOSIT LEDGER */}
          <div className="p-0 sm:p-6 overflow-x-auto border-b-4 border-gray-300">
             <div className="bg-green-700 text-white px-4 py-3 font-bold uppercase tracking-wide flex items-center gap-2">
-               <ArrowDownToLine className="w-5 h-5" /> Deposit Account Ledger (Jama)
+               <ArrowDownToLine className="w-5 h-5" /> Deposit Account Ledger (बचत खाता विवरण)
             </div>
             <table className="w-full text-left border-collapse min-w-[700px]">
                <thead>
                   <tr className="bg-gray-100 text-gray-700 text-[12px] uppercase tracking-wider border-b-2 border-gray-300">
-                     <th className="p-3 font-bold border-r border-gray-300 w-32">Date</th>
-                     <th className="p-3 font-bold border-r border-gray-300">Particulars</th>
-                     <th className="p-3 font-bold border-r border-gray-300 w-40 text-right">Credit Amount</th>
-                     <th className="p-3 font-bold w-48 text-right bg-green-50">Running Balance</th>
+                     <th className="p-3 font-bold border-r border-gray-300 w-32">Date (दिनांक)</th>
+                     <th className="p-3 font-bold border-r border-gray-300">Particulars (विवरण)</th>
+                     <th className="p-3 font-bold border-r border-gray-300 w-32 text-right text-purple-800 bg-purple-50">Interest Earned (ब्याज मिला)</th>
+                     <th className="p-3 font-bold border-r border-gray-300 w-40 text-right">Amount (राशि) (+ / -)</th>
+                     <th className="p-3 font-bold w-48 text-right bg-green-50">Running Balance (शेष राशि)</th>
                   </tr>
                </thead>
                <tbody className="bg-white">
                   {(!jamaTransactions || jamaTransactions.length === 0) ? (
                     <tr>
-                      <td colSpan={4} className="p-8 text-center text-gray-500 font-medium">
+                      <td colSpan={5} className="p-8 text-center text-gray-500 font-medium">
                         No deposits found for this account.
                       </td>
                     </tr>
@@ -157,7 +192,10 @@ export default async function CustomerProfilePage({
                     jamaTransactions.map((tx, index) => {
                       const amtString = Number(tx.amount).toLocaleString('en-IN', { minimumFractionDigits: 2 });
                       const balString = tx.runningBalance.toLocaleString('en-IN', { minimumFractionDigits: 2 });
+                      const interestString = tx.earnedInterest ? tx.earnedInterest.toLocaleString('en-IN', { minimumFractionDigits: 2 }) : '0.00';
                       const bgClass = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+                      const isDeposit = tx.transaction_type === 'JAMA_DEPOSIT' || tx.transaction_type === 'JAMA_PRINCIPAL';
+                      const isInterest = tx.transaction_type === 'JAMA_EARNED_INTEREST';
 
                       return (
                         <tr key={tx.id} className={`${bgClass} hover:bg-green-50/50 text-[13px] text-gray-900 border-b border-gray-200`}>
@@ -165,10 +203,13 @@ export default async function CustomerProfilePage({
                               {new Date(tx.transaction_date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
                            </td>
                            <td className="p-3 border-r border-gray-200 font-medium">
-                              BY DEPOSIT {tx.description ? ` - ${tx.description.toUpperCase()}` : ''}
+                              {isInterest ? 'BY INTEREST (ब्याज)' : isDeposit ? 'BY DEPOSIT' : 'TO WITHDRAWAL'} {tx.description ? ` - ${tx.description.toUpperCase() === 'MONTHLY BULK INTEREST CREDIT' ? 'MONTHLY INTEREST' : tx.description.toUpperCase()}` : ''}
                            </td>
-                           <td className="p-3 border-r border-gray-200 text-right font-bold text-green-700">
-                              + {amtString}
+                           <td className="p-3 border-r border-gray-200 text-right font-extrabold text-purple-700 bg-purple-50/30">
+                              {isInterest ? `+${interestString}` : '-'}
+                           </td>
+                           <td className={`p-3 border-r border-gray-200 text-right font-bold ${isInterest ? 'text-gray-400' : isDeposit ? 'text-green-700' : 'text-red-600'}`}>
+                              {isInterest ? '-' : isDeposit ? `+ ${amtString}` : `- ${amtString}`}
                            </td>
                            <td className="p-3 text-right font-extrabold text-gray-900 bg-green-50/30">
                               {balString}
@@ -184,21 +225,22 @@ export default async function CustomerProfilePage({
          {/* LOAN LEDGER */}
          <div className="p-0 sm:p-6 overflow-x-auto">
             <div className="bg-red-700 text-white px-4 py-3 font-bold uppercase tracking-wide flex items-center gap-2 mt-4 sm:mt-0">
-               <ArrowUpFromLine className="w-5 h-5" /> Loan Account Ledger (Nikasi)
+               <ArrowUpFromLine className="w-5 h-5" /> Loan Account Ledger (ऋण खाता विवरण)
             </div>
             <table className="w-full text-left border-collapse min-w-[700px]">
                <thead>
                   <tr className="bg-gray-100 text-gray-700 text-[12px] uppercase tracking-wider border-b-2 border-gray-300">
-                     <th className="p-3 font-bold border-r border-gray-300 w-32">Date</th>
-                     <th className="p-3 font-bold border-r border-gray-300">Particulars</th>
-                     <th className="p-3 font-bold border-r border-gray-300 w-40 text-right">Debit Amount</th>
-                     <th className="p-3 font-bold w-48 text-right bg-red-50">Running Balance</th>
+                     <th className="p-3 font-bold border-r border-gray-300 w-32">Date (दिनांक)</th>
+                     <th className="p-3 font-bold border-r border-gray-300">Particulars (विवरण)</th>
+                     <th className="p-3 font-bold border-r border-gray-300 w-32 text-right">Principal (मूलधन) (+/-)</th>
+                     <th className="p-3 font-bold border-r border-gray-300 w-32 text-right">Interest Paid (ब्याज दिया)</th>
+                     <th className="p-3 font-bold w-40 text-right bg-red-50">Running Balance (शेष राशि)</th>
                   </tr>
                </thead>
                <tbody className="bg-white">
                   {(!nikasiTransactions || nikasiTransactions.length === 0) ? (
                     <tr>
-                      <td colSpan={4} className="p-8 text-center text-gray-500 font-medium">
+                      <td colSpan={5} className="p-8 text-center text-gray-500 font-medium">
                         No loans issued to this account.
                       </td>
                     </tr>
@@ -207,6 +249,10 @@ export default async function CustomerProfilePage({
                       const amtString = Number(tx.amount).toLocaleString('en-IN', { minimumFractionDigits: 2 });
                       const balString = tx.runningBalance.toLocaleString('en-IN', { minimumFractionDigits: 2 });
                       const bgClass = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+                      
+                      const isLoanGiven = tx.transaction_type === 'NIKASI_LOAN' || tx.transaction_type === 'NIKASI_PRINCIPAL';
+                      const isPrincipalRepay = tx.transaction_type === 'NIKASI_REPAY_PRINCIPAL';
+                      const isInterest = tx.transaction_type === 'NIKASI_REPAY_INTEREST';
 
                       return (
                         <tr key={tx.id} className={`${bgClass} hover:bg-red-50/50 text-[13px] text-gray-900 border-b border-gray-200`}>
@@ -214,10 +260,16 @@ export default async function CustomerProfilePage({
                               {new Date(tx.transaction_date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
                            </td>
                            <td className="p-3 border-r border-gray-200 font-medium">
-                              TO LOAN OUT {tx.description ? ` - ${tx.description.toUpperCase()}` : ''}
+                              {isLoanGiven && 'TO LOAN OUT'}
+                              {isPrincipalRepay && 'BY REPAYMENT (MOOL)'}
+                              {isInterest && 'BY INTEREST (BYAJ)'}
+                              {tx.description ? ` - ${tx.description.toUpperCase()}` : ''}
                            </td>
-                           <td className="p-3 border-r border-gray-200 text-right font-bold text-red-700">
-                              - {amtString}
+                           <td className={`p-3 border-r border-gray-200 text-right font-bold ${isLoanGiven ? 'text-red-700' : isPrincipalRepay ? 'text-green-700' : 'text-gray-400'}`}>
+                              {isLoanGiven ? `+ ${amtString}` : isPrincipalRepay ? `- ${amtString}` : '-'}
+                           </td>
+                           <td className={`p-3 border-r border-gray-200 text-right font-bold ${isInterest ? 'text-purple-700' : 'text-gray-400'}`}>
+                              {isInterest ? amtString : '-'}
                            </td>
                            <td className="p-3 text-right font-extrabold text-gray-900 bg-red-50/30">
                               {balString}
