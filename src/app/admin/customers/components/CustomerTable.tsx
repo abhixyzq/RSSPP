@@ -1,0 +1,219 @@
+'use client'
+
+import { useState, useTransition } from 'react'
+import { useRouter } from 'next/navigation'
+import { Search, Building, Trash2, BookOpen, AlertTriangle, Loader2, Download, Printer } from 'lucide-react'
+import { deleteCustomer } from '@/actions/admin'
+
+type Customer = {
+  id: string
+  full_name: string
+  mobile_number: string
+}
+
+export default function CustomerTable({ customers }: { customers: Customer[] }) {
+  const [searchTerm, setSearchTerm] = useState('')
+  const [customerToDelete, setCustomerToDelete] = useState<Customer | null>(null)
+  const [isPending, startTransition] = useTransition()
+  const [errorMsg, setErrorMsg] = useState('')
+  const router = useRouter()
+
+  const filteredCustomers = customers.filter(c => 
+    c.full_name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    c.mobile_number.includes(searchTerm)
+  )
+
+  const handleDelete = async () => {
+    if (!customerToDelete) return
+    setErrorMsg('')
+    
+    startTransition(async () => {
+       const res = await deleteCustomer(customerToDelete.id)
+       if (res?.error) {
+         setErrorMsg(res.error)
+       } else {
+         setCustomerToDelete(null)
+         router.refresh()
+       }
+    })
+  }
+
+  return (
+    <div className="bg-[#F4F6F9] min-h-[calc(100vh-60px)] -m-4 sm:-m-8 p-4 sm:p-8 font-sans">
+      
+      {/* Top Navigation */}
+      <div className="flex items-center justify-between mb-6">
+        <div>
+           <h1 className="text-2xl font-bold text-[#0B2E59] uppercase">Account Holders</h1>
+        </div>
+        <div className="flex gap-3">
+           <button className="flex items-center gap-2 text-sm font-bold text-gray-600 bg-white px-4 py-2 rounded-md shadow-sm border border-gray-200 hover:bg-gray-50">
+             <Printer className="w-4 h-4" /> Print List
+           </button>
+           <button className="flex items-center gap-2 text-sm font-bold text-white bg-[#0B2E59] px-4 py-2 rounded-md shadow-sm hover:bg-[#071f3e]">
+             <Download className="w-4 h-4" /> Export CSV
+           </button>
+        </div>
+      </div>
+
+      <div className="bg-white shadow-md border border-gray-300">
+        
+        {/* Bank Header */}
+        <div className="bg-[#0B2E59] text-white p-6 border-b-4 border-[#0099CC] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+             <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shrink-0">
+                <Building className="w-8 h-8 text-[#0B2E59]" />
+             </div>
+             <div>
+                <h1 className="text-2xl font-bold uppercase tracking-wide">Customer Database</h1>
+                <p className="text-blue-200 text-sm font-medium tracking-wide">Core Banking System • Account Register</p>
+             </div>
+          </div>
+          
+          <div className="relative w-full sm:w-[320px]">
+             <Search className="absolute left-3 top-2.5 w-5 h-5 text-[#0B2E59]" />
+             <input
+               type="text"
+               placeholder="Search by name or Account No..."
+               value={searchTerm}
+               onChange={(e) => setSearchTerm(e.target.value)}
+               className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#082243] rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-[#0B2E59] placeholder-[#0B2E59]/50 shadow-inner"
+             />
+          </div>
+        </div>
+
+        {/* Status Strip */}
+        <div className="bg-gray-100 p-3 border-b border-gray-300 flex justify-between items-center px-6">
+           <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">
+             Showing {filteredCustomers.length} Accounts
+           </span>
+           <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">
+             Branch: MAIN
+           </span>
+        </div>
+
+        {/* Data Table */}
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse min-w-[800px]">
+             <thead>
+                <tr className="bg-[#0B2E59] text-white text-[12px] uppercase tracking-wider">
+                   <th className="p-4 font-bold border border-[#082243]">Sl No.</th>
+                   <th className="p-4 font-bold border border-[#082243]">Account Name</th>
+                   <th className="p-4 font-bold border border-[#082243]">Account No. (Mobile)</th>
+                   <th className="p-4 font-bold border border-[#082243] text-center">Status</th>
+                   <th className="p-4 font-bold border border-[#082243] text-right w-56">Actions</th>
+                </tr>
+             </thead>
+             <tbody className="bg-white">
+                {filteredCustomers.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="p-10 text-center text-gray-500 font-bold uppercase border border-gray-200">
+                      No Records Found.
+                    </td>
+                  </tr>
+                ) : (
+                  filteredCustomers.map((customer, index) => {
+                    const bgClass = index % 2 === 0 ? 'bg-white' : 'bg-[#F9FAFC]';
+                    return (
+                      <tr key={customer.id} className={`${bgClass} hover:bg-yellow-50 text-[14px] text-gray-900 border-b border-gray-200`}>
+                         <td className="p-4 border-r border-gray-200 font-bold text-gray-500">
+                            {(index + 1).toString().padStart(3, '0')}
+                         </td>
+                         <td className="p-4 border-r border-gray-200 font-bold text-[#0B2E59] uppercase">
+                            {customer.full_name}
+                         </td>
+                         <td className="p-4 border-r border-gray-200 font-bold">
+                            {customer.mobile_number}
+                         </td>
+                         <td className="p-4 border-r border-gray-200 text-center font-bold text-green-700">
+                            ACTIVE
+                         </td>
+                         <td className="p-4 border-r border-gray-200 text-right">
+                            <div className="flex items-center justify-end gap-2">
+                               <button
+                                 onClick={() => router.push(`/admin/customers/${customer.id}`)}
+                                 className="flex items-center gap-1.5 px-3 py-1.5 bg-[#0B2E59] hover:bg-[#071f3e] text-white text-[12px] font-bold rounded shadow-sm transition-colors"
+                               >
+                                 <BookOpen className="w-3.5 h-3.5" /> Statement
+                               </button>
+                               <button
+                                 onClick={() => setCustomerToDelete(customer)}
+                                 className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-red-300 text-red-600 hover:bg-red-50 hover:border-red-400 text-[12px] font-bold rounded shadow-sm transition-colors"
+                                 title="Close Account"
+                               >
+                                 <Trash2 className="w-3.5 h-3.5" /> Close A/c
+                               </button>
+                            </div>
+                         </td>
+                      </tr>
+                    )
+                  })
+                )}
+             </tbody>
+          </table>
+        </div>
+        
+        <div className="p-4 bg-gray-50 border-t border-gray-200 text-center">
+           <p className="text-[11px] text-gray-500 font-medium uppercase tracking-wide">
+              *** END OF DATABASE ***
+           </p>
+        </div>
+
+      </div>
+
+      {/* STRICT DELETE CONFIRMATION MODAL */}
+      {customerToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-md w-full max-w-md overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 border-t-4 border-red-600">
+            
+            <div className="bg-red-50 p-6 flex flex-col items-center text-center border-b border-red-100">
+              <div className="w-16 h-16 bg-white text-red-600 rounded-full flex items-center justify-center mb-4 shadow-sm">
+                <AlertTriangle className="w-8 h-8" />
+              </div>
+              <h3 className="text-xl font-extrabold text-red-900 uppercase tracking-wide mb-1">Account Closure Warning</h3>
+            </div>
+            
+            <div className="p-6 text-center">
+              <p className="text-gray-700 text-[14px] font-medium leading-relaxed">
+                You have requested to close and permanently delete the account for <strong className="text-gray-900 uppercase">{customerToDelete.full_name}</strong> (A/c No: {customerToDelete.mobile_number}).
+              </p>
+              <p className="text-red-600 text-[13px] font-bold mt-4 bg-red-50 p-3 rounded border border-red-100">
+                This action is irreversible and will erase all ledgers associated with this account.
+              </p>
+
+              {errorMsg && (
+                <div className="mt-4 p-3 bg-red-50 text-red-700 text-sm font-bold border border-red-200 w-full">
+                  {errorMsg}
+                </div>
+              )}
+            </div>
+
+            <div className="p-4 bg-gray-100 border-t border-gray-200 flex gap-3">
+              <button
+                onClick={() => {
+                  setCustomerToDelete(null)
+                  setErrorMsg('')
+                }}
+                disabled={isPending}
+                className="flex-1 py-2 px-4 bg-white border border-gray-300 text-gray-700 font-bold rounded shadow-sm hover:bg-gray-50 transition-colors disabled:opacity-50"
+              >
+                CANCEL
+              </button>
+              <button
+                onClick={handleDelete}
+                disabled={isPending}
+                className="flex-1 py-2 px-4 bg-red-600 border border-red-700 text-white font-bold rounded shadow-sm hover:bg-red-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
+              >
+                {isPending ? (
+                  <><Loader2 className="w-4 h-4 animate-spin" /> PROCESSING...</>
+                ) : (
+                  <><Trash2 className="w-4 h-4" /> CONFIRM CLOSURE</>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
