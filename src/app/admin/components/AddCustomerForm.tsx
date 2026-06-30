@@ -128,7 +128,7 @@ export default function AddCustomerForm() {
                     <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Primary Mobile Number <span className="text-red-500">*</span></label>
                     <input 
                       type="tel" 
-                      name="mobileNumber" 
+                      name="mobile" 
                       required 
                       pattern="[0-9]{10}"
                       maxLength={10}
