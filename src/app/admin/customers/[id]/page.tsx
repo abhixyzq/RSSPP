@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { ArrowLeft, Download, Building, CheckCircle, ArrowDownToLine, ArrowUpFromLine, Wallet, CreditCard, Activity, X } from 'lucide-react'
 import EditCustomerModal from '../components/EditCustomerModal'
 import PrintButton from '../../components/PrintButton'
+import PrintPassbook from '../components/PrintPassbook'
 
 export default async function CustomerProfilePage({
   params,
@@ -60,7 +61,8 @@ export default async function CustomerProfilePage({
     .reverse();
 
   return (
-    <div className="max-w-[1200px] mx-auto pb-20 p-4 sm:p-8 font-sans">
+    <>
+    <div className="print:hidden max-w-[1200px] mx-auto pb-20 p-4 sm:p-8 font-sans">
       
       {/* Header Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
@@ -293,5 +295,15 @@ export default async function CustomerProfilePage({
 
       </div>
     </div>
+
+    <PrintPassbook 
+      profile={profile}
+      jamaTransactions={jamaTransactions}
+      nikasiTransactions={nikasiTransactions}
+      currentJamaBalance={currentJamaBalance}
+      currentNikasiBalance={currentNikasiBalance}
+      totalJamaInterest={totalJamaInterest}
+    />
+    </>
   )
 }
