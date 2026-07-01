@@ -94,6 +94,12 @@ export default function AdminLoginPage() {
               </div>
             </div>
 
+            <div className="flex justify-end mt-2">
+              <a href="/admin-login/forgot-password" className="text-[#0B2E59] text-xs font-bold hover:underline">
+                Forgot Password?
+              </a>
+            </div>
+
             <SubmitButton />
             
           </form>

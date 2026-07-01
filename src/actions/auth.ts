@@ -108,3 +108,63 @@ export async function adminLogin(prevState: any, formData: FormData) {
   revalidatePath('/admin', 'layout')
   redirect('/admin')
 }
+
+export async function requestAdminPasswordReset(prevState: any, formData: FormData) {
+  const supabase = await createClient()
+  const adminId = formData.get('adminId') as string
+
+  if (!adminId) {
+    return { error: 'Please enter your Admin ID (Email).' }
+  }
+
+  const email = adminId.includes('@') ? adminId : `${adminId}@rsspp.local`
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email)
+
+  if (error) {
+    return { error: error.message }
+  }
+
+  return { success: true, email }
+}
+
+export async function verifyAdminOtp(prevState: any, formData: FormData) {
+  const supabase = await createClient()
+  const email = formData.get('email') as string
+  const otp = formData.get('otp') as string
+
+  if (!email || !otp || otp.length !== 6) {
+    return { error: 'Please enter a valid 6-digit OTP.' }
+  }
+
+  const { data, error } = await supabase.auth.verifyOtp({
+    email,
+    token: otp,
+    type: 'recovery',
+  })
+
+  if (error) {
+    return { error: 'Invalid or expired OTP.' }
+  }
+
+  return { success: true, token_hash: data.session?.access_token }
+}
+
+export async function updateAdminPassword(prevState: any, formData: FormData) {
+  const supabase = await createClient()
+  const password = formData.get('password') as string
+
+  if (!password || password.length < 6) {
+    return { error: 'Password must be at least 6 characters long.' }
+  }
+
+  const { error } = await supabase.auth.updateUser({
+    password: password
+  })
+
+  if (error) {
+    return { error: error.message }
+  }
+
+  redirect('/admin-login')
+}
