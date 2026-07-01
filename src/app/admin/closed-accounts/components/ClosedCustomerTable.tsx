@@ -63,7 +63,7 @@ export default function ClosedCustomerTable({ customers }: { customers: Customer
     <div className="w-full">
       
       {/* Top Navigation */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
         <div>
            <h1 className="text-2xl font-bold text-gray-800 uppercase">Closed Accounts (बंद खाते)</h1>
         </div>

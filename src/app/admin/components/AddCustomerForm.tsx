@@ -50,7 +50,7 @@ export default function AddCustomerForm() {
     <div className="w-full font-sans pb-12 relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
       
       {/* Top Bar */}
-      <div className="flex items-center justify-between mb-6 max-w-5xl mx-auto">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 max-w-5xl mx-auto">
         <div>
            <h1 className="text-2xl font-bold text-[#0B2E59] uppercase">New Account Registration</h1>
         </div>

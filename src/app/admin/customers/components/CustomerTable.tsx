@@ -47,15 +47,15 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
     <div className="w-full">
       
       {/* Top Navigation */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-           <h1 className="text-2xl font-bold text-[#0B2E59] uppercase flex items-center gap-2">
+           <h1 className="text-2xl font-bold text-[#0B2E59] uppercase flex flex-wrap items-center gap-2">
              <span>Account Holders</span>
              <span className="normal-case text-lg text-gray-500">(खाताधारक)</span>
            </h1>
         </div>
-        <div className="flex gap-3">
-           <button className="flex items-center gap-2 text-sm font-bold text-gray-600 bg-white px-4 py-2 rounded-md shadow-sm border border-gray-200 hover:bg-gray-50">
+        <div className="flex flex-wrap gap-3">
+           <button className="flex items-center gap-2 text-sm font-bold text-gray-600 bg-white px-4 py-2 rounded-md shadow-sm border border-gray-200 hover:bg-gray-50 w-full sm:w-auto justify-center">
              <Printer className="w-4 h-4" /> <span>Print List <span className="normal-case text-xs opacity-70 ml-1">(सूची प्रिंट करें)</span></span>
            </button>
            <button className="flex items-center gap-2 text-sm font-bold text-white bg-[#0B2E59] px-4 py-2 rounded-md shadow-sm hover:bg-[#071f3e]">

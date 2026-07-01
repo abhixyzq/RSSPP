@@ -59,7 +59,7 @@ export default async function CustomerProfilePage({
     .reverse();
 
   return (
-    <div className="max-w-[1200px] mx-auto pb-20 bg-[#F4F6F9] min-h-screen -m-4 sm:-m-8 p-4 sm:p-8 font-sans">
+    <div className="max-w-[1200px] mx-auto pb-20 p-4 sm:p-8 font-sans">
       
       {/* Header Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
@@ -79,7 +79,7 @@ export default async function CustomerProfilePage({
       <div className="bg-white shadow-md border border-gray-300">
          
          {/* Bank Header (SBI/BOI Style) */}
-         <div className="bg-[#0B2E59] text-white p-6 border-b-4 border-[#0099CC] flex items-center gap-4">
+         <div className="bg-[#0B2E59] text-white p-6 border-b-4 border-[#0099CC] flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shrink-0">
                <Building className="w-8 h-8 text-[#0B2E59]" />
             </div>
