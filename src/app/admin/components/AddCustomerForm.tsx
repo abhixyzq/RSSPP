@@ -109,7 +109,7 @@ export default function AddCustomerForm() {
                       name="fullName" 
                       required 
                       onBlur={(e) => handleTransliterate(e.target.value, 'fullNameHi')}
-                      className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 dark:text-slate-100 transition-all shadow-sm"
+                      className="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 dark:text-slate-100 uppercase"
                     />
                   </div>
                   <div>
@@ -118,7 +118,7 @@ export default function AddCustomerForm() {
                       type="text" 
                       id="fullNameHi"
                       name="fullNameHi" 
-                      className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 dark:text-slate-100 transition-all shadow-sm"
+                      className="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 dark:text-slate-100 uppercase"
                     />
                   </div>
                   
@@ -128,7 +128,7 @@ export default function AddCustomerForm() {
                       type="text" 
                       name="guardianName" 
                       onBlur={(e) => handleTransliterate(e.target.value, 'guardianNameHi')}
-                      className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 dark:text-slate-100 transition-all shadow-sm"
+                      className="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 dark:text-slate-100 uppercase"
                     />
                   </div>
                   <div>
@@ -137,7 +137,7 @@ export default function AddCustomerForm() {
                       type="text" 
                       id="guardianNameHi"
                       name="guardianNameHi" 
-                      className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 dark:text-slate-100 transition-all shadow-sm"
+                      className="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 dark:text-slate-100 uppercase"
                     />
                   </div>
 
@@ -147,7 +147,7 @@ export default function AddCustomerForm() {
                       type="text" 
                       name="occupation" 
                       onBlur={(e) => handleTransliterate(e.target.value, 'occupationHi')}
-                      className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 dark:text-slate-100 transition-all shadow-sm"
+                      className="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 dark:text-slate-100 uppercase"
                     />
                   </div>
                   <div>
@@ -156,7 +156,7 @@ export default function AddCustomerForm() {
                       type="text" 
                       id="occupationHi"
                       name="occupationHi" 
-                      className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 dark:text-slate-100 transition-all shadow-sm"
+                      className="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 dark:text-slate-100 uppercase"
                     />
                   </div>
                </div>
@@ -179,7 +179,7 @@ export default function AddCustomerForm() {
                       pattern="[0-9]{10}"
                       maxLength={10}
                       placeholder="10-digit mobile number"
-                      className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 dark:text-slate-100 transition-all shadow-sm"
+                      className="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 dark:text-slate-100 uppercase"
                     />
                   </div>
                   <div>
@@ -189,7 +189,7 @@ export default function AddCustomerForm() {
                       name="secondaryMobile" 
                       pattern="[0-9]{10}"
                       maxLength={10}
-                      className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 dark:text-slate-100 transition-all shadow-sm"
+                      className="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 dark:text-slate-100 uppercase"
                     />
                   </div>
                   <div className="md:col-span-1">
@@ -198,7 +198,7 @@ export default function AddCustomerForm() {
                       type="text" 
                       name="address" 
                       onBlur={(e) => handleTransliterate(e.target.value, 'addressHi')}
-                      className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 dark:text-slate-100 transition-all shadow-sm"
+                      className="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 dark:text-slate-100 uppercase"
                     />
                   </div>
                   <div className="md:col-span-1">
@@ -207,7 +207,7 @@ export default function AddCustomerForm() {
                       type="text" 
                       id="addressHi"
                       name="addressHi" 
-                      className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 dark:text-slate-100 transition-all shadow-sm"
+                      className="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 dark:text-slate-100 uppercase"
                     />
                   </div>
                </div>
@@ -233,7 +233,7 @@ export default function AddCustomerForm() {
                       pattern="[0-9]{4}"
                       maxLength={4}
                       placeholder="e.g. 1234"
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-xl tracking-[0.5em] font-bold text-gray-900 dark:text-slate-100"
+                      className="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-xl tracking-[0.5em] font-bold text-gray-900 dark:text-slate-100"
                     />
                   </div>
                   <div>
@@ -244,7 +244,7 @@ export default function AddCustomerForm() {
                       required 
                       pattern="[0-9]{4}"
                       maxLength={4}
-                      className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-xl tracking-[0.5em] font-black text-gray-900 dark:text-slate-100 transition-all shadow-sm"
+                      className="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-xl tracking-[0.5em] font-bold text-gray-900 dark:text-slate-100 uppercase"
                     />
                   </div>
                </div>
@@ -267,7 +267,7 @@ export default function AddCustomerForm() {
                       maxLength={12}
                       title="Please enter exactly 12 digits for Aadhaar"
                       placeholder="12-digit Aadhaar No."
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 dark:text-slate-100 uppercase"
+                      className="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 dark:text-slate-100 uppercase"
                     />
                   </div>
                   <div>
@@ -279,23 +279,32 @@ export default function AddCustomerForm() {
                       maxLength={10}
                       title="Format: 5 letters, 4 numbers, 1 letter (e.g. ABCDE1234F)"
                       placeholder="e.g. ABCDE1234F"
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 dark:text-slate-100 uppercase"
+                      className="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 dark:text-slate-100 uppercase"
                     />
                   </div>
                   <div className="md:col-span-1">
                     <label className="block text-xs font-bold text-gray-700 dark:text-slate-300 uppercase tracking-wide mb-2">Nominee Details</label>
-                    <input 
-                      type="text" 
-                      name="nomineeDetails" 
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 dark:text-slate-100 uppercase"
-                    />
+                    <div className="flex gap-2">
+                      <input 
+                        type="text" 
+                        name="nomineeName" 
+                        placeholder="Name"
+                        className="w-2/3 px-4 py-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 dark:text-slate-100 uppercase"
+                      />
+                      <input 
+                        type="text" 
+                        name="nomineeRelation" 
+                        placeholder="Relation"
+                        className="w-1/3 px-4 py-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 dark:text-slate-100 uppercase"
+                      />
+                    </div>
                   </div>
                   <div className="md:col-span-1">
                     <label className="block text-xs font-bold text-gray-700 dark:text-slate-300 uppercase tracking-wide mb-2">Guarantor Details</label>
                     <input 
                       type="text" 
                       name="guarantorOptional" 
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 dark:text-slate-100 uppercase"
+                      className="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 dark:text-slate-100 uppercase"
                     />
                   </div>
                </div>

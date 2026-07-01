@@ -1,5 +1,5 @@
 import { getVillageTotals } from '@/actions/admin'
-import { Wallet, Landmark, Users, TrendingUp, Building, BarChart3, Clock, AlertTriangle, ArrowRight, UserPlus, BookOpen, Activity, Zap, History, ArrowUpRight, ArrowDownRight } from 'lucide-react'
+import { Wallet, Landmark, Users, TrendingUp, Building, Clock, ArrowRight, UserPlus, BookOpen, Activity, History, ArrowUpRight, ArrowDownRight } from 'lucide-react'
 import Link from 'next/link'
 import { createAdminClient } from '@/utils/supabase/admin'
 
@@ -26,43 +26,35 @@ export default async function AdminDashboard() {
 
   const stats = [
     {
-      name: 'Total Deposits (Credits)',
+      name: 'Total Deposits',
       value: formatCurrency(totals.totalJama),
       icon: Wallet,
-      gradient: 'from-emerald-400 to-green-600',
-      bgGlow: 'group-hover:bg-green-500/20 bg-green-500/10',
-      iconColor: 'text-emerald-500',
-      borderGlow: 'group-hover:border-green-500/50',
+      color: 'text-green-600 dark:text-green-400',
+      bgColor: 'bg-green-50 dark:bg-green-900/20',
       description: 'Total Jama collected in branch',
     },
     {
-      name: 'Total Loans (Debits)',
+      name: 'Total Loans',
       value: formatCurrency(totals.totalNikasi),
       icon: Landmark,
-      gradient: 'from-rose-400 to-red-600',
-      bgGlow: 'group-hover:bg-red-500/20 bg-red-500/10',
-      iconColor: 'text-rose-500',
-      borderGlow: 'group-hover:border-red-500/50',
+      color: 'text-red-600 dark:text-red-400',
+      bgColor: 'bg-red-50 dark:bg-red-900/20',
       description: 'Total Nikasi disbursed by branch',
     },
     {
-      name: "Today's Cash Inward",
+      name: "Today's Collection",
       value: formatCurrency(totals.todaysCollection),
       icon: TrendingUp,
-      gradient: 'from-blue-400 to-indigo-600',
-      bgGlow: 'group-hover:bg-blue-500/20 bg-blue-500/10',
-      iconColor: 'text-blue-500',
-      borderGlow: 'group-hover:border-blue-500/50',
-      description: 'Total deposits received today',
+      color: 'text-blue-600 dark:text-blue-400',
+      bgColor: 'bg-blue-50 dark:bg-blue-900/20',
+      description: 'Net deposits received today',
     },
     {
       name: 'Active Accounts',
       value: totals.activeCustomers.toString(),
       icon: Users,
-      gradient: 'from-cyan-400 to-blue-500',
-      bgGlow: 'group-hover:bg-cyan-500/20 bg-cyan-500/10',
-      iconColor: 'text-cyan-500',
-      borderGlow: 'group-hover:border-cyan-500/50',
+      color: 'text-[#0B2E59] dark:text-slate-300',
+      bgColor: 'bg-[#0B2E59]/10 dark:bg-slate-700/50',
       description: 'Total registered customers',
     },
   ]
@@ -70,34 +62,31 @@ export default async function AdminDashboard() {
   const currentDate = new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
 
   return (
-    <div className="w-full font-sans relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
+    <div className="w-full font-sans relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20 max-w-7xl mx-auto">
       
-      {/* Premium Glassmorphic Header */}
-      <div className="bg-white/40 dark:bg-slate-800 backdrop-blur-2xl p-6 md:p-8 rounded-3xl border border-white/40 dark:border-slate-600 flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)]">
+      {/* Professional Header Banner */}
+      <div className="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-xl border border-gray-200 dark:border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 shadow-sm">
         <div className="flex items-center gap-5">
-           <div className="w-16 h-16 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-2xl flex items-center justify-center shrink-0 shadow-lg shadow-cyan-500/30">
-              <Building className="w-8 h-8 text-white" />
+           <div className="w-14 h-14 bg-[#0B2E59] dark:bg-slate-800 rounded-lg flex items-center justify-center shrink-0 border border-[#0B2E59]/10 dark:border-slate-700">
+              <Building className="w-7 h-7 text-white dark:text-blue-400" />
            </div>
            <div>
-              <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-1">Control Panel</h1>
-              <p className="text-gray-500 dark:text-gray-300 text-sm font-semibold tracking-wide uppercase flex items-center gap-2">
-                 <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+              <h1 className="text-2xl font-bold tracking-tight text-[#0B2E59] dark:text-white mb-1 uppercase">Control Panel</h1>
+              <p className="text-gray-500 dark:text-gray-400 text-sm font-medium flex items-center gap-2">
+                 <span className="w-2 h-2 rounded-full bg-green-500"></span>
                  System Admin • Main Branch
               </p>
            </div>
         </div>
-        <div className="flex items-center gap-3 bg-white/50 dark:bg-black/50 backdrop-blur-md px-5 py-3 rounded-xl border border-white/50 dark:border-slate-600">
-           <Clock className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
-           <span className="text-sm font-bold tracking-widest uppercase text-gray-700 dark:text-slate-300">{currentDate}</span>
+        <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 dark:bg-slate-800/50 rounded-lg border border-gray-100 dark:border-slate-700/50">
+           <Clock className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+           <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">{currentDate}</span>
         </div>
       </div>
 
-      {/* Financial Summary Grid */}
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center border border-cyan-500/20">
-           <BarChart3 className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
-        </div>
-        <h2 className="text-lg font-black text-gray-900 dark:text-white uppercase tracking-wider">
+      {/* Financial Snapshot Grid */}
+      <div className="mb-6 border-b border-gray-200 dark:border-slate-800 pb-2">
+        <h2 className="text-lg font-bold text-[#0B2E59] dark:text-white uppercase tracking-wider">
           Financial Snapshot
         </h2>
       </div>
@@ -106,24 +95,21 @@ export default async function AdminDashboard() {
         {stats.map((stat) => (
           <div
             key={stat.name}
-            className={`group bg-white/60 dark:bg-slate-800 backdrop-blur-xl border border-white/50 dark:border-slate-600 rounded-3xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 p-6 flex flex-col relative overflow-hidden ${stat.borderGlow}`}
+            className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl shadow-sm p-6 flex flex-col hover:border-[#0B2E59]/30 dark:hover:border-slate-600 transition-colors"
           >
-            {/* Subtle background glow effect on hover */}
-            <div className={`absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${stat.bgGlow}`}></div>
-
-            <div className="flex items-center justify-between mb-6 relative z-10">
-               <p className="text-[12px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-300">{stat.name}</p>
-               <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-colors duration-500 shadow-inner ${stat.bgGlow}`}>
-                  <stat.icon className={`w-6 h-6 ${stat.iconColor}`} strokeWidth={2} />
+            <div className="flex items-center justify-between mb-4">
+               <p className="text-xs font-bold uppercase tracking-wide text-gray-500 dark:text-gray-400">{stat.name}</p>
+               <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${stat.bgColor}`}>
+                  <stat.icon className={`w-5 h-5 ${stat.color}`} strokeWidth={2.5} />
                </div>
             </div>
             
-            <h3 className={`text-3xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r ${stat.gradient} mb-3 relative z-10`}>
+            <h3 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-2">
               {stat.value}
             </h3>
             
-            <div className="mt-auto pt-4 border-t border-gray-200/50 dark:border-slate-600 relative z-10">
-               <p className="text-[11px] text-gray-500 dark:text-gray-300 font-bold uppercase tracking-wide">
+            <div className="mt-auto pt-4 border-t border-gray-100 dark:border-slate-800/50">
+               <p className="text-[11px] text-gray-500 dark:text-gray-400 font-medium tracking-wide">
                   {stat.description}
                </p>
             </div>
@@ -135,121 +121,123 @@ export default async function AdminDashboard() {
         
         {/* Quick Actions Panel */}
         <div className="lg:col-span-1">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center border border-purple-500/20">
-               <Zap className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-            </div>
-            <h2 className="text-lg font-black text-gray-900 dark:text-white uppercase tracking-wider">
+          <div className="mb-6 border-b border-gray-200 dark:border-slate-800 pb-2">
+            <h2 className="text-lg font-bold text-[#0B2E59] dark:text-white uppercase tracking-wider">
               Quick Actions
             </h2>
           </div>
           
-          <div className="flex flex-col gap-4">
-             <Link href="/admin/transaction" className="group flex items-center justify-between p-5 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-2xl shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 hover:-translate-y-1 transition-all duration-300">
+          <div className="flex flex-col gap-3">
+             <Link href="/admin/transaction" className="group flex items-center justify-between p-4 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl shadow-sm hover:border-[#0B2E59] dark:hover:border-blue-500 transition-colors">
                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                    <Activity className="w-5 h-5 text-white" />
+                  <div className="w-10 h-10 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
+                    <Activity className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                   </div>
                   <div>
-                    <h4 className="text-white font-bold tracking-wide">New Ledger Entry</h4>
-                    <p className="text-cyan-100 text-xs font-medium">Record a transaction</p>
+                    <h4 className="text-gray-900 dark:text-white font-bold text-sm">New Ledger Entry</h4>
+                    <p className="text-gray-500 dark:text-gray-400 text-xs">Record a transaction</p>
                   </div>
                </div>
-               <ArrowRight className="w-5 h-5 text-white group-hover:translate-x-1 transition-transform" />
+               <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-[#0B2E59] dark:group-hover:text-blue-400 transition-colors" />
              </Link>
 
-             <Link href="/admin/register" className="group flex items-center justify-between p-5 bg-white/60 dark:bg-slate-800 backdrop-blur-xl border border-white/50 dark:border-slate-600 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 hover:border-blue-500/30">
+             <Link href="/admin/register" className="group flex items-center justify-between p-4 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl shadow-sm hover:border-[#0B2E59] dark:hover:border-blue-500 transition-colors">
                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-blue-100 dark:bg-slate-800/30 rounded-xl flex items-center justify-center">
-                    <UserPlus className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                  <div className="w-10 h-10 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg flex items-center justify-center">
+                    <UserPlus className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                   </div>
                   <div>
-                    <h4 className="text-gray-900 dark:text-white font-bold tracking-wide">Open Account</h4>
-                    <p className="text-gray-500 dark:text-gray-300 text-xs font-medium">Register new customer</p>
+                    <h4 className="text-gray-900 dark:text-white font-bold text-sm">Open Account</h4>
+                    <p className="text-gray-500 dark:text-gray-400 text-xs">Register new customer</p>
                   </div>
                </div>
-               <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
+               <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-[#0B2E59] dark:group-hover:text-blue-400 transition-colors" />
              </Link>
 
-             <Link href="/admin/bulk-interest" className="group flex items-center justify-between p-5 bg-white/60 dark:bg-slate-800 backdrop-blur-xl border border-white/50 dark:border-slate-600 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 hover:border-purple-500/30">
+             <Link href="/admin/bulk-interest" className="group flex items-center justify-between p-4 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl shadow-sm hover:border-[#0B2E59] dark:hover:border-blue-500 transition-colors">
                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center">
+                  <div className="w-10 h-10 bg-purple-50 dark:bg-purple-900/20 rounded-lg flex items-center justify-center">
                     <BookOpen className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                   </div>
                   <div>
-                    <h4 className="text-gray-900 dark:text-white font-bold tracking-wide">Interest Payout</h4>
-                    <p className="text-gray-500 dark:text-gray-300 text-xs font-medium">Distribute monthly interest</p>
+                    <h4 className="text-gray-900 dark:text-white font-bold text-sm">Interest Payout</h4>
+                    <p className="text-gray-500 dark:text-gray-400 text-xs">Distribute monthly interest</p>
                   </div>
                </div>
-               <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-purple-500 group-hover:translate-x-1 transition-all" />
+               <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-[#0B2E59] dark:group-hover:text-blue-400 transition-colors" />
              </Link>
           </div>
         </div>
 
         {/* Recent Transactions Module */}
         <div className="lg:col-span-2">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500/20 to-blue-500/20 flex items-center justify-center border border-indigo-500/20">
-               <History className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-            </div>
-            <h2 className="text-lg font-black text-gray-900 dark:text-white uppercase tracking-wider">
+          <div className="mb-6 border-b border-gray-200 dark:border-slate-800 pb-2 flex justify-between items-end">
+            <h2 className="text-lg font-bold text-[#0B2E59] dark:text-white uppercase tracking-wider">
               Recent Transactions
             </h2>
+            <Link href="/admin/transactions" className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline">
+              View Ledger
+            </Link>
           </div>
 
-          <div className="bg-white/60 dark:bg-slate-800 backdrop-blur-xl border border-white/50 dark:border-slate-600 rounded-3xl shadow-lg p-6 relative overflow-hidden h-[330px] flex flex-col">
-             {/* Decorative background element */}
-             <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-indigo-400/5 dark:bg-indigo-400/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl shadow-sm overflow-hidden flex flex-col">
              
-             <div className="flex-1 overflow-y-auto scrollbar-hide relative z-10 pr-2">
-               <div className="space-y-3">
-                  {recentTxs && recentTxs.length > 0 ? (
-                    recentTxs.map((tx: any) => {
-                      const isCredit = tx.transaction_type.startsWith('JAMA')
-                      return (
-                        <div key={tx.id} className="flex items-center justify-between p-4 bg-white/80 dark:bg-slate-700/50 backdrop-blur-md border border-gray-100 dark:border-white/5 rounded-2xl hover:border-indigo-500/30 transition-colors group">
-                           <div className="flex items-center gap-4">
-                              <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${isCredit ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400'}`}>
-                                {isCredit ? <ArrowDownRight className="w-5 h-5" /> : <ArrowUpRight className="w-5 h-5" />}
-                              </div>
-                              <div className="flex flex-col">
-                                <span className="text-[13px] font-bold text-gray-900 dark:text-white">{tx.users_profile?.full_name || 'Unknown User'}</span>
-                                <span className="text-[11px] font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wide mt-0.5">
-                                  {new Date(tx.transaction_date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
+             <div className="flex-1 overflow-x-auto">
+               <table className="w-full text-left border-collapse">
+                  <thead>
+                     <tr className="bg-gray-50 dark:bg-slate-800/50 border-b border-gray-200 dark:border-slate-800">
+                        <th className="px-4 py-3 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Date</th>
+                        <th className="px-4 py-3 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Customer</th>
+                        <th className="px-4 py-3 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Type</th>
+                        <th className="px-4 py-3 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide text-right">Amount</th>
+                     </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100 dark:divide-slate-800/50">
+                    {recentTxs && recentTxs.length > 0 ? (
+                      recentTxs.map((tx: any) => {
+                        const isCredit = tx.transaction_type.startsWith('JAMA')
+                        return (
+                          <tr key={tx.id} className="hover:bg-gray-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                             <td className="px-4 py-3 whitespace-nowrap">
+                               <div className="text-[13px] font-semibold text-gray-900 dark:text-slate-300">
+                                 {new Date(tx.transaction_date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}
+                               </div>
+                               <div className="text-[11px] text-gray-500 dark:text-gray-500">
+                                 {new Date(tx.transaction_date).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
+                               </div>
+                             </td>
+                             <td className="px-4 py-3">
+                               <div className="text-[13px] font-bold text-[#0B2E59] dark:text-blue-400">{tx.users_profile?.full_name || 'Unknown User'}</div>
+                               <div className="text-[10px] text-gray-400 font-mono mt-0.5">ID: {tx.user_id.substring(0, 8)}</div>
+                             </td>
+                             <td className="px-4 py-3">
+                                <span className={`inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${isCredit ? 'bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-400'}`}>
+                                  {isCredit ? <ArrowDownRight className="w-3 h-3" /> : <ArrowUpRight className="w-3 h-3" />}
+                                  {tx.transaction_type.replace(/_/g, ' ')}
                                 </span>
-                              </div>
-                           </div>
-                           <div className="text-right">
-                              <span className={`text-sm font-black tracking-wide ${isCredit ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
-                                {isCredit ? '+' : '-'}{formatCurrency(Number(tx.amount))}
-                              </span>
-                              <div className="text-[10px] text-gray-400 dark:text-gray-500 dark:text-gray-300 font-bold uppercase mt-1 tracking-wider">
-                                {tx.transaction_type.replace(/_/g, ' ')}
-                              </div>
-                           </div>
-                        </div>
-                      )
-                    })
-                  ) : (
-                    <div className="flex flex-col items-center justify-center h-48 mt-4 bg-white/40 dark:bg-black/20 backdrop-blur-sm border border-gray-100 dark:border-white/5 rounded-2xl">
-                      <div className="w-12 h-12 bg-gray-100 dark:bg-white/10 rounded-full flex items-center justify-center mb-3">
-                         <History className="w-6 h-6 text-gray-400 dark:text-gray-500 dark:text-gray-300" />
-                      </div>
-                      <p className="text-gray-600 dark:text-gray-300 font-bold text-sm">No recent transactions</p>
-                      <p className="text-gray-500 dark:text-gray-500 dark:text-gray-300 text-xs font-medium mt-1 text-center px-4">When new ledger entries are recorded, they will appear here.</p>
-                    </div>
-                  )}
-               </div>
+                             </td>
+                             <td className="px-4 py-3 text-right">
+                                <span className={`text-[13px] font-bold ${isCredit ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                                  {isCredit ? '+' : '-'}{formatCurrency(Number(tx.amount))}
+                                </span>
+                             </td>
+                          </tr>
+                        )
+                      })
+                    ) : (
+                      <tr>
+                        <td colSpan={4} className="px-4 py-8 text-center text-gray-500 dark:text-gray-400 text-sm">
+                          <History className="w-6 h-6 mx-auto mb-2 opacity-50" />
+                          No recent transactions found.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+               </table>
              </div>
              
-             <div className="pt-4 mt-2 border-t border-gray-100 dark:border-slate-600 text-center relative z-10 shrink-0">
-               <Link href="/admin/transactions" className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 uppercase tracking-wider transition-colors inline-flex items-center gap-1">
-                 View All Ledger Entries <ArrowRight className="w-4 h-4" />
-               </Link>
-             </div>
           </div>
         </div>
-
       </div>
     </div>
   )

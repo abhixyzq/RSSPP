@@ -28,7 +28,15 @@ export async function createCustomer(prevState: any, formData: FormData) {
     kycDocument = `Aadhaar: ${aadhaar || 'N/A'} | PAN: ${(pan || 'N/A').toUpperCase()}`
   }
   
-  const nomineeDetails = formData.get('nomineeDetails') as string
+  const nomineeName = formData.get('nomineeName') as string
+  const nomineeRelation = formData.get('nomineeRelation') as string
+  let nomineeDetails = ''
+  if (nomineeName) {
+    nomineeDetails = nomineeName
+    if (nomineeRelation) {
+      nomineeDetails += ` (${nomineeRelation})`
+    }
+  }
   const guarantorOptional = formData.get('guarantorOptional') as string
   const occupation = formData.get('occupation') as string
   const occupationHi = formData.get('occupationHi') as string
@@ -203,7 +211,7 @@ export async function getAllCustomers() {
   
   const { data, error } = await supabaseAdmin
     .from('users_profile')
-    .select('id, full_name, mobile_number, kyc_document')
+    .select('id, full_name, full_name_hi, mobile_number, kyc_document')
     .eq('role', 'customer')
     .not('full_name', 'ilike', '[CLOSED:%')
     .order('full_name', { ascending: true })

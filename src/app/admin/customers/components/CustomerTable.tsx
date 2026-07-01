@@ -9,6 +9,7 @@ import ExportCSVButton from '../../components/ExportCSVButton'
 type Customer = {
   id: string
   full_name: string
+  full_name_hi?: string
   mobile_number: string
   kyc_document?: string
 }
@@ -140,6 +141,11 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
                          </td>
                          <td className="p-4 font-bold text-[#0B2E59] dark:text-blue-400 uppercase">
                             {customer.full_name}
+                            {customer.full_name_hi && (
+                              <span className="block text-xs text-gray-500 dark:text-gray-400 mt-0.5 normal-case font-medium">
+                                {customer.full_name_hi}
+                              </span>
+                            )}
                          </td>
                          <td className="p-4 font-bold text-gray-700 dark:text-slate-300">
                             {customer.mobile_number}

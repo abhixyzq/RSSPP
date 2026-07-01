@@ -20,7 +20,7 @@ export default async function TransactionsPage() {
   // Fetch up to 100 recent transactions for the history page
   const { data: transactions, error } = await supabase
     .from('transactions')
-    .select('*, users_profile(full_name)')
+    .select('*, users_profile(full_name, mobile_number)')
     .order('transaction_date', { ascending: false })
     .limit(100)
 
@@ -92,7 +92,7 @@ export default async function TransactionsPage() {
                           {tx.users_profile?.full_name || 'Unknown User'}
                         </div>
                         <div className="text-xs font-semibold text-gray-500 dark:text-gray-300 mt-0.5">
-                          ID: {tx.user_id.substring(0, 8)}...
+                          {tx.users_profile?.mobile_number ? `MOB: ${tx.users_profile.mobile_number}` : `ID: ${tx.user_id.substring(0, 8)}...`}
                         </div>
                       </td>
                       <td className="p-4">
