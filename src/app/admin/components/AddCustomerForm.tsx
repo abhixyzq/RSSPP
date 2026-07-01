@@ -262,15 +262,30 @@ export default function AddCustomerForm() {
                </div>
                <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">KYC Document Details</label>
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Aadhaar (आधार) <span className="text-gray-400 font-normal normal-case">(Optional)</span></label>
                     <input 
                       type="text" 
-                      name="kycDocument" 
-                      placeholder="e.g. Aadhar: 1234..."
+                      name="aadhaar" 
+                      pattern="[0-9]{12}"
+                      maxLength={12}
+                      title="Please enter exactly 12 digits for Aadhaar"
+                      placeholder="12-digit Aadhaar No."
                       className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 uppercase"
                     />
                   </div>
                   <div>
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">PAN (पैन) <span className="text-gray-400 font-normal normal-case">(Optional)</span></label>
+                    <input 
+                      type="text" 
+                      name="pan" 
+                      pattern="^[A-Za-z]{5}[0-9]{4}[A-Za-z]{1}$"
+                      maxLength={10}
+                      title="Format: 5 letters, 4 numbers, 1 letter (e.g. ABCDE1234F)"
+                      placeholder="e.g. ABCDE1234F"
+                      className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 uppercase"
+                    />
+                  </div>
+                  <div className="md:col-span-1">
                     <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Nominee Details</label>
                     <input 
                       type="text" 
@@ -278,7 +293,7 @@ export default function AddCustomerForm() {
                       className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 uppercase"
                     />
                   </div>
-                  <div className="md:col-span-2">
+                  <div className="md:col-span-1">
                     <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Guarantor Details</label>
                     <input 
                       type="text" 

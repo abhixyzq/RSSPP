@@ -190,14 +190,32 @@ export default function EditCustomerModal({ profile }: { profile: any }) {
                </div>
 
                <div>
-                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">KYC Document</label>
+                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">Aadhaar (आधार)</label>
                   <div className="relative">
                     <FileText className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                     <input 
                       type="text" 
-                      name="kycDocument" 
-                      defaultValue={profile.kyc_document || ''} 
-                      placeholder="e.g. Aadhar: 1234..."
+                      name="aadhaar" 
+                      pattern="[0-9]{12}"
+                      maxLength={12}
+                      defaultValue={profile.kyc_document?.match(/Aadhaar: (\d+)/)?.[1] || ''} 
+                      placeholder="12-digit Aadhaar No."
+                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 uppercase"
+                    />
+                  </div>
+               </div>
+
+               <div>
+                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">PAN (पैन)</label>
+                  <div className="relative">
+                    <FileText className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                    <input 
+                      type="text" 
+                      name="pan" 
+                      pattern="^[A-Za-z]{5}[0-9]{4}[A-Za-z]{1}$"
+                      maxLength={10}
+                      defaultValue={profile.kyc_document?.match(/PAN: ([A-Za-z0-9]+)/)?.[1] || ''} 
+                      placeholder="e.g. ABCDE1234F"
                       className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 uppercase"
                     />
                   </div>

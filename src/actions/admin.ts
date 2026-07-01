@@ -16,7 +16,13 @@ export async function createCustomer(prevState: any, formData: FormData) {
   const guardianNameHi = formData.get('guardianNameHi') as string
   const address = formData.get('address') as string
   const addressHi = formData.get('addressHi') as string
-  const kycDocument = formData.get('kycDocument') as string
+  const aadhaar = formData.get('aadhaar') as string
+  const pan = formData.get('pan') as string
+  let kycDocument = ''
+  if (aadhaar || pan) {
+    kycDocument = `Aadhaar: ${aadhaar || 'N/A'} | PAN: ${(pan || 'N/A').toUpperCase()}`
+  }
+  
   const nomineeDetails = formData.get('nomineeDetails') as string
   const guarantorOptional = formData.get('guarantorOptional') as string
   const occupation = formData.get('occupation') as string
@@ -298,7 +304,13 @@ export async function updateCustomerDetails(prevState: any, formData: FormData) 
   const guardianNameHi = formData.get('guardianNameHi') as string
   const address = formData.get('address') as string
   const addressHi = formData.get('addressHi') as string
-  const kycDocument = formData.get('kycDocument') as string
+  
+  const aadhaar = formData.get('aadhaar') as string
+  const pan = formData.get('pan') as string
+  let kycDocument = ''
+  if (aadhaar || pan) {
+    kycDocument = `Aadhaar: ${aadhaar || 'N/A'} | PAN: ${(pan || 'N/A').toUpperCase()}`
+  }
   const nomineeDetails = formData.get('nomineeDetails') as string
   const guarantorOptional = formData.get('guarantorOptional') as string
   const occupation = formData.get('occupation') as string
