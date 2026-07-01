@@ -1,5 +1,5 @@
 import { createAdminClient } from '@/utils/supabase/admin'
-import { History, Printer } from 'lucide-react'
+import { History, Printer, ArrowUpRight, ArrowDownRight, Search, FileText } from 'lucide-react'
 import PrintTransactionLedger from './PrintTransactionLedger'
 import PrintButton from '../components/PrintButton'
 
