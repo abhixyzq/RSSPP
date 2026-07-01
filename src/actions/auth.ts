@@ -55,9 +55,10 @@ export async function login(prevState: any, formData: FormData) {
       .single()
 
     // STRICT ADMIN CHECK: If they are admin, they MUST use the admin portal
+    // We show a generic error to hide the fact that this is an admin account
     if (profile?.role === 'admin') {
       await supabase.auth.signOut()
-      return { error: 'Admin accounts must use the dedicated Admin Portal (/admin-login) to sign in.' }
+      return { error: 'Invalid Mobile Number or PIN. Please try again.' }
     }
   }
 
