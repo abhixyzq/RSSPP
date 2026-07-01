@@ -60,14 +60,6 @@ export default function LandingPage() {
             <p className="text-sm sm:text-base text-slate-600 dark:text-gray-400 font-light leading-relaxed max-w-md tracking-wide transition-colors">
               Track savings (Jama), loans (Udhaar), and dynamic interest payouts with complete mathematical transparency. Built for modern cooperative societies.
             </p>
-
-            <div className="flex items-center gap-6 pt-4">
-              {/* Fake UI Tag */}
-              <div className="hidden sm:flex items-center gap-2 text-[10px] uppercase tracking-[0.1em] text-slate-500 dark:text-gray-500 transition-colors">
-                <div className="w-1 h-1 rounded-full bg-cyan-500/50"></div>
-                v2.0.4 Active
-              </div>
-            </div>
           </div>
 
           {/* Right: Customer Login Component */}
