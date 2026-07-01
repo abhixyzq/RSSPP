@@ -203,7 +203,7 @@ export async function getAllCustomers() {
   
   const { data, error } = await supabaseAdmin
     .from('users_profile')
-    .select('id, full_name, mobile_number')
+    .select('id, full_name, mobile_number, kyc_document')
     .eq('role', 'customer')
     .not('full_name', 'ilike', '[CLOSED:%')
     .order('full_name', { ascending: true })
@@ -399,7 +399,7 @@ export async function getClosedCustomers() {
   
   const { data, error } = await supabaseAdmin
     .from('users_profile')
-    .select('id, full_name, mobile_number')
+    .select('id, full_name, mobile_number, kyc_document')
     .ilike('full_name', '[CLOSED:%')
     .order('full_name', { ascending: true })
     

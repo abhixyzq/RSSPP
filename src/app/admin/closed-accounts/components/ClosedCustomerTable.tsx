@@ -9,6 +9,7 @@ type Customer = {
   id: string
   full_name: string
   mobile_number: string
+  kyc_document?: string
 }
 
 export default function ClosedCustomerTable({ customers }: { customers: Customer[] }) {
@@ -19,10 +20,14 @@ export default function ClosedCustomerTable({ customers }: { customers: Customer
   const [errorMsg, setErrorMsg] = useState('')
   const router = useRouter()
 
-  const filteredCustomers = customers.filter(c => 
-    c.full_name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    c.mobile_number.includes(searchTerm)
-  )
+  const filteredCustomers = customers.filter(c => {
+    const searchLower = searchTerm.toLowerCase()
+    return (
+      c.full_name.toLowerCase().includes(searchLower) || 
+      c.mobile_number.includes(searchTerm) ||
+      (c.kyc_document && c.kyc_document.toLowerCase().includes(searchLower))
+    )
+  })
 
   const handlePermanentDelete = async () => {
     if (!customerToDelete) return

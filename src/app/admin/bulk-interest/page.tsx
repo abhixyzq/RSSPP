@@ -59,7 +59,8 @@ export default async function BulkInterestPage() {
       id: profile.id,
       name: profile.full_name,
       mobile: profile.mobile_number,
-      currentJamaBalance: currentJamaBal
+      currentJamaBalance: currentJamaBal,
+      kyc_document: profile.kyc_document
     }
   })
 

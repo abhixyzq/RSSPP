@@ -9,6 +9,7 @@ type EligibleCustomer = {
   name: string
   mobile: string
   currentJamaBalance: number
+  kyc_document?: string
 }
 
 export default function BulkInterestUI({ customers }: { customers: EligibleCustomer[] }) {
@@ -25,10 +26,14 @@ export default function BulkInterestUI({ customers }: { customers: EligibleCusto
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set(customers.map(c => c.id)))
 
   // Filter
-  const filteredCustomers = customers.filter(c => 
-    c.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    c.mobile.includes(searchTerm)
-  )
+  const filteredCustomers = customers.filter(c => {
+    const searchLower = searchTerm.toLowerCase()
+    return (
+      c.name.toLowerCase().includes(searchLower) || 
+      c.mobile.includes(searchTerm) ||
+      (c.kyc_document && c.kyc_document.toLowerCase().includes(searchLower))
+    )
+  })
 
   // Handlers
   const toggleSelection = (id: string) => {

@@ -9,6 +9,7 @@ type Customer = {
   id: string
   full_name: string
   mobile_number: string
+  kyc_document?: string
 }
 
 function SubmitBtn({ typeSelected, customerId, amount }: { typeSelected: string, customerId: string, amount: string }) {
@@ -104,10 +105,14 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
     }
   }, [state])
   
-  const filteredCustomers = customers.filter(c => 
-    c.full_name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    c.mobile_number.includes(searchQuery)
-  )
+  const filteredCustomers = customers.filter(c => {
+    const searchLower = searchQuery.toLowerCase()
+    return (
+      c.full_name.toLowerCase().includes(searchLower) || 
+      c.mobile_number.includes(searchQuery) ||
+      (c.kyc_document && c.kyc_document.toLowerCase().includes(searchLower))
+    )
+  })
 
   const selectedCustomer = customers.find(c => c.id === selectedCustomerId)
 
