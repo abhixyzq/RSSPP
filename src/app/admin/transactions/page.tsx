@@ -20,7 +20,7 @@ export default async function TransactionsPage() {
   const { data: transactions, error } = await supabase
     .from('transactions')
     .select('*, users_profile(full_name)')
-    .order('created_at', { ascending: false })
+    .order('transaction_date', { ascending: false })
     .limit(100)
 
   return (
@@ -65,10 +65,10 @@ export default async function TransactionsPage() {
                     <tr key={tx.id} className="hover:bg-white/50 dark:hover:bg-white/5 transition-colors group">
                       <td className="p-4 whitespace-nowrap">
                         <div className="text-sm font-bold text-gray-900 dark:text-gray-200">
-                          {new Date(tx.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+                          {new Date(tx.transaction_date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
                         </div>
                         <div className="text-xs font-semibold text-gray-500 dark:text-gray-400">
-                          {new Date(tx.created_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
+                          {new Date(tx.transaction_date).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
                         </div>
                       </td>
                       <td className="p-4">

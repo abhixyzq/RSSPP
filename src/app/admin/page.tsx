@@ -21,7 +21,7 @@ export default async function AdminDashboard() {
   const { data: recentTxs } = await supabase
     .from('transactions')
     .select('*, users_profile(full_name)')
-    .order('created_at', { ascending: false })
+    .order('transaction_date', { ascending: false })
     .limit(5)
 
   const stats = [
@@ -215,7 +215,7 @@ export default async function AdminDashboard() {
                               <div className="flex flex-col">
                                 <span className="text-[13px] font-bold text-gray-900 dark:text-white">{tx.users_profile?.full_name || 'Unknown User'}</span>
                                 <span className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mt-0.5">
-                                  {new Date(tx.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                                  {new Date(tx.transaction_date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
                                 </span>
                               </div>
                            </div>
