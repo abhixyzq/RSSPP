@@ -73,22 +73,22 @@ export default async function AdminDashboard() {
     <div className="w-full font-sans relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
       
       {/* Premium Glassmorphic Header */}
-      <div className="bg-white/40 dark:bg-black/40 backdrop-blur-2xl p-6 md:p-8 rounded-3xl border border-white/40 dark:border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)]">
+      <div className="bg-white/40 dark:bg-slate-800 backdrop-blur-2xl p-6 md:p-8 rounded-3xl border border-white/40 dark:border-slate-600 flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)]">
         <div className="flex items-center gap-5">
            <div className="w-16 h-16 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-2xl flex items-center justify-center shrink-0 shadow-lg shadow-cyan-500/30">
               <Building className="w-8 h-8 text-white" />
            </div>
            <div>
               <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-1">Control Panel</h1>
-              <p className="text-gray-500 dark:text-gray-400 text-sm font-semibold tracking-wide uppercase flex items-center gap-2">
+              <p className="text-gray-500 dark:text-gray-300 text-sm font-semibold tracking-wide uppercase flex items-center gap-2">
                  <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                  System Admin • Main Branch
               </p>
            </div>
         </div>
-        <div className="flex items-center gap-3 bg-white/50 dark:bg-black/50 backdrop-blur-md px-5 py-3 rounded-xl border border-white/50 dark:border-white/10">
+        <div className="flex items-center gap-3 bg-white/50 dark:bg-black/50 backdrop-blur-md px-5 py-3 rounded-xl border border-white/50 dark:border-slate-600">
            <Clock className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
-           <span className="text-sm font-bold tracking-widest uppercase text-gray-700 dark:text-gray-300">{currentDate}</span>
+           <span className="text-sm font-bold tracking-widest uppercase text-gray-700 dark:text-slate-300">{currentDate}</span>
         </div>
       </div>
 
@@ -106,13 +106,13 @@ export default async function AdminDashboard() {
         {stats.map((stat) => (
           <div
             key={stat.name}
-            className={`group bg-white/60 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-3xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 p-6 flex flex-col relative overflow-hidden ${stat.borderGlow}`}
+            className={`group bg-white/60 dark:bg-slate-800 backdrop-blur-xl border border-white/50 dark:border-slate-600 rounded-3xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 p-6 flex flex-col relative overflow-hidden ${stat.borderGlow}`}
           >
             {/* Subtle background glow effect on hover */}
             <div className={`absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${stat.bgGlow}`}></div>
 
             <div className="flex items-center justify-between mb-6 relative z-10">
-               <p className="text-[12px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">{stat.name}</p>
+               <p className="text-[12px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-300">{stat.name}</p>
                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-colors duration-500 shadow-inner ${stat.bgGlow}`}>
                   <stat.icon className={`w-6 h-6 ${stat.iconColor}`} strokeWidth={2} />
                </div>
@@ -122,8 +122,8 @@ export default async function AdminDashboard() {
               {stat.value}
             </h3>
             
-            <div className="mt-auto pt-4 border-t border-gray-200/50 dark:border-white/10 relative z-10">
-               <p className="text-[11px] text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wide">
+            <div className="mt-auto pt-4 border-t border-gray-200/50 dark:border-slate-600 relative z-10">
+               <p className="text-[11px] text-gray-500 dark:text-gray-300 font-bold uppercase tracking-wide">
                   {stat.description}
                </p>
             </div>
@@ -158,27 +158,27 @@ export default async function AdminDashboard() {
                <ArrowRight className="w-5 h-5 text-white group-hover:translate-x-1 transition-transform" />
              </Link>
 
-             <Link href="/admin/register" className="group flex items-center justify-between p-5 bg-white/60 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 hover:border-blue-500/30">
+             <Link href="/admin/register" className="group flex items-center justify-between p-5 bg-white/60 dark:bg-slate-800 backdrop-blur-xl border border-white/50 dark:border-slate-600 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 hover:border-blue-500/30">
                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
+                  <div className="w-10 h-10 bg-blue-100 dark:bg-slate-800/30 rounded-xl flex items-center justify-center">
                     <UserPlus className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                   </div>
                   <div>
                     <h4 className="text-gray-900 dark:text-white font-bold tracking-wide">Open Account</h4>
-                    <p className="text-gray-500 dark:text-gray-400 text-xs font-medium">Register new customer</p>
+                    <p className="text-gray-500 dark:text-gray-300 text-xs font-medium">Register new customer</p>
                   </div>
                </div>
                <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
              </Link>
 
-             <Link href="/admin/bulk-interest" className="group flex items-center justify-between p-5 bg-white/60 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 hover:border-purple-500/30">
+             <Link href="/admin/bulk-interest" className="group flex items-center justify-between p-5 bg-white/60 dark:bg-slate-800 backdrop-blur-xl border border-white/50 dark:border-slate-600 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 hover:border-purple-500/30">
                <div className="flex items-center gap-4">
                   <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center">
                     <BookOpen className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                   </div>
                   <div>
                     <h4 className="text-gray-900 dark:text-white font-bold tracking-wide">Interest Payout</h4>
-                    <p className="text-gray-500 dark:text-gray-400 text-xs font-medium">Distribute monthly interest</p>
+                    <p className="text-gray-500 dark:text-gray-300 text-xs font-medium">Distribute monthly interest</p>
                   </div>
                </div>
                <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-purple-500 group-hover:translate-x-1 transition-all" />
@@ -197,7 +197,7 @@ export default async function AdminDashboard() {
             </h2>
           </div>
 
-          <div className="bg-white/60 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-3xl shadow-lg p-6 relative overflow-hidden h-[330px] flex flex-col">
+          <div className="bg-white/60 dark:bg-slate-800 backdrop-blur-xl border border-white/50 dark:border-slate-600 rounded-3xl shadow-lg p-6 relative overflow-hidden h-[330px] flex flex-col">
              {/* Decorative background element */}
              <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-indigo-400/5 dark:bg-indigo-400/10 rounded-full blur-3xl pointer-events-none"></div>
              
@@ -207,14 +207,14 @@ export default async function AdminDashboard() {
                     recentTxs.map((tx: any) => {
                       const isCredit = tx.transaction_type.startsWith('JAMA')
                       return (
-                        <div key={tx.id} className="flex items-center justify-between p-4 bg-white/80 dark:bg-white/5 backdrop-blur-md border border-gray-100 dark:border-white/5 rounded-2xl hover:border-indigo-500/30 transition-colors group">
+                        <div key={tx.id} className="flex items-center justify-between p-4 bg-white/80 dark:bg-slate-700/50 backdrop-blur-md border border-gray-100 dark:border-white/5 rounded-2xl hover:border-indigo-500/30 transition-colors group">
                            <div className="flex items-center gap-4">
                               <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${isCredit ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400'}`}>
                                 {isCredit ? <ArrowDownRight className="w-5 h-5" /> : <ArrowUpRight className="w-5 h-5" />}
                               </div>
                               <div className="flex flex-col">
                                 <span className="text-[13px] font-bold text-gray-900 dark:text-white">{tx.users_profile?.full_name || 'Unknown User'}</span>
-                                <span className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mt-0.5">
+                                <span className="text-[11px] font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wide mt-0.5">
                                   {new Date(tx.transaction_date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
                                 </span>
                               </div>
@@ -223,7 +223,7 @@ export default async function AdminDashboard() {
                               <span className={`text-sm font-black tracking-wide ${isCredit ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                                 {isCredit ? '+' : '-'}{formatCurrency(Number(tx.amount))}
                               </span>
-                              <div className="text-[10px] text-gray-400 dark:text-gray-500 dark:text-gray-400 font-bold uppercase mt-1 tracking-wider">
+                              <div className="text-[10px] text-gray-400 dark:text-gray-500 dark:text-gray-300 font-bold uppercase mt-1 tracking-wider">
                                 {tx.transaction_type.replace(/_/g, ' ')}
                               </div>
                            </div>
@@ -233,16 +233,16 @@ export default async function AdminDashboard() {
                   ) : (
                     <div className="flex flex-col items-center justify-center h-48 mt-4 bg-white/40 dark:bg-black/20 backdrop-blur-sm border border-gray-100 dark:border-white/5 rounded-2xl">
                       <div className="w-12 h-12 bg-gray-100 dark:bg-white/10 rounded-full flex items-center justify-center mb-3">
-                         <History className="w-6 h-6 text-gray-400 dark:text-gray-500 dark:text-gray-400" />
+                         <History className="w-6 h-6 text-gray-400 dark:text-gray-500 dark:text-gray-300" />
                       </div>
-                      <p className="text-gray-600 dark:text-gray-400 font-bold text-sm">No recent transactions</p>
-                      <p className="text-gray-500 dark:text-gray-500 dark:text-gray-400 text-xs font-medium mt-1 text-center px-4">When new ledger entries are recorded, they will appear here.</p>
+                      <p className="text-gray-600 dark:text-gray-300 font-bold text-sm">No recent transactions</p>
+                      <p className="text-gray-500 dark:text-gray-500 dark:text-gray-300 text-xs font-medium mt-1 text-center px-4">When new ledger entries are recorded, they will appear here.</p>
                     </div>
                   )}
                </div>
              </div>
              
-             <div className="pt-4 mt-2 border-t border-gray-100 dark:border-white/10 text-center relative z-10 shrink-0">
+             <div className="pt-4 mt-2 border-t border-gray-100 dark:border-slate-600 text-center relative z-10 shrink-0">
                <Link href="/admin/transactions" className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 uppercase tracking-wider transition-colors inline-flex items-center gap-1">
                  View All Ledger Entries <ArrowRight className="w-4 h-4" />
                </Link>

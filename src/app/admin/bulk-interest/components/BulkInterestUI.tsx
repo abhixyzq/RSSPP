@@ -109,14 +109,14 @@ export default function BulkInterestUI({ customers }: { customers: EligibleCusto
             <BookOpen className="w-8 h-8 text-purple-600" /> 
             Interest Payout Dashboard (ब्याज वितरण डैशबोर्ड)
           </h1>
-          <p className="text-gray-500 dark:text-gray-400 font-medium mt-1">
+          <p className="text-gray-500 dark:text-gray-300 font-medium mt-1">
             Credit monthly savings interest to multiple accounts at once.
           </p>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-gray-200 dark:border-slate-700 shadow-sm flex items-center gap-4">
+        <div className="bg-white dark:bg-[#0B1120] p-4 rounded-xl border border-gray-200 dark:border-slate-600 shadow-sm flex items-center gap-4">
           <div>
-             <label className="block text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Global Interest Rate (ब्याज दर)</label>
+             <label className="block text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider mb-1">Global Interest Rate (ब्याज दर)</label>
              <div className="relative">
                 <input 
                   type="number" 
@@ -153,10 +153,10 @@ export default function BulkInterestUI({ customers }: { customers: EligibleCusto
       )}
 
       {/* Global Actions */}
-      <div className="bg-white dark:bg-slate-900 border-2 border-[#0B2E59] rounded-2xl shadow-xl overflow-hidden">
+      <div className="bg-white dark:bg-[#0B1120] border-2 border-[#0B2E59] rounded-2xl shadow-xl overflow-hidden">
         
         {/* Table Toolbar */}
-        <div className="p-4 bg-gray-50 dark:bg-slate-800/50 border-b border-gray-200 dark:border-slate-700 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="p-4 bg-gray-50 dark:bg-slate-700/50 border-b border-gray-200 dark:border-slate-600 flex flex-col sm:flex-row justify-between items-center gap-4">
            <div className="relative w-full sm:w-96">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input 
@@ -164,10 +164,10 @@ export default function BulkInterestUI({ customers }: { customers: EligibleCusto
                 placeholder="Search customers (खोजें)..." 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-medium text-sm"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-medium text-sm"
               />
            </div>
-           <div className="text-sm font-bold text-gray-600 dark:text-gray-400">
+           <div className="text-sm font-bold text-gray-600 dark:text-gray-300">
              {selectedIds.size} selected of {filteredCustomers.length}
            </div>
         </div>
@@ -176,7 +176,7 @@ export default function BulkInterestUI({ customers }: { customers: EligibleCusto
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
              <thead>
-                <tr className="bg-[#0B2E59] dark:bg-blue-900 text-white text-[12px] uppercase tracking-wider">
+                <tr className="bg-[#0B2E59] dark:bg-slate-800 text-white text-[12px] uppercase tracking-wider">
                    <th className="p-4 w-16 text-center">
                      <input 
                        type="checkbox" 
@@ -191,10 +191,10 @@ export default function BulkInterestUI({ customers }: { customers: EligibleCusto
                    <th className="p-4 font-bold text-right w-48 bg-purple-900/50">Manual Override (बदलें)</th>
                 </tr>
              </thead>
-             <tbody className="bg-white dark:bg-slate-900 divide-y divide-gray-200">
+             <tbody className="bg-white dark:bg-[#0B1120] divide-y divide-gray-200">
                 {filteredCustomers.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="p-8 text-center text-gray-500 dark:text-gray-400 font-medium">
+                    <td colSpan={5} className="p-8 text-center text-gray-500 dark:text-gray-300 font-medium">
                       No eligible customers found.
                     </td>
                   </tr>
@@ -207,7 +207,7 @@ export default function BulkInterestUI({ customers }: { customers: EligibleCusto
                     const hasOverride = override !== undefined && override !== null
                     
                     return (
-                      <tr key={cust.id} className={`transition-colors ${isSelected ? 'bg-blue-50/30' : 'hover:bg-gray-50 dark:bg-slate-800/50'}`}>
+                      <tr key={cust.id} className={`transition-colors ${isSelected ? 'bg-blue-50/30' : 'hover:bg-gray-50 dark:bg-slate-700/50'}`}>
                          <td className="p-4 text-center">
                             <input 
                                type="checkbox" 
@@ -217,11 +217,11 @@ export default function BulkInterestUI({ customers }: { customers: EligibleCusto
                             />
                          </td>
                          <td className="p-4 border-r border-gray-100">
-                            <p className="font-bold text-gray-900 dark:text-gray-100 text-sm">{cust.name}</p>
-                            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mt-0.5">{cust.mobile}</p>
+                            <p className="font-bold text-gray-900 dark:text-slate-100 text-sm">{cust.name}</p>
+                            <p className="text-xs font-semibold text-gray-500 dark:text-gray-300 mt-0.5">{cust.mobile}</p>
                          </td>
                          <td className="p-4 border-r border-gray-100 text-right">
-                            <p className="font-black text-gray-900 dark:text-gray-100">
+                            <p className="font-black text-gray-900 dark:text-slate-100">
                                ₹{cust.currentJamaBalance.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                             </p>
                          </td>
@@ -244,8 +244,8 @@ export default function BulkInterestUI({ customers }: { customers: EligibleCusto
                               onChange={(e) => handleOverrideChange(cust.id, e.target.value)}
                               disabled={!isSelected}
                               className={`w-full text-right p-2 border rounded-md text-sm font-bold focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors ${
-                                hasOverride ? 'border-purple-400 bg-purple-50 text-purple-900' : 'border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100'
-                              } disabled:opacity-50 disabled:bg-gray-100 dark:bg-slate-800`}
+                                hasOverride ? 'border-purple-400 bg-purple-50 text-purple-900' : 'border-gray-200 dark:border-slate-600 bg-white dark:bg-[#0B1120] text-gray-900 dark:text-slate-100'
+                              } disabled:opacity-50 disabled:bg-gray-100 dark:bg-slate-700/50`}
                             />
                          </td>
                       </tr>
@@ -258,20 +258,20 @@ export default function BulkInterestUI({ customers }: { customers: EligibleCusto
       </div>
 
       {/* Floating Action Bar */}
-      <div className="fixed bottom-0 left-0 right-0 md:left-64 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-slate-700 p-4 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.1)] flex flex-col sm:flex-row justify-between items-center gap-4 z-40">
+      <div className="fixed bottom-0 left-0 right-0 md:left-64 bg-white dark:bg-[#0B1120] border-t border-gray-200 dark:border-slate-600 p-4 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.1)] flex flex-col sm:flex-row justify-between items-center gap-4 z-40">
          <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
                <HandCoins className="w-6 h-6 text-purple-600" />
             </div>
             <div>
-               <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Total Payout Amount (कुल भुगतान राशि)</p>
+               <p className="text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-widest">Total Payout Amount (कुल भुगतान राशि)</p>
                <p className="text-2xl font-black text-purple-700">₹{totalCalculatedPayout.toLocaleString('en-IN')}</p>
             </div>
          </div>
          <button 
            onClick={handleSubmit}
            disabled={selectedIds.size === 0 || isPending}
-           className="w-full sm:w-auto bg-[#0B2E59] dark:bg-blue-900 hover:bg-[#071f3e] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold py-3 px-8 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 tracking-widest uppercase text-sm"
+           className="w-full sm:w-auto bg-[#0B2E59] dark:bg-slate-800 hover:bg-[#071f3e] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold py-3 px-8 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 tracking-widest uppercase text-sm"
          >
            {isPending ? 'Processing...' : `Credit ${selectedIds.size} Accounts (ब्याज जमा करें)`}
            <ArrowRight className="w-5 h-5" />
