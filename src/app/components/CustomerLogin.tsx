@@ -25,13 +25,13 @@ export default function CustomerLogin() {
   const [state, formAction] = useActionState(login, null)
 
   return (
-    <div className="relative w-full max-w-[380px] mx-auto transform-gpu preserve-3d group">
+    <div className="relative w-full max-w-[380px] mx-auto group">
       
       {/* Background glow */}
       <div className="absolute inset-0 bg-blue-100 dark:bg-cyan-500/20 blur-[80px] rounded-full transition-colors duration-500"></div>
       
       {/* Login Card */}
-      <div className="relative bg-white/70 dark:bg-gradient-to-bl dark:from-white/10 dark:to-black/40 border border-slate-200 dark:border-white/20 rounded-3xl backdrop-blur-xl p-8 shadow-2xl dark:shadow-[0_0_50px_rgba(0,0,0,0.5)] transform-gpu hover:rotate-y-[5deg] hover:rotate-x-[2deg] transition-all duration-700">
+      <div className="relative bg-white/70 dark:bg-gradient-to-bl dark:from-white/10 dark:to-black/40 border border-slate-200 dark:border-white/20 rounded-3xl backdrop-blur-xl p-8 shadow-2xl dark:shadow-[0_0_50px_rgba(0,0,0,0.5)] transition-all duration-300">
         
         {/* Header */}
         <div className="mb-8">
