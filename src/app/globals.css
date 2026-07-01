@@ -51,7 +51,7 @@ body {
   }
 
   /* Expand wrappers */
-  main, .max-w-[1200px], .max-w-7xl, .max-w-5xl, .w-full, .max-w-4xl {
+  main, .max-w-\[1200px\], .max-w-7xl, .max-w-5xl, .w-full, .max-w-4xl {
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 !important;
