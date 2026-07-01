@@ -121,7 +121,7 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
 
 
   return (
-    <div className="bg-[#F4F6F9] min-h-screen w-full p-4 sm:p-8 font-sans pb-20">
+    <div className="w-full font-sans pb-20 relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
       
       <div className="max-w-4xl mx-auto mb-6">
         <h1 className="text-2xl font-bold text-[#0B2E59] uppercase">Ledger Entry (खाता बही)</h1>

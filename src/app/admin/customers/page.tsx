@@ -7,7 +7,7 @@ export default async function CustomersPage() {
   const customers = await getAllCustomers()
 
   return (
-    <div className="-m-4 sm:-m-8 p-4 sm:p-8 bg-gray-50 min-h-screen">
+    <div className="w-full font-sans relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
       
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-8">

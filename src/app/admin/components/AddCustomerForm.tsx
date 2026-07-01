@@ -47,7 +47,7 @@ export default function AddCustomerForm() {
   }, [state])
 
   return (
-    <div className="bg-[#F4F6F9] min-h-full font-sans pb-12 overflow-y-auto w-full h-full p-4 sm:p-8">
+    <div className="w-full font-sans pb-12 relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
       
       {/* Top Bar */}
       <div className="flex items-center justify-between mb-6 max-w-5xl mx-auto">
