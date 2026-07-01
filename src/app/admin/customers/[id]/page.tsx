@@ -1,7 +1,7 @@
 import { getCustomerDetails } from '@/actions/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, Printer, Download, Building, CheckCircle, ArrowDownToLine, ArrowUpFromLine, Wallet, CreditCard, Activity } from 'lucide-react'
+import { ArrowLeft, Printer, Download, Building, CheckCircle, ArrowDownToLine, ArrowUpFromLine, Wallet, CreditCard, Activity, X } from 'lucide-react'
 import EditCustomerModal from '../components/EditCustomerModal'
 
 export default async function CustomerProfilePage({
