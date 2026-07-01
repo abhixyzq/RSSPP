@@ -63,3 +63,45 @@ export async function login(prevState: any, formData: FormData) {
   revalidatePath('/', 'layout')
   redirect(redirectPath)
 }
+
+export async function adminLogin(prevState: any, formData: FormData) {
+  const supabase = await createClient()
+
+  const adminId = formData.get('adminId') as string
+  const password = formData.get('password') as string
+
+  if (!adminId || !password) {
+    return { error: 'Please enter both Admin ID and Password.' }
+  }
+
+  // Map Admin ID to email format for Supabase Auth
+  // We can just append @rsspp.local if it's not already an email
+  const email = adminId.includes('@') ? adminId : `${adminId}@rsspp.local`
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  })
+
+  if (error) {
+    return { error: 'Invalid Administrator ID or Password.' }
+  }
+
+  // Verify if the user is actually an admin
+  const { data: { user } } = await supabase.auth.getUser()
+  if (user) {
+    const { data: profile } = await supabase
+      .from('users_profile')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+
+    if (profile?.role !== 'admin') {
+      await supabase.auth.signOut()
+      return { error: 'Access Denied: You do not have administrator privileges.' }
+    }
+  }
+
+  revalidatePath('/admin', 'layout')
+  redirect('/admin')
+}

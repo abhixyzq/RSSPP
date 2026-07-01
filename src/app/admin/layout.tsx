@@ -14,7 +14,7 @@ export default async function AdminLayout({
   } = await supabase.auth.getUser()
 
   if (!user) {
-    redirect('/login')
+    redirect('/admin-login')
   }
 
   // Check if user is an admin by querying the users_profile table
@@ -27,7 +27,8 @@ export default async function AdminLayout({
   if (error || profile?.role !== 'admin') {
     // If not an admin or error occurs, redirect them.
     // They are authenticated, but lack permissions.
-    redirect('/')
+    await supabase.auth.signOut()
+    redirect('/admin-login')
   }
 
   return (
