@@ -1,5 +1,7 @@
 import { createAdminClient } from '@/utils/supabase/admin'
-import { History, ArrowUpRight, ArrowDownRight, Search, FileText } from 'lucide-react'
+import { History, Printer } from 'lucide-react'
+import PrintTransactionLedger from './PrintTransactionLedger'
+import PrintButton from '../components/PrintButton'
 
 // Helper to format currency
 const formatCurrency = (amount: number) => {
@@ -24,7 +26,8 @@ export default async function TransactionsPage() {
     .limit(100)
 
   return (
-    <div className="w-full font-sans relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
+    <>
+    <div className="w-full font-sans relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20 print:hidden">
       
       {/* Header */}
       <div className="bg-white/40 dark:bg-black/40 backdrop-blur-2xl p-6 md:p-8 rounded-3xl border border-white/40 dark:border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 shadow-lg">
@@ -39,6 +42,7 @@ export default async function TransactionsPage() {
               </p>
            </div>
         </div>
+        <PrintButton label={<><Printer className="w-4 h-4" /> Print Ledger</>} />
       </div>
 
       {/* Transactions Table */}
@@ -115,5 +119,8 @@ export default async function TransactionsPage() {
         </div>
       </div>
     </div>
+    
+    <PrintTransactionLedger transactions={transactions || []} />
+    </>
   )
 }

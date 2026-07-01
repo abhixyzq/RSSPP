@@ -1,5 +1,4 @@
 import React from 'react'
-import { Building } from 'lucide-react'
 
 export default function PrintPassbook({ 
   profile, 
@@ -9,178 +8,255 @@ export default function PrintPassbook({
   currentNikasiBalance, 
   totalJamaInterest 
 }: any) {
+  const printDate = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' })
+  const printTime = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })
+
+  const fmt = (n: number) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 2 }).format(n)
+
   return (
-    <div className="hidden print:block w-full bg-white text-gray-900 font-sans p-4">
-      
-      {/* Premium Bank Header */}
-      <div className="flex justify-between items-start border-b-[3px] border-[#0B2E59] pb-6 mb-8">
-        <div className="flex items-center gap-4">
-          <div className="w-16 h-16 bg-[#0B2E59] rounded-lg flex items-center justify-center text-white shrink-0">
-             <Building className="w-10 h-10" />
+    <div className="hidden print:block w-full bg-white text-gray-900" style={{ fontFamily: 'Arial, sans-serif', fontSize: '12px' }}>
+
+      {/* ── PAGE HEADER ── */}
+      <div style={{ borderBottom: '4px double #0B2E59', paddingBottom: '16px', marginBottom: '24px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+            <div style={{ width: '52px', height: '52px', background: '#0B2E59', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <span style={{ color: 'white', fontWeight: 900, fontSize: '22px' }}>AS</span>
+            </div>
+            <div>
+              <h1 style={{ fontSize: '24px', fontWeight: 900, color: '#0B2E59', letterSpacing: '1px', margin: 0, textTransform: 'uppercase' }}>
+                Apna Sang Sahayata Samuh
+              </h1>
+              <p style={{ fontSize: '11px', color: '#555', margin: '3px 0 0 0', letterSpacing: '1.5px', textTransform: 'uppercase' }}>
+                Registered Savings &amp; Credit Society — Main Branch (मुख्य शाखा)
+              </p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-3xl font-black text-[#0B2E59] uppercase tracking-wide mb-1">Apna Sang Sahayata Samuh</h1>
-            <p className="text-gray-600 font-semibold text-sm uppercase tracking-widest">Main Branch (मुख्य शाखा)</p>
+          <div style={{ textAlign: 'right' }}>
+            <h2 style={{ fontSize: '20px', fontWeight: 300, color: '#bbb', letterSpacing: '3px', textTransform: 'uppercase', margin: '0 0 6px 0' }}>
+              Account Statement
+            </h2>
+            <p style={{ fontSize: '11px', color: '#555', margin: '2px 0' }}><strong>Printed:</strong> {printDate} at {printTime}</p>
+            <p style={{ fontSize: '11px', color: '#555', margin: '2px 0' }}><strong>Page:</strong> 1 of 1</p>
           </div>
-        </div>
-        <div className="text-right">
-          <h2 className="text-2xl font-light text-gray-400 uppercase tracking-widest mb-2">Account Statement</h2>
-          <p className="text-sm text-gray-500"><span className="font-semibold text-gray-700">Date:</span> {new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</p>
-          <p className="text-sm text-gray-500 mt-1"><span className="font-semibold text-gray-700">Page:</span> 1 of 1</p>
         </div>
       </div>
 
-      {/* Customer & Account Details (Two Column Modern Card) */}
-      <div className="flex justify-between mb-10">
-        
-        {/* Customer Address Block */}
-        <div className="w-[55%]">
-          <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Customer Details</p>
-          <h3 className="text-xl font-bold text-gray-800 uppercase mb-1">
-            {profile.full_name} {profile.full_name_hi ? `(${profile.full_name_hi})` : ''}
+      {/* ── CUSTOMER SECTION ── */}
+      <div style={{ display: 'flex', gap: '0', marginBottom: '24px' }}>
+        {/* Left: Customer Address Block */}
+        <div style={{ flex: '1.2', paddingRight: '20px', borderRight: '1px solid #e5e7eb' }}>
+          <p style={{ fontSize: '10px', fontWeight: 700, color: '#999', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>Account Holder</p>
+          <h3 style={{ fontSize: '18px', fontWeight: 900, color: '#1a1a2e', textTransform: 'uppercase', margin: '0 0 6px 0' }}>
+            {profile.full_name}
           </h3>
-          <p className="text-sm text-gray-600 leading-relaxed max-w-xs">
-            {profile.address || 'Address not provided'}
-            {profile.address_hi ? `\n${profile.address_hi}` : ''}
+          {profile.full_name_hi && (
+            <p style={{ fontSize: '14px', color: '#555', margin: '0 0 8px 0' }}>{profile.full_name_hi}</p>
+          )}
+          <p style={{ fontSize: '12px', color: '#666', margin: '2px 0' }}>
+            <strong>Address:</strong> {profile.address || 'Not Provided'}
+          </p>
+          {profile.address_hi && (
+            <p style={{ fontSize: '12px', color: '#666', margin: '2px 0' }}>{profile.address_hi}</p>
+          )}
+          <p style={{ fontSize: '12px', color: '#666', margin: '4px 0 0 0' }}>
+            <strong>Occupation:</strong> {profile.occupation || 'Not Specified'}
           </p>
         </div>
 
-        {/* Account Info Block */}
-        <div className="w-[40%] bg-gray-50 rounded-lg p-5 border border-gray-200">
-          <div className="grid grid-cols-2 gap-y-3 text-sm">
-            <p className="text-gray-500">Account No:</p>
-            <p className="font-bold text-gray-900 text-right">{profile.mobile_number}</p>
-            
-            <p className="text-gray-500">Account Status:</p>
-            <p className={`font-bold text-right ${profile.isClosed ? 'text-red-600' : 'text-green-600'}`}>
-              {profile.isClosed ? 'CLOSED' : 'ACTIVE'}
-            </p>
-            
-            <p className="text-gray-500">KYC Status:</p>
-            <p className="font-bold text-gray-900 text-right">{profile.kyc_document || 'PENDING'}</p>
-            
-            <p className="text-gray-500">Currency:</p>
-            <p className="font-bold text-gray-900 text-right">INR (₹)</p>
-          </div>
+        {/* Right: Account Details */}
+        <div style={{ flex: '1', paddingLeft: '24px' }}>
+          <p style={{ fontSize: '10px', fontWeight: 700, color: '#999', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>Account Details</p>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
+            <tbody>
+              {[
+                ['Account No.', profile.mobile_number],
+                ['Account Status', profile.isClosed ? 'CLOSED' : 'ACTIVE'],
+                ['KYC Status', profile.kyc_document || 'PENDING'],
+                ['Branch', 'Main (मुख्य शाखा)'],
+                ['Currency', 'INR (₹)'],
+              ].map(([label, value]) => (
+                <tr key={label} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                  <td style={{ padding: '5px 4px 5px 0', color: '#888', fontWeight: 600, width: '45%' }}>{label}</td>
+                  <td style={{ padding: '5px 0', fontWeight: 700, color: label === 'Account Status' ? (profile.isClosed ? '#991b1b' : '#166534') : '#1a1a2e' }}>
+                    {value}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 
-      {/* Financial Dashboard Highlights */}
-      <div className="flex gap-4 mb-10">
-        <div className="flex-1 bg-white border-l-4 border-blue-600 shadow-sm border-y border-r border-gray-100 p-4">
-          <p className="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1">Total Deposit Balance</p>
-          <p className="text-2xl font-bold text-gray-900">₹{currentJamaBalance.toLocaleString('en-IN')}</p>
+      {/* ── FINANCIAL SUMMARY STRIP ── */}
+      <div style={{ display: 'flex', marginBottom: '28px', border: '1px solid #e0e7f0', borderLeft: '4px solid #0B2E59' }}>
+        <div style={{ flex: 1, padding: '12px 16px', borderRight: '1px solid #e0e7f0' }}>
+          <p style={{ fontSize: '10px', fontWeight: 700, color: '#666', textTransform: 'uppercase', letterSpacing: '1px', margin: '0 0 4px 0' }}>Deposit Balance</p>
+          <p style={{ fontSize: '20px', fontWeight: 900, color: '#1d4ed8', margin: 0 }}>{fmt(currentJamaBalance)}</p>
         </div>
-        <div className="flex-1 bg-white border-l-4 border-orange-500 shadow-sm border-y border-r border-gray-100 p-4">
-          <p className="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1">Total Loan Balance</p>
-          <p className="text-2xl font-bold text-gray-900">₹{currentNikasiBalance.toLocaleString('en-IN')}</p>
+        <div style={{ flex: 1, padding: '12px 16px', borderRight: '1px solid #e0e7f0' }}>
+          <p style={{ fontSize: '10px', fontWeight: 700, color: '#666', textTransform: 'uppercase', letterSpacing: '1px', margin: '0 0 4px 0' }}>Loan Balance</p>
+          <p style={{ fontSize: '20px', fontWeight: 900, color: '#dc2626', margin: 0 }}>{fmt(currentNikasiBalance)}</p>
         </div>
-        <div className="flex-1 bg-white border-l-4 border-green-500 shadow-sm border-y border-r border-gray-100 p-4">
-          <p className="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1">Interest Earned</p>
-          <p className="text-2xl font-bold text-gray-900">₹{totalJamaInterest.toLocaleString('en-IN')}</p>
+        <div style={{ flex: 1, padding: '12px 16px' }}>
+          <p style={{ fontSize: '10px', fontWeight: 700, color: '#666', textTransform: 'uppercase', letterSpacing: '1px', margin: '0 0 4px 0' }}>Interest Earned</p>
+          <p style={{ fontSize: '20px', fontWeight: 900, color: '#16a34a', margin: 0 }}>{fmt(totalJamaInterest)}</p>
         </div>
       </div>
 
-      {/* Deposit Ledger */}
-      <div className="mb-12 break-inside-avoid">
-        <h3 className="text-sm font-bold text-[#0B2E59] uppercase tracking-wider mb-4 flex items-center gap-2">
-          Deposit Statement (बचत खाता)
-          <div className="h-px bg-gray-200 flex-1 ml-2"></div>
-        </h3>
-        
-        <table className="w-full text-left text-[13px]">
+      {/* ── DEPOSIT LEDGER ── */}
+      <div style={{ marginBottom: '32px', pageBreakInside: 'avoid' }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+          <span style={{ background: '#0B2E59', color: 'white', padding: '5px 14px', fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '2px' }}>
+            Deposit Ledger (बचत खाता)
+          </span>
+          <div style={{ flex: 1, height: '1px', background: '#e5e7eb', marginLeft: '12px' }}></div>
+        </div>
+
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '11px' }}>
           <thead>
-            <tr className="border-y-2 border-gray-300">
-              <th className="py-3 px-2 font-semibold text-gray-600 uppercase tracking-wider w-28">Date</th>
-              <th className="py-3 px-2 font-semibold text-gray-600 uppercase tracking-wider">Transaction Details</th>
-              <th className="py-3 px-2 font-semibold text-gray-600 uppercase tracking-wider text-right w-32">Interest</th>
-              <th className="py-3 px-2 font-semibold text-gray-600 uppercase tracking-wider text-right w-32">Amount</th>
-              <th className="py-3 px-2 font-semibold text-gray-600 uppercase tracking-wider text-right w-32">Balance</th>
+            <tr style={{ background: '#f8fafc', borderBottom: '2px solid #cbd5e1' }}>
+              <th style={{ padding: '8px 6px', textAlign: 'left', fontWeight: 800, textTransform: 'uppercase', fontSize: '10px', color: '#555', letterSpacing: '0.5px', width: '90px', borderRight: '1px solid #e2e8f0' }}>Date</th>
+              <th style={{ padding: '8px 6px', textAlign: 'left', fontWeight: 800, textTransform: 'uppercase', fontSize: '10px', color: '#555', letterSpacing: '0.5px', borderRight: '1px solid #e2e8f0' }}>Particulars</th>
+              <th style={{ padding: '8px 6px', textAlign: 'right', fontWeight: 800, textTransform: 'uppercase', fontSize: '10px', color: '#555', letterSpacing: '0.5px', width: '100px', borderRight: '1px solid #e2e8f0' }}>Interest</th>
+              <th style={{ padding: '8px 6px', textAlign: 'right', fontWeight: 800, textTransform: 'uppercase', fontSize: '10px', color: '#555', letterSpacing: '0.5px', width: '110px', borderRight: '1px solid #e2e8f0' }}>Amount</th>
+              <th style={{ padding: '8px 6px', textAlign: 'right', fontWeight: 800, textTransform: 'uppercase', fontSize: '10px', color: '#555', letterSpacing: '0.5px', width: '110px' }}>Balance</th>
             </tr>
           </thead>
-          <tbody className="text-gray-800">
+          <tbody>
             {(!jamaTransactions || jamaTransactions.length === 0) ? (
               <tr>
-                <td colSpan={5} className="py-6 text-center italic text-gray-500 border-b border-gray-100">No deposit transactions available for this period.</td>
+                <td colSpan={5} style={{ padding: '20px', textAlign: 'center', fontStyle: 'italic', color: '#aaa', borderBottom: '1px solid #e5e7eb' }}>
+                  No deposit transactions for this account.
+                </td>
               </tr>
             ) : (
-              jamaTransactions.map((tx: any, i: number) => (
-                <tr key={i} className="border-b border-gray-100">
-                  <td className="py-3 px-2">{new Date(tx.transaction_date).toLocaleDateString('en-IN')}</td>
-                  <td className="py-3 px-2">
-                    <span className="font-semibold">{tx.transaction_type.replace('JAMA_', '')}</span>
-                    {tx.description && <span className="block text-[11px] text-gray-500 mt-0.5">{tx.description}</span>}
-                  </td>
-                  <td className="py-3 px-2 text-right text-gray-500">{tx.earnedInterest ? `₹${tx.earnedInterest.toLocaleString('en-IN')}` : '-'}</td>
-                  <td className={`py-3 px-2 text-right font-semibold ${tx.transaction_type.includes('WITHDRAWAL') ? 'text-red-600' : 'text-gray-900'}`}>
-                    {tx.transaction_type.includes('WITHDRAWAL') ? '-' : '+'}₹{Number(tx.amount).toLocaleString('en-IN')}
-                  </td>
-                  <td className="py-3 px-2 text-right font-bold">₹{tx.runningBalance.toLocaleString('en-IN')}</td>
-                </tr>
-              ))
+              jamaTransactions.map((tx: any, i: number) => {
+                const isWithdrawal = tx.transaction_type.includes('WITHDRAWAL')
+                return (
+                  <tr key={i} style={{ borderBottom: '1px solid #f0f0f0', background: i % 2 === 0 ? '#fff' : '#fafafa', pageBreakInside: 'avoid' }}>
+                    <td style={{ padding: '7px 6px', color: '#444', borderRight: '1px solid #f0f0f0' }}>
+                      {new Date(tx.transaction_date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+                    </td>
+                    <td style={{ padding: '7px 6px', borderRight: '1px solid #f0f0f0' }}>
+                      <span style={{ fontWeight: 700, textTransform: 'uppercase', fontSize: '11px', color: '#1a1a2e' }}>
+                        {tx.transaction_type.replace('JAMA_', '').replace(/_/g, ' ')}
+                      </span>
+                      {tx.description && (
+                        <span style={{ display: 'block', fontSize: '10px', color: '#888', marginTop: '2px', fontStyle: 'italic' }}>
+                          {tx.description}
+                        </span>
+                      )}
+                    </td>
+                    <td style={{ padding: '7px 6px', textAlign: 'right', color: '#16a34a', fontWeight: 600, borderRight: '1px solid #f0f0f0' }}>
+                      {tx.earnedInterest ? fmt(tx.earnedInterest) : '—'}
+                    </td>
+                    <td style={{ padding: '7px 6px', textAlign: 'right', fontWeight: 700, color: isWithdrawal ? '#dc2626' : '#166534', borderRight: '1px solid #f0f0f0', fontFamily: 'monospace' }}>
+                      {isWithdrawal ? '-' : '+'}{fmt(Number(tx.amount))}
+                    </td>
+                    <td style={{ padding: '7px 6px', textAlign: 'right', fontWeight: 800, color: '#0B2E59', fontFamily: 'monospace' }}>
+                      {fmt(tx.runningBalance)}
+                    </td>
+                  </tr>
+                )
+              })
             )}
           </tbody>
+          <tfoot>
+            <tr style={{ background: '#f0f4f8', borderTop: '2px solid #0B2E59' }}>
+              <td colSpan={4} style={{ padding: '8px 6px', fontWeight: 700, fontSize: '11px', color: '#0B2E59', textTransform: 'uppercase' }}>
+                Current Deposit Balance
+              </td>
+              <td style={{ padding: '8px 6px', textAlign: 'right', fontWeight: 900, fontSize: '13px', color: '#0B2E59', fontFamily: 'monospace' }}>
+                {fmt(currentJamaBalance)}
+              </td>
+            </tr>
+          </tfoot>
         </table>
       </div>
 
-      {/* Loan Ledger */}
-      <div className="mb-12 break-inside-avoid">
-        <h3 className="text-sm font-bold text-[#0B2E59] uppercase tracking-wider mb-4 flex items-center gap-2">
-          Loan Statement (ऋण खाता)
-          <div className="h-px bg-gray-200 flex-1 ml-2"></div>
-        </h3>
-        
-        <table className="w-full text-left text-[13px]">
+      {/* ── LOAN LEDGER ── */}
+      <div style={{ marginBottom: '32px', pageBreakInside: 'avoid' }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+          <span style={{ background: '#7c2d12', color: 'white', padding: '5px 14px', fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '2px' }}>
+            Loan Ledger (ऋण खाता)
+          </span>
+          <div style={{ flex: 1, height: '1px', background: '#e5e7eb', marginLeft: '12px' }}></div>
+        </div>
+
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '11px' }}>
           <thead>
-            <tr className="border-y-2 border-gray-300">
-              <th className="py-3 px-2 font-semibold text-gray-600 uppercase tracking-wider w-28">Date</th>
-              <th className="py-3 px-2 font-semibold text-gray-600 uppercase tracking-wider">Transaction Details</th>
-              <th className="py-3 px-2 font-semibold text-gray-600 uppercase tracking-wider text-right w-32">Amount</th>
-              <th className="py-3 px-2 font-semibold text-gray-600 uppercase tracking-wider text-right w-32">Balance</th>
+            <tr style={{ background: '#f8fafc', borderBottom: '2px solid #cbd5e1' }}>
+              <th style={{ padding: '8px 6px', textAlign: 'left', fontWeight: 800, textTransform: 'uppercase', fontSize: '10px', color: '#555', letterSpacing: '0.5px', width: '90px', borderRight: '1px solid #e2e8f0' }}>Date</th>
+              <th style={{ padding: '8px 6px', textAlign: 'left', fontWeight: 800, textTransform: 'uppercase', fontSize: '10px', color: '#555', letterSpacing: '0.5px', borderRight: '1px solid #e2e8f0' }}>Particulars</th>
+              <th style={{ padding: '8px 6px', textAlign: 'right', fontWeight: 800, textTransform: 'uppercase', fontSize: '10px', color: '#555', letterSpacing: '0.5px', width: '110px', borderRight: '1px solid #e2e8f0' }}>Amount</th>
+              <th style={{ padding: '8px 6px', textAlign: 'right', fontWeight: 800, textTransform: 'uppercase', fontSize: '10px', color: '#555', letterSpacing: '0.5px', width: '110px' }}>Balance</th>
             </tr>
           </thead>
-          <tbody className="text-gray-800">
+          <tbody>
             {(!nikasiTransactions || nikasiTransactions.length === 0) ? (
               <tr>
-                <td colSpan={4} className="py-6 text-center italic text-gray-500 border-b border-gray-100">No loan transactions available for this period.</td>
+                <td colSpan={4} style={{ padding: '20px', textAlign: 'center', fontStyle: 'italic', color: '#aaa', borderBottom: '1px solid #e5e7eb' }}>
+                  No loan transactions for this account.
+                </td>
               </tr>
             ) : (
-              nikasiTransactions.map((tx: any, i: number) => (
-                <tr key={i} className="border-b border-gray-100">
-                  <td className="py-3 px-2">{new Date(tx.transaction_date).toLocaleDateString('en-IN')}</td>
-                  <td className="py-3 px-2">
-                    <span className="font-semibold">{tx.transaction_type.replace('NIKASI_', '').replace(/_/g, ' ')}</span>
-                    {tx.description && <span className="block text-[11px] text-gray-500 mt-0.5">{tx.description}</span>}
-                  </td>
-                  <td className={`py-3 px-2 text-right font-semibold ${tx.transaction_type.includes('REPAY') ? 'text-green-600' : 'text-gray-900'}`}>
-                    {tx.transaction_type.includes('REPAY') ? '-' : '+'}₹{Number(tx.amount).toLocaleString('en-IN')}
-                  </td>
-                  <td className="py-3 px-2 text-right font-bold">₹{tx.runningBalance.toLocaleString('en-IN')}</td>
-                </tr>
-              ))
+              nikasiTransactions.map((tx: any, i: number) => {
+                const isRepay = tx.transaction_type.includes('REPAY')
+                return (
+                  <tr key={i} style={{ borderBottom: '1px solid #f0f0f0', background: i % 2 === 0 ? '#fff' : '#fafafa', pageBreakInside: 'avoid' }}>
+                    <td style={{ padding: '7px 6px', color: '#444', borderRight: '1px solid #f0f0f0' }}>
+                      {new Date(tx.transaction_date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+                    </td>
+                    <td style={{ padding: '7px 6px', borderRight: '1px solid #f0f0f0' }}>
+                      <span style={{ fontWeight: 700, textTransform: 'uppercase', fontSize: '11px', color: '#1a1a2e' }}>
+                        {tx.transaction_type.replace('NIKASI_', '').replace(/_/g, ' ')}
+                      </span>
+                      {tx.description && (
+                        <span style={{ display: 'block', fontSize: '10px', color: '#888', marginTop: '2px', fontStyle: 'italic' }}>
+                          {tx.description}
+                        </span>
+                      )}
+                    </td>
+                    <td style={{ padding: '7px 6px', textAlign: 'right', fontWeight: 700, color: isRepay ? '#16a34a' : '#dc2626', borderRight: '1px solid #f0f0f0', fontFamily: 'monospace' }}>
+                      {isRepay ? '-' : '+'}{fmt(Number(tx.amount))}
+                    </td>
+                    <td style={{ padding: '7px 6px', textAlign: 'right', fontWeight: 800, color: '#7c2d12', fontFamily: 'monospace' }}>
+                      {fmt(tx.runningBalance)}
+                    </td>
+                  </tr>
+                )
+              })
             )}
           </tbody>
+          <tfoot>
+            <tr style={{ background: '#fef2f2', borderTop: '2px solid #7c2d12' }}>
+              <td colSpan={3} style={{ padding: '8px 6px', fontWeight: 700, fontSize: '11px', color: '#7c2d12', textTransform: 'uppercase' }}>
+                Current Loan Balance Outstanding
+              </td>
+              <td style={{ padding: '8px 6px', textAlign: 'right', fontWeight: 900, fontSize: '13px', color: '#7c2d12', fontFamily: 'monospace' }}>
+                {fmt(currentNikasiBalance)}
+              </td>
+            </tr>
+          </tfoot>
         </table>
       </div>
 
-      {/* Professional Footer */}
-      <div className="mt-16 pt-8 border-t border-gray-200 break-inside-avoid">
-        <div className="flex justify-between items-end">
-          <div className="text-[10px] text-gray-400">
-            <p className="mb-1 uppercase font-bold text-gray-500">** End of Statement **</p>
-            <p>This is a computer generated statement and does not require a signature or physical stamp.</p>
-            <p>Please examine this statement immediately. If no error is reported, it will be considered approved.</p>
+      {/* ── PROFESSIONAL FOOTER ── */}
+      <div style={{ marginTop: '40px', paddingTop: '20px', borderTop: '1px solid #ccc', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        <div style={{ fontSize: '9px', color: '#aaa', maxWidth: '55%' }}>
+          <p style={{ margin: '0 0 3px 0', fontWeight: 700, color: '#888', textTransform: 'uppercase', letterSpacing: '1px' }}>— End of Account Statement —</p>
+          <p style={{ margin: 0 }}>This is a computer-generated statement and does not require a physical signature or stamp.</p>
+          <p style={{ margin: '3px 0 0 0' }}>Please examine this statement immediately. If no discrepancy is reported within 7 days, it will be deemed correct and accepted.</p>
+        </div>
+        <div style={{ display: 'flex', gap: '60px' }}>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ width: '130px', borderBottom: '1px solid #555', marginBottom: '6px', height: '36px' }}></div>
+            <p style={{ fontSize: '10px', fontWeight: 700, color: '#555', textTransform: 'uppercase', margin: 0 }}>Customer Signature</p>
           </div>
-          
-          <div className="flex gap-16">
-            <div className="text-center">
-              <div className="w-40 border-b border-gray-400 mb-2 h-10"></div>
-              <p className="text-[11px] font-bold text-gray-500 uppercase">Customer Signature</p>
-            </div>
-            <div className="text-center">
-              <div className="w-40 border-b border-gray-400 mb-2 h-10"></div>
-              <p className="text-[11px] font-bold text-gray-500 uppercase">Authorized Signatory</p>
-            </div>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ width: '130px', borderBottom: '1px solid #555', marginBottom: '6px', height: '36px' }}></div>
+            <p style={{ fontSize: '10px', fontWeight: 700, color: '#555', textTransform: 'uppercase', margin: 0 }}>Authorised Signatory</p>
           </div>
         </div>
       </div>

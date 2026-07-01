@@ -44,7 +44,7 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full print:hidden">
       
       {/* Top Navigation */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
