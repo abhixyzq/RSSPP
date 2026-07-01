@@ -4,7 +4,7 @@ import CustomerLogin from './components/CustomerLogin'
 
 export default function LandingPage() {
   return (
-    <div className="h-screen bg-[#030712] font-sans text-gray-300 selection:bg-cyan-500/30 selection:text-cyan-100 overflow-hidden relative flex flex-col">
+    <div className="min-h-screen lg:h-screen bg-[#030712] font-sans text-gray-300 selection:bg-cyan-500/30 selection:text-cyan-100 overflow-x-hidden lg:overflow-hidden relative flex flex-col">
       
       {/* Dynamic Background Effects */}
       <div className="fixed inset-0 z-0 pointer-events-none">
@@ -42,9 +42,9 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <main className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 flex-1 flex flex-col justify-center min-h-0 w-full">
+      <main className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 flex-1 flex flex-col justify-center py-8 lg:py-0 lg:min-h-0 w-full">
         
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           {/* Left: Typography */}
           <div className="space-y-8 relative">
             {/* Decorative crosshair */}
