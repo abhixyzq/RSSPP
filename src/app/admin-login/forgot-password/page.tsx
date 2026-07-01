@@ -90,7 +90,8 @@ export default function ForgotPasswordPage() {
         </div>
       </nav>
 
-      <main className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 flex-1 flex flex-col justify-start lg:justify-center pt-6 lg:pt-0 pb-8 lg:py-0 lg:min-h-0 w-full">
+      {/* Hero Section */}
+      <main className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 flex-1 flex flex-col justify-center py-8 lg:py-0 lg:min-h-0 w-full">
         
         {/* Centered Recovery Component */}
         <div className="relative w-full flex items-center justify-center">
