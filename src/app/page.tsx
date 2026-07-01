@@ -69,10 +69,10 @@ export default function LandingPage() {
         </div>
       </main>
 
-      {/* Key Features Minimalist Bar (Hidden on mobile) */}
-      <section className="hidden lg:block relative z-10 border-t border-slate-200 dark:border-white/5 bg-white/50 dark:bg-black/20 backdrop-blur-md shrink-0 transition-colors duration-500">
+      {/* Key Features Bar */}
+      <section className="relative z-10 border-t border-slate-200 dark:border-white/5 bg-white/50 dark:bg-black/20 backdrop-blur-md shrink-0 transition-colors duration-500">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 py-6 lg:py-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             <div className="flex items-start gap-4">
               <div className="mt-1 w-1.5 h-1.5 rounded-full bg-cyan-500 shadow-[0_0_10px_#22d3ee]"></div>
               <div>
