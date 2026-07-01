@@ -144,7 +144,17 @@ export async function requestAdminPasswordReset(prevState: any, formData: FormDa
     return { error: 'Access Denied: This ID does not have administrator privileges.' }
   }
 
-  const { error } = await supabase.auth.resetPasswordForEmail(email)
+  const { headers } = await import('next/headers')
+  const headersList = await headers()
+  // Determine origin from headers. If not available, fallback to a sensible default.
+  // Next.js headers might have 'origin' or 'host'
+  const host = headersList.get('host')
+  const protocol = host?.includes('localhost') ? 'http' : 'https'
+  const origin = headersList.get('origin') || (host ? `${protocol}://${host}` : '')
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: origin ? `${origin}/admin-login/forgot-password` : undefined
+  })
 
   if (error) {
     return { error: error.message }
