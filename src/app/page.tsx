@@ -1,7 +1,6 @@
 import Link from 'next/link'
-import { ArrowRight, ChevronRight, Coins, ShieldCheck, Activity, Zap, Cpu } from 'lucide-react'
+import { ArrowRight, ChevronRight, Coins, ShieldCheck, Activity, Zap, Cpu, User } from 'lucide-react'
 import CustomerLogin from './components/CustomerLogin'
-import { ThemeToggle } from '@/components/ThemeToggle'
 
 export default function LandingPage() {
   return (
@@ -30,12 +29,12 @@ export default function LandingPage() {
         </div>
 
         <div className="flex items-center gap-4">
-          <ThemeToggle />
           <Link 
             href="/admin-login" 
-            className="hidden md:block text-xs uppercase tracking-[0.15em] font-medium text-slate-500 dark:text-gray-500 hover:text-slate-900 dark:hover:text-white transition-colors"
+            className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-slate-700 dark:text-cyan-400"
+            title="Admin Portal"
           >
-            Admin
+            <User className="w-5 h-5" />
           </Link>
         </div>
       </nav>
