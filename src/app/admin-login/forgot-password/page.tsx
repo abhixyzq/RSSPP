@@ -35,12 +35,14 @@ export default function ForgotPasswordPage() {
     setErrorMsg('')
     const formData = new FormData(e.currentTarget)
     formData.append('email', email)
+    const otpValue = formData.get('otp') as string
     
     startTransition(async () => {
       const res = await verifyAdminOtp(null, formData)
       if (res.error) {
         setErrorMsg(res.error)
       } else if (res.success) {
+        setOtp(otpValue)
         setStep(3)
       }
     })
@@ -230,6 +232,8 @@ export default function ForgotPasswordPage() {
               {/* STEP 3: Set New Password */}
               {step === 3 && (
                 <form onSubmit={handleUpdatePassword} className="space-y-6">
+                  <input type="hidden" name="email" value={email} />
+                  <input type="hidden" name="otp" value={otp} />
                   <div className="space-y-2">
                     <label htmlFor="password" className="block text-[10px] uppercase tracking-[0.15em] font-medium text-slate-500 dark:text-gray-400 transition-colors">
                       New Security Password

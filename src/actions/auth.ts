@@ -144,27 +144,60 @@ export async function requestAdminPasswordReset(prevState: any, formData: FormDa
     return { error: 'Access Denied: This ID does not have administrator privileges.' }
   }
 
-  const { headers } = await import('next/headers')
-  const headersList = await headers()
-  // Determine origin from headers. If not available, fallback to a sensible default.
-  // Next.js headers might have 'origin' or 'host'
-  const host = headersList.get('host')
-  const protocol = host?.includes('localhost') ? 'http' : 'https'
-  const origin = headersList.get('origin') || (host ? `${protocol}://${host}` : '')
-
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: origin ? `${origin}/admin-login/forgot-password` : undefined
+  // --- CUSTOM OTP FLOW via RESEND ---
+  // Generate a random 6-digit OTP
+  const otp = Math.floor(100000 + Math.random() * 900000).toString()
+  const expiresAt = Date.now() + 15 * 60 * 1000 // 15 mins from now
+  
+  // Save OTP to the user's metadata in Supabase
+  const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(targetUser.id, {
+    user_metadata: {
+      ...targetUser.user_metadata,
+      reset_otp: otp,
+      reset_otp_expires_at: expiresAt
+    }
   })
 
-  if (error) {
-    return { error: error.message }
+  if (updateError) {
+    return { error: 'Failed to generate OTP. Please try again.' }
+  }
+
+  // Send the OTP via Resend
+  const { Resend } = await import('resend')
+  const resendApiKey = process.env.RESEND_API_KEY
+  
+  if (!resendApiKey) {
+    return { error: 'RESEND_API_KEY is not configured in the environment.' }
+  }
+
+  const resend = new Resend(resendApiKey)
+
+  const { error: resendError } = await resend.emails.send({
+    from: 'RSSPP Admin <onboarding@resend.dev>',
+    to: email,
+    subject: 'Your Admin Password Reset Code',
+    html: `
+      <div style="font-family: sans-serif; max-w-2xl; margin: 0 auto; padding: 20px;">
+        <h2 style="color: #0f172a;">Password Reset Request</h2>
+        <p style="color: #475569;">You have requested to reset the password for your RSSPP Administrator account.</p>
+        <p style="color: #475569;">Here is your secure 6-digit verification code:</p>
+        <div style="background-color: #f1f5f9; padding: 16px; border-radius: 8px; margin: 24px 0; text-align: center;">
+          <span style="font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #0284c7;">${otp}</span>
+        </div>
+        <p style="color: #475569; font-size: 14px;">This code will expire in 15 minutes.</p>
+        <p style="color: #475569; font-size: 14px;">If you did not request this, please ignore this email.</p>
+      </div>
+    `
+  })
+
+  if (resendError) {
+    return { error: 'Failed to send OTP email via Resend. ' + resendError.message }
   }
 
   return { success: true, email }
 }
 
 export async function verifyAdminOtp(prevState: any, formData: FormData) {
-  const supabase = await createClient()
   const email = formData.get('email') as string
   const otp = formData.get('otp') as string
 
@@ -172,29 +205,64 @@ export async function verifyAdminOtp(prevState: any, formData: FormData) {
     return { error: 'Please enter a valid 6-digit OTP.' }
   }
 
-  const { data, error } = await supabase.auth.verifyOtp({
-    email,
-    token: otp,
-    type: 'recovery',
-  })
+  const { createAdminClient } = await import('@/utils/supabase/admin')
+  const supabaseAdmin = createAdminClient()
 
-  if (error) {
-    return { error: 'Invalid or expired OTP.' }
+  // Find user by email
+  const { data: usersData, error: usersError } = await supabaseAdmin.auth.admin.listUsers()
+  if (usersError) return { error: 'Failed to verify identity.' }
+
+  const targetUser = usersData.users.find((u: any) => u.email === email)
+  if (!targetUser) return { error: 'Invalid or expired OTP.' }
+
+  const storedOtp = targetUser.user_metadata?.reset_otp
+  const expiresAt = targetUser.user_metadata?.reset_otp_expires_at
+
+  if (!storedOtp || storedOtp !== otp) {
+    return { error: 'Invalid OTP.' }
   }
 
-  return { success: true, token_hash: data.session?.access_token }
+  if (!expiresAt || Date.now() > expiresAt) {
+    return { error: 'OTP has expired.' }
+  }
+
+  // Success, return true (we do not delete the OTP here, we delete it during password update)
+  return { success: true }
 }
 
 export async function updateAdminPassword(prevState: any, formData: FormData) {
-  const supabase = await createClient()
+  const email = formData.get('email') as string
+  const otp = formData.get('otp') as string
   const password = formData.get('password') as string
 
-  if (!password || password.length < 6) {
-    return { error: 'Password must be at least 6 characters long.' }
+  if (!email || !otp || !password || password.length < 6) {
+    return { error: 'Invalid input. Password must be at least 6 characters long.' }
   }
 
-  const { error } = await supabase.auth.updateUser({
-    password: password
+  const { createAdminClient } = await import('@/utils/supabase/admin')
+  const supabaseAdmin = createAdminClient()
+
+  const { data: usersData, error: usersError } = await supabaseAdmin.auth.admin.listUsers()
+  if (usersError) return { error: 'Failed to verify identity.' }
+
+  const targetUser = usersData.users.find((u: any) => u.email === email)
+  if (!targetUser) return { error: 'Invalid or expired session.' }
+
+  const storedOtp = targetUser.user_metadata?.reset_otp
+  const expiresAt = targetUser.user_metadata?.reset_otp_expires_at
+
+  if (!storedOtp || storedOtp !== otp || !expiresAt || Date.now() > expiresAt) {
+    return { error: 'Invalid or expired OTP.' }
+  }
+
+  // Update the user's password and clear the OTP
+  const { error } = await supabaseAdmin.auth.admin.updateUserById(targetUser.id, {
+    password: password,
+    user_metadata: {
+      ...targetUser.user_metadata,
+      reset_otp: null,
+      reset_otp_expires_at: null
+    }
   })
 
   if (error) {
