@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, useEffect } from 'react'
 import { useTheme } from 'next-themes'
 import { Sun, Moon, LogOut, ArrowDownToLine, ArrowUpFromLine, Search, Filter, CheckCircle2, TrendingUp, IndianRupee } from 'lucide-react'
