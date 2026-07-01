@@ -33,14 +33,14 @@ function SubmitBtn({ typeSelected, customerId, amount }: { typeSelected: string,
         pending ? 'bg-gray-400' : btnClass
       }`}
     >
-      {pending ? 'Processing...' : (
+      {pending ? 'Processing... (प्रोसेस हो रहा है)' : (
         <>
           {typeSelected.startsWith('JAMA_') ? (
             <>Save to Passbook (पासबुक में लिखें) <ArrowRight className="w-5 h-5" /></>
           ) : typeSelected.startsWith('NIKASI_') ? (
             <>Record in Loan Ledger (खाता बही में लिखें) <ArrowRight className="w-5 h-5" /></>
           ) : (
-            'Save Transaction'
+            'Save Transaction (लेन-देन सेव करें)'
           )}
         </>
       )}
@@ -124,7 +124,7 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
     <div className="bg-[#F4F6F9] min-h-screen w-full p-4 sm:p-8 font-sans pb-20">
       
       <div className="max-w-4xl mx-auto mb-6">
-        <h1 className="text-2xl font-bold text-[#0B2E59] uppercase">Ledger Entry</h1>
+        <h1 className="text-2xl font-bold text-[#0B2E59] uppercase">Ledger Entry (खाता बही)</h1>
       </div>
 
       <div className="max-w-4xl mx-auto bg-white shadow-xl border border-gray-300">
@@ -135,13 +135,13 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
                 <Building className={`w-8 h-8 ${isDepositAccount ? 'text-[#0B2E59]' : 'text-[#310A14]'}`} />
              </div>
              <div>
-                <h1 className="text-2xl font-bold uppercase tracking-wide text-white">Transaction Gateway</h1>
-                <p className="text-gray-300 text-sm font-medium tracking-wide">Core Banking System • Secure Processing Node</p>
+                <h1 className="text-2xl font-bold uppercase tracking-wide text-white">Transaction Gateway <span className="text-lg normal-case font-medium">(लेन-देन गेटवे)</span></h1>
+                <p className="text-gray-300 text-sm font-medium tracking-wide">Core Banking System • Secure Processing Node <span className="opacity-80">(कोर बैंकिंग सिस्टम • सुरक्षित नोड)</span></p>
              </div>
           </div>
           <div className="flex items-center gap-2 text-white bg-white/10 px-4 py-2 rounded">
              <ShieldCheck className="w-5 h-5 text-green-400" />
-             <span className="text-xs font-bold tracking-widest uppercase">Encrypted</span>
+             <span className="text-xs font-bold tracking-widest uppercase">Encrypted (सुरक्षित)</span>
           </div>
         </div>
 
@@ -170,52 +170,59 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
           <form ref={formRef} action={formAction} className="space-y-10">
             
             <div>
-               <h3 className="text-[13px] font-bold text-gray-500 uppercase tracking-wider mb-4 border-b border-gray-200 pb-2">
-                 1. Select Transaction Type
+               <h3 className="text-[13px] font-bold text-gray-500 uppercase tracking-wider mb-4 border-b border-gray-200 pb-2 flex justify-between">
+                 <span>1. Select Transaction Type</span>
+                 <span className="text-gray-400 normal-case">(लेन-देन का प्रकार चुनें)</span>
                </h3>
                
                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="border-2 border-green-200 rounded p-4 bg-green-50/20">
-                     <h4 className="text-green-800 font-bold uppercase tracking-wider mb-4 border-b border-green-200 pb-2 text-sm flex items-center gap-2">
-                        <ArrowDownToLine className="w-4 h-4" /> Deposit Account (Jama)
+                     <h4 className="text-green-800 font-bold uppercase tracking-wider mb-4 border-b border-green-200 pb-2 text-sm flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                           <ArrowDownToLine className="w-4 h-4" /> Deposit Account
+                        </div>
+                        <span className="text-green-600/80 normal-case text-xs">(जमा खाता)</span>
                      </h4>
                      <div className="space-y-3">
                         <label className={`relative flex items-center p-3 cursor-pointer border rounded transition-all ${txType === 'JAMA_DEPOSIT' ? 'bg-green-100 border-green-600 shadow' : 'bg-white border-gray-200 hover:border-green-300'}`}>
                            <input type="radio" name="type" value="JAMA_DEPOSIT" checked={txType === 'JAMA_DEPOSIT'} onChange={() => setTxType('JAMA_DEPOSIT')} className="mr-3 w-4 h-4 text-green-600 focus:ring-green-500" />
                            <div>
-                              <span className="block font-bold text-green-900 uppercase text-sm">Deposit Funds</span>
+                              <span className="block font-bold text-green-900 uppercase text-sm">Deposit Funds <span className="normal-case text-xs text-green-700/80 ml-1">(पैसे जमा करें)</span></span>
                            </div>
                         </label>
                         <label className={`relative flex items-center p-3 cursor-pointer border rounded transition-all ${txType === 'JAMA_WITHDRAWAL' ? 'bg-orange-100 border-orange-600 shadow' : 'bg-white border-gray-200 hover:border-orange-300'}`}>
                            <input type="radio" name="type" value="JAMA_WITHDRAWAL" checked={txType === 'JAMA_WITHDRAWAL'} onChange={() => setTxType('JAMA_WITHDRAWAL')} className="mr-3 w-4 h-4 text-orange-600 focus:ring-orange-500" />
                            <div>
-                              <span className="block font-bold text-orange-900 uppercase text-sm">Withdraw Funds</span>
+                              <span className="block font-bold text-orange-900 uppercase text-sm">Withdraw Funds <span className="normal-case text-xs text-orange-700/80 ml-1">(पैसे निकालें)</span></span>
                            </div>
                         </label>
                      </div>
                   </div>
 
                   <div className="border-2 border-red-200 rounded p-4 bg-red-50/20">
-                     <h4 className="text-red-800 font-bold uppercase tracking-wider mb-4 border-b border-red-200 pb-2 text-sm flex items-center gap-2">
-                        <ArrowUpFromLine className="w-4 h-4" /> Loan Account (Nikasi)
+                     <h4 className="text-red-800 font-bold uppercase tracking-wider mb-4 border-b border-red-200 pb-2 text-sm flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                           <ArrowUpFromLine className="w-4 h-4" /> Loan Account
+                        </div>
+                        <span className="text-red-600/80 normal-case text-xs">(उधार खाता)</span>
                      </h4>
                      <div className="space-y-3">
                         <label className={`relative flex items-center p-3 cursor-pointer border rounded transition-all ${txType === 'NIKASI_LOAN' ? 'bg-red-100 border-red-600 shadow' : 'bg-white border-gray-200 hover:border-red-300'}`}>
                            <input type="radio" name="type" value="NIKASI_LOAN" checked={txType === 'NIKASI_LOAN'} onChange={() => setTxType('NIKASI_LOAN')} className="mr-3 w-4 h-4 text-red-600 focus:ring-red-500" />
                            <div>
-                              <span className="block font-bold text-red-900 uppercase text-sm">Issue New Loan</span>
+                              <span className="block font-bold text-red-900 uppercase text-sm">Issue New Loan <span className="normal-case text-xs text-red-700/80 ml-1">(नया उधार दें)</span></span>
                            </div>
                         </label>
                         <label className={`relative flex items-center p-3 cursor-pointer border rounded transition-all ${txType === 'NIKASI_REPAY_PRINCIPAL' ? 'bg-blue-100 border-blue-600 shadow' : 'bg-white border-gray-200 hover:border-blue-300'}`}>
                            <input type="radio" name="type" value="NIKASI_REPAY_PRINCIPAL" checked={txType === 'NIKASI_REPAY_PRINCIPAL'} onChange={() => setTxType('NIKASI_REPAY_PRINCIPAL')} className="mr-3 w-4 h-4 text-blue-600 focus:ring-blue-500" />
                            <div>
-                              <span className="block font-bold text-blue-900 uppercase text-sm">Repay Principal</span>
+                              <span className="block font-bold text-blue-900 uppercase text-sm">Repay Principal <span className="normal-case text-xs text-blue-700/80 ml-1">(मूल वापसी करें)</span></span>
                            </div>
                         </label>
                         <label className={`relative flex items-center p-3 cursor-pointer border rounded transition-all ${txType === 'NIKASI_REPAY_INTEREST' ? 'bg-purple-100 border-purple-600 shadow' : 'bg-white border-gray-200 hover:border-purple-300'}`}>
                            <input type="radio" name="type" value="NIKASI_REPAY_INTEREST" checked={txType === 'NIKASI_REPAY_INTEREST'} onChange={() => setTxType('NIKASI_REPAY_INTEREST')} className="mr-3 w-4 h-4 text-purple-600 focus:ring-purple-500" />
                            <div>
-                              <span className="block font-bold text-purple-900 uppercase text-sm">Pay Interest</span>
+                              <span className="block font-bold text-purple-900 uppercase text-sm">Pay Interest <span className="normal-case text-xs text-purple-700/80 ml-1">(ब्याज भरें)</span></span>
                            </div>
                         </label>
                      </div>
@@ -224,8 +231,9 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
             </div>
 
             <div>
-               <h3 className="text-[13px] font-bold text-gray-500 uppercase tracking-wider mb-4 border-b border-gray-200 pb-2">
-                 2. Select Target Account
+               <h3 className="text-[13px] font-bold text-gray-500 uppercase tracking-wider mb-4 border-b border-gray-200 pb-2 flex justify-between">
+                 <span>2. Select Target Account</span>
+                 <span className="text-gray-400 normal-case">(खाता चुनें)</span>
                </h3>
                
                <div className="relative">
@@ -245,9 +253,10 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
                      <button 
                        type="button" 
                        onClick={() => setSelectedCustomerId('')}
-                       className="text-xs font-bold text-blue-600 uppercase hover:underline bg-blue-50 px-3 py-1.5 rounded"
+                       className="text-xs font-bold text-blue-600 uppercase hover:underline bg-blue-50 px-3 py-1.5 rounded flex flex-col items-center"
                      >
-                       Change Account
+                       <span>Change Account</span>
+                       <span className="text-[10px] normal-case opacity-80">(खाता बदलें)</span>
                      </button>
                    </div>
                  ) : (
@@ -257,7 +266,7 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
                      </div>
                      <input
                        type="text"
-                       placeholder="Search by Name or Account No (Mobile)..."
+                       placeholder="Search by Name or Account No / नाम या खाता नंबर से खोजें..."
                        value={searchQuery}
                        onChange={(e) => {
                          setSearchQuery(e.target.value)
@@ -270,7 +279,10 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
                      {isDropdownOpen && searchQuery && (
                        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded shadow-xl max-h-60 overflow-auto">
                          {filteredCustomers.length === 0 ? (
-                           <div className="p-4 text-sm text-gray-500 font-bold uppercase">No matching accounts found</div>
+                           <div className="p-4 text-sm text-gray-500 font-bold uppercase flex flex-col gap-1">
+                             <span>No matching accounts found</span>
+                             <span className="normal-case text-gray-400 font-medium">(कोई खाता नहीं मिला)</span>
+                           </div>
                          ) : (
                            filteredCustomers.map(customer => (
                              <div
@@ -299,15 +311,17 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
 
             {/* Step 3: Transaction Details */}
             <div className={`p-6 border-2 rounded ${isDepositAccount ? 'bg-green-50/30 border-green-200' : 'bg-red-50/30 border-red-200'}`}>
-               <h3 className="text-[13px] font-bold text-gray-500 uppercase tracking-wider mb-6 border-b border-gray-200 pb-2">
-                 3. Transaction Details
+               <h3 className="text-[13px] font-bold text-gray-500 uppercase tracking-wider mb-6 border-b border-gray-200 pb-2 flex justify-between">
+                 <span>3. Transaction Details</span>
+                 <span className="text-gray-400 normal-case">(लेन-देन का विवरण)</span>
                </h3>
                
                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {/* Amount Input (MASSIVE) */}
                   <div className="md:col-span-2">
-                    <label className={`block text-xs font-bold uppercase tracking-wide mb-3 ${isCredit ? 'text-green-800' : 'text-red-800'}`}>
-                      Transaction Amount (₹) <span className="text-red-500">*</span>
+                    <label className={`block text-xs font-bold uppercase tracking-wide mb-3 flex items-center justify-between ${isCredit ? 'text-green-800' : 'text-red-800'}`}>
+                      <span>Transaction Amount (₹) <span className="text-red-500">*</span></span>
+                      <span className="normal-case text-[11px] opacity-80">(लेन-देन की राशि)</span>
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
@@ -329,13 +343,16 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
 
                   {/* Description */}
                   <div className="md:col-span-2">
-                    <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-2">Particulars (Remarks)</label>
+                    <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-2 flex justify-between items-center">
+                       <span>Particulars (Remarks)</span>
+                       <span className="normal-case text-[11px] opacity-80">(विवरण / टिप्पणी)</span>
+                    </label>
                     <div className="relative group">
                       <FileText className="absolute left-4 top-3.5 w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors" />
                       <input 
                         type="text" 
                         name="description" 
-                        placeholder="e.g. Cash Deposit, Bank Transfer, Loan Installment..."
+                        placeholder="e.g. Cash Deposit, Bank Transfer, Loan Installment... (नकद जमा, ऑनलाइन ट्रांसफर...)"
                         className="w-full pl-12 pr-4 py-3 bg-white border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-[15px] font-bold text-gray-900 uppercase transition-all shadow-sm"
                       />
                     </div>
@@ -359,9 +376,10 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
               <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-2xl mb-8 ring-[16px] ring-white/30">
                  <Check className="w-16 h-16 text-blue-600" strokeWidth={3} />
               </div>
-              <h2 className="text-4xl font-extrabold text-white mb-2 text-center">Transaction Successful</h2>
-              <p className="text-blue-100 text-lg font-bold text-center bg-blue-700/50 px-6 py-2 rounded-full mt-4">
-                 Entry Saved in Ledger
+              <h2 className="text-4xl font-extrabold text-white mb-2 text-center">Transaction Successful <br/><span className="text-2xl font-medium block mt-2 text-blue-200">(लेन-देन सफल)</span></h2>
+              <p className="text-blue-100 text-lg font-bold text-center bg-blue-700/50 px-6 py-2 rounded-full mt-4 flex flex-col items-center gap-1">
+                 <span>Entry Saved in Ledger</span>
+                 <span className="text-sm font-medium text-blue-200">(खाता बही में दर्ज हो गया)</span>
               </p>
            </div>
         </div>
