@@ -22,11 +22,7 @@ export default function LandingPage() {
           <img src="/logo.png" alt="Logo" className="w-10 h-10 object-contain drop-shadow-sm" />
           <span className="text-lg font-medium tracking-widest text-slate-900 dark:text-white transition-colors">अपना स्वयं सहायता समूह<span className="text-cyan-600 dark:text-cyan-400">.</span></span>
         </div>
-        
-        <div className="hidden md:flex items-center gap-8 text-xs uppercase tracking-[0.2em] font-medium text-slate-500 dark:text-gray-500">
-          <a href="#platform" className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">Platform</a>
-          <a href="#security" className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">Security</a>
-        </div>
+
 
         <div className="flex items-center gap-4">
           <Link 
