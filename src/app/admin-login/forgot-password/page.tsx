@@ -250,24 +250,24 @@ export default function ForgotPasswordPage() {
         <div className="max-w-7xl mx-auto px-6 lg:px-12 py-6 lg:py-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             <div className="flex items-start gap-4">
-              <div className="mt-1 w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_10px_#ef4444]"></div>
+              <div className="mt-1 w-1.5 h-1.5 rounded-full bg-cyan-500 shadow-[0_0_10px_#22d3ee]"></div>
               <div>
-                <h4 className="text-sm font-medium text-slate-900 dark:text-white tracking-widest uppercase mb-2 transition-colors">Member Control</h4>
-                <p className="text-xs text-slate-600 dark:text-gray-500 font-light leading-relaxed transition-colors">Register new members, manage status, and oversee society parameters effortlessly.</p>
+                <h4 className="text-sm font-medium text-slate-900 dark:text-white tracking-widest uppercase mb-2 transition-colors">Digital Passbook</h4>
+                <p className="text-xs text-slate-600 dark:text-gray-500 font-light leading-relaxed transition-colors">Members can view their Jama & Udhaar balances, transaction logs, and accrued interest in real-time.</p>
               </div>
             </div>
             <div className="flex items-start gap-4">
-              <div className="mt-1 w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_10px_#f59e0b]"></div>
+              <div className="mt-1 w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_10px_#3b82f6]"></div>
               <div>
-                <h4 className="text-sm font-medium text-slate-900 dark:text-white tracking-widest uppercase mb-2 transition-colors">Bulk Interest</h4>
-                <p className="text-xs text-slate-600 dark:text-gray-500 font-light leading-relaxed transition-colors">Calculate and deposit monthly interest in bulk across all member ledger accounts dynamically.</p>
+                <h4 className="text-sm font-medium text-slate-900 dark:text-white tracking-widest uppercase mb-2 transition-colors">Interest Payouts</h4>
+                <p className="text-xs text-slate-600 dark:text-gray-500 font-light leading-relaxed transition-colors">Admin-controlled dynamic interest calculations for deposits and loan statements.</p>
               </div>
             </div>
             <div className="flex items-start gap-4">
               <div className="mt-1 w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-white shadow-[0_0_10px_#94a3b8] dark:shadow-[0_0_10px_#ffffff]"></div>
               <div>
-                <h4 className="text-sm font-medium text-slate-900 dark:text-white tracking-widest uppercase mb-2 transition-colors">Audit Ledger</h4>
-                <p className="text-xs text-slate-600 dark:text-gray-500 font-light leading-relaxed transition-colors">Full society ledger audits, jama-nikasi tracking, and exportable financial reports.</p>
+                <h4 className="text-sm font-medium text-slate-900 dark:text-white tracking-widest uppercase mb-2 transition-colors">Secure & Trustworthy</h4>
+                <p className="text-xs text-slate-600 dark:text-gray-500 font-light leading-relaxed transition-colors">Secure password-protected member logins and a dedicated admin panel to build community trust.</p>
               </div>
             </div>
           </div>
