@@ -243,7 +243,7 @@ export default async function AdminDashboard() {
              </div>
              
              <div className="pt-4 mt-2 border-t border-gray-100 dark:border-white/10 text-center relative z-10 shrink-0">
-               <Link href="/admin/transaction" className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 uppercase tracking-wider transition-colors inline-flex items-center gap-1">
+               <Link href="/admin/transactions" className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 uppercase tracking-wider transition-colors inline-flex items-center gap-1">
                  View All Ledger Entries <ArrowRight className="w-4 h-4" />
                </Link>
              </div>

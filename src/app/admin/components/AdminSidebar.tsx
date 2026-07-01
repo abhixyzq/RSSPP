@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Users, UserPlus, ArrowRightLeft, BookOpen, Menu, X, LogOut, Archive, Sun, Moon } from 'lucide-react'
+import { LayoutDashboard, Users, UserPlus, ArrowRightLeft, BookOpen, Menu, X, LogOut, Archive, Sun, Moon, History } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { useTheme } from 'next-themes'
 
@@ -22,6 +22,7 @@ export default function AdminSidebar({ profileName }: { profileName: string }) {
     { name: 'Dashboard (डैशबोर्ड)', href: '/admin', icon: LayoutDashboard },
     { name: 'Customers (ग्राहक)', href: '/admin/customers', icon: Users },
     { name: 'Ledger Entry (खाता बही)', href: '/admin/ledger', icon: ArrowRightLeft },
+    { name: 'Ledger History (इतिहास)', href: '/admin/transactions', icon: History },
     { name: 'Interest Payout (ब्याज वितरण)', href: '/admin/bulk-interest', icon: BookOpen },
     { name: 'Register (नया खाता)', href: '/admin/register', icon: UserPlus },
     { name: 'Recycle Bin (बंद खाते)', href: '/admin/closed-accounts', icon: Archive },
