@@ -56,7 +56,7 @@ export default async function AdminDashboard() {
   const currentDate = new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
 
   return (
-    <div className="bg-[#F4F6F9] min-h-[calc(100vh-60px)] -m-4 sm:-m-8 p-4 sm:p-8 font-sans">
+    <div className="w-full font-sans relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
       
       {/* Formal Bank Header */}
       <div className="bg-[#0B2E59] text-white p-6 border-b-4 border-[#0099CC] flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 shadow-md">

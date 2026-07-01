@@ -60,7 +60,7 @@ export default function ClosedCustomerTable({ customers }: { customers: Customer
   }
 
   return (
-    <div className="bg-[#F4F6F9] min-h-[calc(100vh-60px)] -m-4 sm:-m-8 p-4 sm:p-8 font-sans">
+    <div className="w-full">
       
       {/* Top Navigation */}
       <div className="flex items-center justify-between mb-6">

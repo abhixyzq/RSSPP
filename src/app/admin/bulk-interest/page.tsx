@@ -68,7 +68,7 @@ export default async function BulkInterestPage() {
   const eligibleCustomers = customerData.filter(c => c.currentJamaBalance > 0)
 
   return (
-    <div className="-m-4 sm:-m-8 h-[calc(100vh-60px)] bg-gray-50 overflow-y-auto">
+    <div className="w-full relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <BulkInterestUI customers={eligibleCustomers} />
     </div>
   )
