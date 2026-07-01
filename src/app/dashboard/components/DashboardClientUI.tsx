@@ -256,43 +256,6 @@ export default function DashboardClientUI({
             </div>
           </div>
 
-          {/* Interest Accrual Info cards */}
-          {activeTab === 'JAMA' ? (
-            <div className="p-5 rounded-2xl bg-white/70 dark:bg-gradient-to-bl dark:from-white/10 dark:to-black/40 border border-slate-200 dark:border-white/20 shadow-md backdrop-blur-xl flex items-center justify-between transition-all duration-300">
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center bg-cyan-50 dark:bg-cyan-950/30 text-cyan-600 dark:text-cyan-400 border border-cyan-100 dark:border-cyan-900/30">
-                  <TrendingUp className="w-5 h-5" />
-                </div>
-                <div>
-                  <p className="text-[9px] uppercase tracking-[0.15em] font-medium text-slate-400 dark:text-gray-400">Interest Earned (2%)</p>
-                  <p className="text-[11px] font-semibold text-slate-800 dark:text-white">कुल मिला ब्याज</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-lg font-medium text-cyan-600 dark:text-cyan-400">
-                  +{formatCurrency(totalEarnedInterest)}
-                </p>
-              </div>
-            </div>
-          ) : (
-            <div className="p-5 rounded-2xl bg-white/70 dark:bg-gradient-to-bl dark:from-white/10 dark:to-black/40 border border-slate-200 dark:border-white/20 shadow-md backdrop-blur-xl flex items-center justify-between transition-all duration-300">
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center bg-red-50 dark:bg-red-950/30 text-red-500 dark:text-red-400 border border-red-100 dark:border-red-900/30">
-                  <TrendingUp className="w-5 h-5" />
-                </div>
-                <div>
-                  <p className="text-[9px] uppercase tracking-[0.15em] font-medium text-slate-400 dark:text-gray-400">Total Interest Paid</p>
-                  <p className="text-[11px] font-semibold text-slate-800 dark:text-white">कुल भरा गया ब्याज</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-lg font-medium text-red-500 dark:text-red-400">
-                  {formatCurrency(totalInterestPaid)}
-                </p>
-              </div>
-            </div>
-          )}
-
         </div>
 
         {/* Right Side: Statement History Table */}
