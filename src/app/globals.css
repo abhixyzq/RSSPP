@@ -24,3 +24,83 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@media print {
+  /* Force background colors and images to print */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  @page {
+    margin: 1cm;
+    size: A4 portrait;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Hide UI elements */
+  aside, nav, header, button, .print-hidden, .overflow-x-auto::-webkit-scrollbar, a[href^="/"] {
+    display: none !important;
+  }
+
+  /* Expand wrappers */
+  main, .max-w-[1200px], .max-w-7xl, .max-w-5xl, .w-full, .max-w-4xl {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Table Reset */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin-bottom: 1rem !important;
+    page-break-inside: auto;
+    border: 1px solid #333 !important;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  th, td {
+    border: 1px solid #777 !important;
+    padding: 8px !important;
+    text-align: left;
+    background-color: transparent !important;
+    color: #000 !important;
+  }
+
+  th {
+    background-color: #f0f0f0 !important;
+    font-weight: bold !important;
+    color: #000 !important;
+  }
+
+  /* Ensure the main bank header prints cleanly */
+  .bg-\[\#0B2E59\] {
+    background-color: #0B2E59 !important;
+    color: #ffffff !important;
+  }
+
+  .text-blue-200 {
+    color: #b3d4ff !important;
+  }
+
+  /* Disable shadows and rounded corners */
+  * {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+}
