@@ -11,7 +11,7 @@ function SubmitBtn() {
     <button
       type="submit"
       disabled={pending}
-      className="w-full bg-[#0B2E59] hover:bg-[#071f3e] text-white font-bold py-4 px-10 rounded-xl shadow-lg shadow-blue-900/20 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed uppercase tracking-widest text-sm"
+      className="w-full bg-[#0B2E59] dark:bg-blue-900 hover:bg-[#071f3e] text-white font-bold py-4 px-10 rounded-xl shadow-lg shadow-blue-900/20 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed uppercase tracking-widest text-sm"
     >
       {pending ? 'Processing...' : 'Authorize & Open Account'}
     </button>
@@ -52,16 +52,16 @@ export default function AddCustomerForm() {
       {/* Top Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 max-w-5xl mx-auto">
         <div>
-           <h1 className="text-2xl font-bold text-[#0B2E59] uppercase">New Account Registration</h1>
+           <h1 className="text-2xl font-bold text-[#0B2E59] dark:text-blue-400 uppercase">New Account Registration</h1>
         </div>
       </div>
 
-      <div className="bg-white shadow-md border border-gray-300 max-w-5xl mx-auto">
+      <div className="bg-white dark:bg-slate-900 shadow-md border border-gray-300 dark:border-slate-700 max-w-5xl mx-auto">
         
         {/* Bank Header */}
-        <div className="bg-[#0B2E59] text-white p-6 border-b-4 border-[#0099CC] flex flex-col sm:flex-row sm:items-center gap-4">
-          <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shrink-0">
-             <Building className="w-8 h-8 text-[#0B2E59]" />
+        <div className="bg-[#0B2E59] dark:bg-blue-900 text-white p-6 border-b-4 border-[#0099CC] flex flex-col sm:flex-row sm:items-center gap-4">
+          <div className="w-14 h-14 bg-white dark:bg-slate-900 rounded-full flex items-center justify-center shrink-0">
+             <Building className="w-8 h-8 text-[#0B2E59] dark:text-blue-400" />
           </div>
           <div>
              <h1 className="text-2xl font-bold uppercase tracking-wide">Account Opening Form</h1>
@@ -95,83 +95,83 @@ export default function AddCustomerForm() {
           <form ref={formRef} action={formAction} className="space-y-8">
             
             {/* SECTION 1: Personal Details */}
-            <div className="border border-gray-200 rounded">
-               <div className="bg-gray-100 p-3 border-b border-gray-200">
-                  <h3 className="text-[13px] font-bold text-[#0B2E59] uppercase tracking-wider flex items-center gap-2">
+            <div className="border border-gray-200 dark:border-slate-700 rounded">
+               <div className="bg-gray-100 dark:bg-slate-800 p-3 border-b border-gray-200 dark:border-slate-700">
+                  <h3 className="text-[13px] font-bold text-[#0B2E59] dark:text-blue-400 uppercase tracking-wider flex items-center gap-2">
                     <User className="w-4 h-4" /> 1. Personal Details (व्यक्तिगत जानकारी)
                   </h3>
                </div>
                <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Full Name (English) <span className="text-red-500">*</span></label>
+                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-2">Full Name (English) <span className="text-red-500">*</span></label>
                     <input 
                       type="text" 
                       name="fullName" 
                       required 
                       onBlur={(e) => handleTransliterate(e.target.value, 'fullNameHi')}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 transition-all shadow-sm"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 dark:text-gray-100 transition-all shadow-sm"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">पूरा नाम (Hindi)</label>
+                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-2">पूरा नाम (Hindi)</label>
                     <input 
                       type="text" 
                       id="fullNameHi"
                       name="fullNameHi" 
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 transition-all shadow-sm"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 dark:text-gray-100 transition-all shadow-sm"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Guardian Name (English)</label>
+                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-2">Guardian Name (English)</label>
                     <input 
                       type="text" 
                       name="guardianName" 
                       onBlur={(e) => handleTransliterate(e.target.value, 'guardianNameHi')}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 transition-all shadow-sm"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 dark:text-gray-100 transition-all shadow-sm"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">अभिभावक का नाम (Hindi)</label>
+                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-2">अभिभावक का नाम (Hindi)</label>
                     <input 
                       type="text" 
                       id="guardianNameHi"
                       name="guardianNameHi" 
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 transition-all shadow-sm"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 dark:text-gray-100 transition-all shadow-sm"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Occupation (English)</label>
+                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-2">Occupation (English)</label>
                     <input 
                       type="text" 
                       name="occupation" 
                       onBlur={(e) => handleTransliterate(e.target.value, 'occupationHi')}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 transition-all shadow-sm"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 dark:text-gray-100 transition-all shadow-sm"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">पेशा (Hindi)</label>
+                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-2">पेशा (Hindi)</label>
                     <input 
                       type="text" 
                       id="occupationHi"
                       name="occupationHi" 
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 transition-all shadow-sm"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 dark:text-gray-100 transition-all shadow-sm"
                     />
                   </div>
                </div>
             </div>
 
             {/* SECTION 2: Contact Information */}
-            <div className="border border-gray-200 rounded">
-               <div className="bg-gray-100 p-3 border-b border-gray-200">
-                  <h3 className="text-[13px] font-bold text-[#0B2E59] uppercase tracking-wider flex items-center gap-2">
+            <div className="border border-gray-200 dark:border-slate-700 rounded">
+               <div className="bg-gray-100 dark:bg-slate-800 p-3 border-b border-gray-200 dark:border-slate-700">
+                  <h3 className="text-[13px] font-bold text-[#0B2E59] dark:text-blue-400 uppercase tracking-wider flex items-center gap-2">
                     <Phone className="w-4 h-4" /> 2. Contact Information (संपर्क जानकारी)
                   </h3>
                </div>
                <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Primary Mobile Number <span className="text-red-500">*</span></label>
+                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-2">Primary Mobile Number <span className="text-red-500">*</span></label>
                     <input 
                       type="tel" 
                       name="mobile" 
@@ -179,53 +179,53 @@ export default function AddCustomerForm() {
                       pattern="[0-9]{10}"
                       maxLength={10}
                       placeholder="10-digit mobile number"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 transition-all shadow-sm"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 dark:text-gray-100 transition-all shadow-sm"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Secondary Mobile</label>
+                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-2">Secondary Mobile</label>
                     <input 
                       type="tel" 
                       name="secondaryMobile" 
                       pattern="[0-9]{10}"
                       maxLength={10}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 transition-all shadow-sm"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 dark:text-gray-100 transition-all shadow-sm"
                     />
                   </div>
                   <div className="md:col-span-1">
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Full Address (English)</label>
+                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-2">Full Address (English)</label>
                     <input 
                       type="text" 
                       name="address" 
                       onBlur={(e) => handleTransliterate(e.target.value, 'addressHi')}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 transition-all shadow-sm"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 dark:text-gray-100 transition-all shadow-sm"
                     />
                   </div>
                   <div className="md:col-span-1">
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">पूरा पता (Hindi)</label>
+                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-2">पूरा पता (Hindi)</label>
                     <input 
                       type="text" 
                       id="addressHi"
                       name="addressHi" 
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 transition-all shadow-sm"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-semibold text-gray-900 dark:text-gray-100 transition-all shadow-sm"
                     />
                   </div>
                </div>
             </div>
 
             {/* SECTION 3: Account Security */}
-            <div className="border border-gray-200 rounded">
-               <div className="bg-gray-100 p-3 border-b border-gray-200">
-                  <h3 className="text-[13px] font-bold text-[#0B2E59] uppercase tracking-wider flex items-center gap-2">
+            <div className="border border-gray-200 dark:border-slate-700 rounded">
+               <div className="bg-gray-100 dark:bg-slate-800 p-3 border-b border-gray-200 dark:border-slate-700">
+                  <h3 className="text-[13px] font-bold text-[#0B2E59] dark:text-blue-400 uppercase tracking-wider flex items-center gap-2">
                     <Lock className="w-4 h-4" /> 3. Account Security (सुरक्षा पिन)
                   </h3>
                </div>
                <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="md:col-span-2">
-                     <p className="text-sm text-gray-500 font-medium mb-4">Create a 4-digit PIN that the customer will use to login to their passbook.</p>
+                     <p className="text-sm text-gray-500 dark:text-gray-400 font-medium mb-4">Create a 4-digit PIN that the customer will use to login to their passbook.</p>
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">4-Digit PIN <span className="text-red-500">*</span></label>
+                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-2">4-Digit PIN <span className="text-red-500">*</span></label>
                     <input 
                       type="password" 
                       name="pin" 
@@ -233,33 +233,33 @@ export default function AddCustomerForm() {
                       pattern="[0-9]{4}"
                       maxLength={4}
                       placeholder="e.g. 1234"
-                      className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-xl tracking-[0.5em] font-bold text-gray-900"
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-slate-700 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-xl tracking-[0.5em] font-bold text-gray-900 dark:text-gray-100"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Confirm PIN <span className="text-red-500">*</span></label>
+                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-2">Confirm PIN <span className="text-red-500">*</span></label>
                     <input 
                       type="password" 
                       name="confirmPin" 
                       required 
                       pattern="[0-9]{4}"
                       maxLength={4}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-xl tracking-[0.5em] font-black text-gray-900 transition-all shadow-sm"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-xl tracking-[0.5em] font-black text-gray-900 dark:text-gray-100 transition-all shadow-sm"
                     />
                   </div>
                </div>
             </div>
 
             {/* SECTION 4: KYC & Declarations */}
-            <div className="border border-gray-200 rounded">
-               <div className="bg-gray-100 p-3 border-b border-gray-200">
-                  <h3 className="text-[13px] font-bold text-[#0B2E59] uppercase tracking-wider flex items-center gap-2">
+            <div className="border border-gray-200 dark:border-slate-700 rounded">
+               <div className="bg-gray-100 dark:bg-slate-800 p-3 border-b border-gray-200 dark:border-slate-700">
+                  <h3 className="text-[13px] font-bold text-[#0B2E59] dark:text-blue-400 uppercase tracking-wider flex items-center gap-2">
                     <FileText className="w-4 h-4" /> 4. KYC & Declarations
                   </h3>
                </div>
                <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Aadhaar (आधार) <span className="text-gray-400 font-normal normal-case">(At least one is mandatory)</span></label>
+                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-2">Aadhaar (आधार) <span className="text-gray-400 font-normal normal-case">(At least one is mandatory)</span></label>
                     <input 
                       type="text" 
                       name="aadhaar" 
@@ -267,11 +267,11 @@ export default function AddCustomerForm() {
                       maxLength={12}
                       title="Please enter exactly 12 digits for Aadhaar"
                       placeholder="12-digit Aadhaar No."
-                      className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 uppercase"
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-slate-700 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 dark:text-gray-100 uppercase"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">PAN (पैन) <span className="text-gray-400 font-normal normal-case">(At least one is mandatory)</span></label>
+                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-2">PAN (पैन) <span className="text-gray-400 font-normal normal-case">(At least one is mandatory)</span></label>
                     <input 
                       type="text" 
                       name="pan" 
@@ -279,31 +279,31 @@ export default function AddCustomerForm() {
                       maxLength={10}
                       title="Format: 5 letters, 4 numbers, 1 letter (e.g. ABCDE1234F)"
                       placeholder="e.g. ABCDE1234F"
-                      className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 uppercase"
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-slate-700 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 dark:text-gray-100 uppercase"
                     />
                   </div>
                   <div className="md:col-span-1">
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Nominee Details</label>
+                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-2">Nominee Details</label>
                     <input 
                       type="text" 
                       name="nomineeDetails" 
-                      className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 uppercase"
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-slate-700 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 dark:text-gray-100 uppercase"
                     />
                   </div>
                   <div className="md:col-span-1">
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Guarantor Details</label>
+                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-2">Guarantor Details</label>
                     <input 
                       type="text" 
                       name="guarantorOptional" 
-                      className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 uppercase"
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-slate-700 rounded focus:ring-2 focus:ring-[#0099CC] focus:border-[#0099CC] outline-none text-sm font-bold text-gray-900 dark:text-gray-100 uppercase"
                     />
                   </div>
                </div>
             </div>
 
             {/* Actions */}
-            <div className="bg-gray-50 -mx-6 -mb-8 sm:-mx-8 p-6 sm:p-8 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4">
-               <p className="text-xs text-gray-500 font-bold uppercase">
+            <div className="bg-gray-50 dark:bg-slate-800/50 -mx-6 -mb-8 sm:-mx-8 p-6 sm:p-8 border-t border-gray-200 dark:border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4">
+               <p className="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase">
                   Verify all details before submitting
                </p>
                <SubmitBtn />

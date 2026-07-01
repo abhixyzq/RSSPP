@@ -223,7 +223,7 @@ export default async function AdminDashboard() {
                               <span className={`text-sm font-black tracking-wide ${isCredit ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                                 {isCredit ? '+' : '-'}{formatCurrency(Number(tx.amount))}
                               </span>
-                              <div className="text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase mt-1 tracking-wider">
+                              <div className="text-[10px] text-gray-400 dark:text-gray-500 dark:text-gray-400 font-bold uppercase mt-1 tracking-wider">
                                 {tx.transaction_type.replace(/_/g, ' ')}
                               </div>
                            </div>
@@ -233,10 +233,10 @@ export default async function AdminDashboard() {
                   ) : (
                     <div className="flex flex-col items-center justify-center h-48 mt-4 bg-white/40 dark:bg-black/20 backdrop-blur-sm border border-gray-100 dark:border-white/5 rounded-2xl">
                       <div className="w-12 h-12 bg-gray-100 dark:bg-white/10 rounded-full flex items-center justify-center mb-3">
-                         <History className="w-6 h-6 text-gray-400 dark:text-gray-500" />
+                         <History className="w-6 h-6 text-gray-400 dark:text-gray-500 dark:text-gray-400" />
                       </div>
                       <p className="text-gray-600 dark:text-gray-400 font-bold text-sm">No recent transactions</p>
-                      <p className="text-gray-500 dark:text-gray-500 text-xs font-medium mt-1 text-center px-4">When new ledger entries are recorded, they will appear here.</p>
+                      <p className="text-gray-500 dark:text-gray-500 dark:text-gray-400 text-xs font-medium mt-1 text-center px-4">When new ledger entries are recorded, they will appear here.</p>
                     </div>
                   )}
                </div>

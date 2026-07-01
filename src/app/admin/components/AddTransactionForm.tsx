@@ -124,15 +124,15 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
     <div className="w-full font-sans pb-20 relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
       
       <div className="max-w-4xl mx-auto mb-6">
-        <h1 className="text-2xl font-bold text-[#0B2E59] uppercase">Ledger Entry (खाता बही)</h1>
+        <h1 className="text-2xl font-bold text-[#0B2E59] dark:text-blue-400 uppercase">Ledger Entry (खाता बही)</h1>
       </div>
 
-      <div className="max-w-4xl mx-auto bg-white shadow-xl border border-gray-300">
+      <div className="max-w-4xl mx-auto bg-white dark:bg-slate-900 shadow-xl border border-gray-300 dark:border-slate-700">
         
-        <div className={`p-6 border-b-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors duration-500 ${isDepositAccount ? 'bg-[#0B2E59] border-green-500' : 'bg-[#310A14] border-red-500'}`}>
+        <div className={`p-6 border-b-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors duration-500 ${isDepositAccount ? 'bg-[#0B2E59] dark:bg-blue-900 border-green-500' : 'bg-[#310A14] border-red-500'}`}>
           <div className="flex items-center gap-4">
-             <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shrink-0">
-                <Building className={`w-8 h-8 ${isDepositAccount ? 'text-[#0B2E59]' : 'text-[#310A14]'}`} />
+             <div className="w-14 h-14 bg-white dark:bg-slate-900 rounded-full flex items-center justify-center shrink-0">
+                <Building className={`w-8 h-8 ${isDepositAccount ? 'text-[#0B2E59] dark:text-blue-400' : 'text-[#310A14]'}`} />
              </div>
              <div>
                 <h1 className="text-2xl font-bold uppercase tracking-wide text-white">Transaction Gateway <span className="text-lg normal-case font-medium">(लेन-देन गेटवे)</span></h1>
@@ -170,7 +170,7 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
           <form ref={formRef} action={formAction} className="space-y-10">
             
             <div>
-               <h3 className="text-[13px] font-bold text-gray-500 uppercase tracking-wider mb-4 border-b border-gray-200 pb-2 flex justify-between">
+               <h3 className="text-[13px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4 border-b border-gray-200 dark:border-slate-700 pb-2 flex justify-between">
                  <span>1. Select Transaction Type</span>
                  <span className="text-gray-400 normal-case">(लेन-देन का प्रकार चुनें)</span>
                </h3>
@@ -184,13 +184,13 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
                         <span className="text-green-600/80 normal-case text-xs">(जमा खाता)</span>
                      </h4>
                      <div className="space-y-3">
-                        <label className={`relative flex items-center p-3 cursor-pointer border rounded transition-all ${txType === 'JAMA_DEPOSIT' ? 'bg-green-100 border-green-600 shadow' : 'bg-white border-gray-200 hover:border-green-300'}`}>
+                        <label className={`relative flex items-center p-3 cursor-pointer border rounded transition-all ${txType === 'JAMA_DEPOSIT' ? 'bg-green-100 border-green-600 shadow' : 'bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 hover:border-green-300'}`}>
                            <input type="radio" name="type" value="JAMA_DEPOSIT" checked={txType === 'JAMA_DEPOSIT'} onChange={() => setTxType('JAMA_DEPOSIT')} className="mr-3 w-4 h-4 text-green-600 focus:ring-green-500" />
                            <div>
                               <span className="block font-bold text-green-900 uppercase text-sm">Deposit Funds <span className="normal-case text-xs text-green-700/80 ml-1">(पैसे जमा करें)</span></span>
                            </div>
                         </label>
-                        <label className={`relative flex items-center p-3 cursor-pointer border rounded transition-all ${txType === 'JAMA_WITHDRAWAL' ? 'bg-orange-100 border-orange-600 shadow' : 'bg-white border-gray-200 hover:border-orange-300'}`}>
+                        <label className={`relative flex items-center p-3 cursor-pointer border rounded transition-all ${txType === 'JAMA_WITHDRAWAL' ? 'bg-orange-100 border-orange-600 shadow' : 'bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 hover:border-orange-300'}`}>
                            <input type="radio" name="type" value="JAMA_WITHDRAWAL" checked={txType === 'JAMA_WITHDRAWAL'} onChange={() => setTxType('JAMA_WITHDRAWAL')} className="mr-3 w-4 h-4 text-orange-600 focus:ring-orange-500" />
                            <div>
                               <span className="block font-bold text-orange-900 uppercase text-sm">Withdraw Funds <span className="normal-case text-xs text-orange-700/80 ml-1">(पैसे निकालें)</span></span>
@@ -207,19 +207,19 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
                         <span className="text-red-600/80 normal-case text-xs">(उधार खाता)</span>
                      </h4>
                      <div className="space-y-3">
-                        <label className={`relative flex items-center p-3 cursor-pointer border rounded transition-all ${txType === 'NIKASI_LOAN' ? 'bg-red-100 border-red-600 shadow' : 'bg-white border-gray-200 hover:border-red-300'}`}>
+                        <label className={`relative flex items-center p-3 cursor-pointer border rounded transition-all ${txType === 'NIKASI_LOAN' ? 'bg-red-100 border-red-600 shadow' : 'bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 hover:border-red-300'}`}>
                            <input type="radio" name="type" value="NIKASI_LOAN" checked={txType === 'NIKASI_LOAN'} onChange={() => setTxType('NIKASI_LOAN')} className="mr-3 w-4 h-4 text-red-600 focus:ring-red-500" />
                            <div>
                               <span className="block font-bold text-red-900 uppercase text-sm">Issue New Loan <span className="normal-case text-xs text-red-700/80 ml-1">(नया उधार दें)</span></span>
                            </div>
                         </label>
-                        <label className={`relative flex items-center p-3 cursor-pointer border rounded transition-all ${txType === 'NIKASI_REPAY_PRINCIPAL' ? 'bg-blue-100 border-blue-600 shadow' : 'bg-white border-gray-200 hover:border-blue-300'}`}>
+                        <label className={`relative flex items-center p-3 cursor-pointer border rounded transition-all ${txType === 'NIKASI_REPAY_PRINCIPAL' ? 'bg-blue-100 border-blue-600 shadow' : 'bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 hover:border-blue-300'}`}>
                            <input type="radio" name="type" value="NIKASI_REPAY_PRINCIPAL" checked={txType === 'NIKASI_REPAY_PRINCIPAL'} onChange={() => setTxType('NIKASI_REPAY_PRINCIPAL')} className="mr-3 w-4 h-4 text-blue-600 focus:ring-blue-500" />
                            <div>
                               <span className="block font-bold text-blue-900 uppercase text-sm">Repay Principal <span className="normal-case text-xs text-blue-700/80 ml-1">(मूल वापसी करें)</span></span>
                            </div>
                         </label>
-                        <label className={`relative flex items-center p-3 cursor-pointer border rounded transition-all ${txType === 'NIKASI_REPAY_INTEREST' ? 'bg-purple-100 border-purple-600 shadow' : 'bg-white border-gray-200 hover:border-purple-300'}`}>
+                        <label className={`relative flex items-center p-3 cursor-pointer border rounded transition-all ${txType === 'NIKASI_REPAY_INTEREST' ? 'bg-purple-100 border-purple-600 shadow' : 'bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 hover:border-purple-300'}`}>
                            <input type="radio" name="type" value="NIKASI_REPAY_INTEREST" checked={txType === 'NIKASI_REPAY_INTEREST'} onChange={() => setTxType('NIKASI_REPAY_INTEREST')} className="mr-3 w-4 h-4 text-purple-600 focus:ring-purple-500" />
                            <div>
                               <span className="block font-bold text-purple-900 uppercase text-sm">Pay Interest <span className="normal-case text-xs text-purple-700/80 ml-1">(ब्याज भरें)</span></span>
@@ -231,7 +231,7 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
             </div>
 
             <div>
-               <h3 className="text-[13px] font-bold text-gray-500 uppercase tracking-wider mb-4 border-b border-gray-200 pb-2 flex justify-between">
+               <h3 className="text-[13px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4 border-b border-gray-200 dark:border-slate-700 pb-2 flex justify-between">
                  <span>2. Select Target Account</span>
                  <span className="text-gray-400 normal-case">(खाता चुनें)</span>
                </h3>
@@ -240,14 +240,14 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
                  <input type="hidden" name="userId" value={selectedCustomerId} required />
                  
                  {selectedCustomer ? (
-                   <div className={`flex items-center justify-between p-4 border-2 rounded bg-white ${isDepositAccount ? 'border-green-500' : 'border-red-500'}`}>
+                   <div className={`flex items-center justify-between p-4 border-2 rounded bg-white dark:bg-slate-900 ${isDepositAccount ? 'border-green-500' : 'border-red-500'}`}>
                      <div className="flex items-center gap-4">
                         <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg ${isDepositAccount ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                            {selectedCustomer.full_name.charAt(0)}
                         </div>
                         <div>
-                           <p className="font-extrabold text-gray-900 uppercase text-lg">{selectedCustomer.full_name}</p>
-                           <p className="text-sm font-bold text-gray-500">A/C No: {selectedCustomer.mobile_number}</p>
+                           <p className="font-extrabold text-gray-900 dark:text-gray-100 uppercase text-lg">{selectedCustomer.full_name}</p>
+                           <p className="text-sm font-bold text-gray-500 dark:text-gray-400">A/C No: {selectedCustomer.mobile_number}</p>
                         </div>
                      </div>
                      <button 
@@ -273,13 +273,13 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
                          setIsDropdownOpen(true)
                        }}
                        onFocus={() => setIsDropdownOpen(true)}
-                       className="w-full pl-11 pr-4 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 font-bold focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition-all shadow-sm"
+                       className="w-full pl-11 pr-4 py-4 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl text-gray-900 dark:text-gray-100 font-bold focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition-all shadow-sm"
                      />
                      
                      {isDropdownOpen && searchQuery && (
-                       <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded shadow-xl max-h-60 overflow-auto">
+                       <div className="absolute z-10 w-full mt-1 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded shadow-xl max-h-60 overflow-auto">
                          {filteredCustomers.length === 0 ? (
-                           <div className="p-4 text-sm text-gray-500 font-bold uppercase flex flex-col gap-1">
+                           <div className="p-4 text-sm text-gray-500 dark:text-gray-400 font-bold uppercase flex flex-col gap-1">
                              <span>No matching accounts found</span>
                              <span className="normal-case text-gray-400 font-medium">(कोई खाता नहीं मिला)</span>
                            </div>
@@ -292,11 +292,11 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
                                  setSearchQuery('')
                                  setIsDropdownOpen(false)
                                }}
-                               className="p-4 hover:bg-gray-50 cursor-pointer border-b border-gray-100 flex items-center justify-between"
+                               className="p-4 hover:bg-gray-50 dark:bg-slate-800/50 cursor-pointer border-b border-gray-100 flex items-center justify-between"
                              >
                                <div>
-                                 <p className="font-bold text-gray-900 uppercase">{customer.full_name}</p>
-                                 <p className="text-xs font-bold text-gray-500">A/C: {customer.mobile_number}</p>
+                                 <p className="font-bold text-gray-900 dark:text-gray-100 uppercase">{customer.full_name}</p>
+                                 <p className="text-xs font-bold text-gray-500 dark:text-gray-400">A/C: {customer.mobile_number}</p>
                                </div>
                                <div className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded uppercase">Select</div>
                              </div>
@@ -311,7 +311,7 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
 
             {/* Step 3: Transaction Details */}
             <div className={`p-6 border-2 rounded ${isDepositAccount ? 'bg-green-50/30 border-green-200' : 'bg-red-50/30 border-red-200'}`}>
-               <h3 className="text-[13px] font-bold text-gray-500 uppercase tracking-wider mb-6 border-b border-gray-200 pb-2 flex justify-between">
+               <h3 className="text-[13px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-6 border-b border-gray-200 dark:border-slate-700 pb-2 flex justify-between">
                  <span>3. Transaction Details</span>
                  <span className="text-gray-400 normal-case">(लेन-देन का विवरण)</span>
                </h3>
@@ -336,14 +336,14 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
                         onChange={(e) => setAmountInput(e.target.value)}
                         onWheel={(e) => (e.target as HTMLInputElement).blur()}
                         placeholder="0.00"
-                        className={`w-full pl-16 pr-6 py-6 border-2 rounded focus:outline-none text-4xl font-extrabold tracking-wider [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${isCredit ? 'bg-white border-green-300 focus:ring-2 focus:ring-green-500 text-green-900 placeholder-green-200' : 'bg-white border-red-300 focus:ring-2 focus:ring-red-500 text-red-900 placeholder-red-200'}`}
+                        className={`w-full pl-16 pr-6 py-6 border-2 rounded focus:outline-none text-4xl font-extrabold tracking-wider [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${isCredit ? 'bg-white dark:bg-slate-900 border-green-300 focus:ring-2 focus:ring-green-500 text-green-900 placeholder-green-200' : 'bg-white dark:bg-slate-900 border-red-300 focus:ring-2 focus:ring-red-500 text-red-900 placeholder-red-200'}`}
                       />
                     </div>
                   </div>
 
                   {/* Description */}
                   <div className="md:col-span-2">
-                    <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-2 flex justify-between items-center">
+                    <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wide mb-2 flex justify-between items-center">
                        <span>Particulars (Remarks)</span>
                        <span className="normal-case text-[11px] opacity-80">(विवरण / टिप्पणी)</span>
                     </label>
@@ -353,7 +353,7 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
                         type="text" 
                         name="description" 
                         placeholder="e.g. Cash Deposit, Bank Transfer, Loan Installment... (नकद जमा, ऑनलाइन ट्रांसफर...)"
-                        className="w-full pl-12 pr-4 py-3 bg-white border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-[15px] font-bold text-gray-900 uppercase transition-all shadow-sm"
+                        className="w-full pl-12 pr-4 py-3 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-[15px] font-bold text-gray-900 dark:text-gray-100 uppercase transition-all shadow-sm"
                       />
                     </div>
                   </div>
@@ -373,7 +373,7 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
       {showSuccessOverlay && (
         <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-blue-600 animate-in fade-in duration-300">
            <div className="flex flex-col items-center justify-center animate-in zoom-in-50 slide-in-from-bottom-10 duration-500 delay-150">
-              <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-2xl mb-8 ring-[16px] ring-white/30">
+              <div className="w-32 h-32 bg-white dark:bg-slate-900 rounded-full flex items-center justify-center shadow-2xl mb-8 ring-[16px] ring-white/30">
                  <Check className="w-16 h-16 text-blue-600" strokeWidth={3} />
               </div>
               <h2 className="text-4xl font-extrabold text-white mb-2 text-center">Transaction Successful <br/><span className="text-2xl font-medium block mt-2 text-blue-200">(लेन-देन सफल)</span></h2>

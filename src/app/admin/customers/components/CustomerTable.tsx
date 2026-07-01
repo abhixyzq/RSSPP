@@ -57,9 +57,9 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
       {/* Top Navigation */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-           <h1 className="text-2xl font-bold text-[#0B2E59] uppercase flex flex-wrap items-center gap-2">
+           <h1 className="text-2xl font-bold text-[#0B2E59] dark:text-blue-400 uppercase flex flex-wrap items-center gap-2">
              <span>Account Holders</span>
-             <span className="normal-case text-lg text-gray-500">(खाताधारक)</span>
+             <span className="normal-case text-lg text-gray-500 dark:text-gray-400">(खाताधारक)</span>
            </h1>
         </div>
         <div className="flex flex-wrap gap-3">
@@ -71,13 +71,13 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
         </div>
       </div>
 
-      <div className="bg-white shadow-md border border-gray-300">
+      <div className="bg-white dark:bg-slate-900 shadow-md border border-gray-300 dark:border-slate-700">
         
         {/* Bank Header */}
-        <div className="bg-[#0B2E59] text-white p-6 border-b-4 border-[#0099CC] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="bg-[#0B2E59] dark:bg-blue-900 text-white p-6 border-b-4 border-[#0099CC] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-             <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shrink-0">
-                <Building className="w-8 h-8 text-[#0B2E59]" />
+             <div className="w-14 h-14 bg-white dark:bg-slate-900 rounded-full flex items-center justify-center shrink-0">
+                <Building className="w-8 h-8 text-[#0B2E59] dark:text-blue-400" />
              </div>
              <div>
                 <h1 className="text-2xl font-bold uppercase tracking-wide flex items-center gap-2">
@@ -89,24 +89,24 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
           </div>
           
           <div className="relative w-full sm:w-[320px]">
-             <Search className="absolute left-3 top-2.5 w-5 h-5 text-[#0B2E59]" />
+             <Search className="absolute left-3 top-2.5 w-5 h-5 text-[#0B2E59] dark:text-blue-400" />
              <input
                type="text"
                placeholder="Search by name or Account No (नाम या खाता नंबर से खोजें)..."
                value={searchTerm}
                onChange={(e) => setSearchTerm(e.target.value)}
-               className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#082243] rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-[#0B2E59] placeholder-[#0B2E59]/50 shadow-inner"
+               className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-slate-900 border border-[#082243] rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-[#0B2E59] dark:text-blue-400 placeholder-[#0B2E59]/50 shadow-inner"
              />
           </div>
         </div>
 
         {/* Status Strip */}
-        <div className="bg-gray-100 p-3 border-b border-gray-300 flex justify-between items-center px-6">
-           <span className="text-xs font-bold text-gray-600 uppercase tracking-wider flex items-center gap-2">
+        <div className="bg-gray-100 dark:bg-slate-800 p-3 border-b border-gray-300 dark:border-slate-700 flex justify-between items-center px-6">
+           <span className="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider flex items-center gap-2">
              <span>Showing {filteredCustomers.length} Accounts</span>
              <span className="normal-case opacity-70">({filteredCustomers.length} खाते दिखा रहे हैं)</span>
            </span>
-           <span className="text-xs font-bold text-gray-600 uppercase tracking-wider flex items-center gap-2">
+           <span className="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider flex items-center gap-2">
              <span>Branch: MAIN</span>
              <span className="normal-case opacity-70">(शाखा: मुख्य)</span>
            </span>
@@ -115,7 +115,7 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
         {/* Data Table */}
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm whitespace-nowrap">
-             <thead className="bg-gray-50/80 border-b border-gray-100 uppercase text-[11px] font-extrabold tracking-wider text-gray-500">
+             <thead className="bg-gray-50/80 border-b border-gray-100 uppercase text-[11px] font-extrabold tracking-wider text-gray-500 dark:text-gray-400">
                 <tr>
                    <th className="p-4">Sl No. (क्रम संख्या)</th>
                    <th className="p-4">Account Name (खाता नाम)</th>
@@ -124,10 +124,10 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
                    <th className="p-4 text-right">Actions (कार्रवाई)</th>
                 </tr>
              </thead>
-             <tbody className="bg-white">
+             <tbody className="bg-white dark:bg-slate-900">
                 {filteredCustomers.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="p-10 text-center text-gray-500 font-bold uppercase border border-gray-200 flex flex-col items-center gap-1">
+                    <td colSpan={5} className="p-10 text-center text-gray-500 dark:text-gray-400 font-bold uppercase border border-gray-200 dark:border-slate-700 flex flex-col items-center gap-1">
                       <span>No Records Found.</span>
                       <span className="normal-case text-gray-400 text-sm">(कोई रिकॉर्ड नहीं मिला)</span>
                     </td>
@@ -138,10 +138,10 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
                          <td className="p-4 text-gray-400 font-bold w-12 text-center group-hover:text-blue-500 transition-colors">
                             {(index + 1).toString().padStart(3, '0')}
                          </td>
-                         <td className="p-4 font-bold text-[#0B2E59] uppercase">
+                         <td className="p-4 font-bold text-[#0B2E59] dark:text-blue-400 uppercase">
                             {customer.full_name}
                          </td>
-                         <td className="p-4 font-bold text-gray-700">
+                         <td className="p-4 font-bold text-gray-700 dark:text-gray-300">
                             {customer.mobile_number}
                          </td>
                          <td className="p-4 text-center">
@@ -163,7 +163,7 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
                                </button>
                                <button
                                  onClick={() => setCustomerToDelete(customer)}
-                                 className="flex items-center gap-1.5 px-4 py-2 bg-white border border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 text-[12px] font-bold rounded-lg shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5"
+                                 className="flex items-center gap-1.5 px-4 py-2 bg-white dark:bg-slate-900 border border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 text-[12px] font-bold rounded-lg shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5"
                                  title="Close Account"
                                >
                                  <Trash2 className="w-3.5 h-3.5" /> 
@@ -181,8 +181,8 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
           </table>
         </div>
         
-        <div className="p-4 bg-gray-50 border-t border-gray-200 text-center flex flex-col items-center gap-1">
-           <p className="text-[11px] text-gray-500 font-medium uppercase tracking-wide">
+        <div className="p-4 bg-gray-50 dark:bg-slate-800/50 border-t border-gray-200 dark:border-slate-700 text-center flex flex-col items-center gap-1">
+           <p className="text-[11px] text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wide">
               *** END OF DATABASE ***
            </p>
            <p className="text-[10px] text-gray-400 font-medium tracking-wide">
@@ -195,18 +195,18 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
       {/* STRICT DELETE CONFIRMATION MODAL */}
       {customerToDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white rounded-md w-full max-w-md overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 border-t-4 border-red-600">
+          <div className="bg-white dark:bg-slate-900 rounded-md w-full max-w-md overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 border-t-4 border-red-600">
             
             <div className="bg-red-50 p-6 flex flex-col items-center text-center border-b border-red-100">
-              <div className="w-16 h-16 bg-white text-red-600 rounded-full flex items-center justify-center mb-4 shadow-sm">
+              <div className="w-16 h-16 bg-white dark:bg-slate-900 text-red-600 rounded-full flex items-center justify-center mb-4 shadow-sm">
                 <AlertTriangle className="w-8 h-8" />
               </div>
               <h3 className="text-xl font-extrabold text-red-900 uppercase tracking-wide mb-1">Account Closure Warning</h3>
             </div>
             
             <div className="p-6 text-center">
-              <p className="text-gray-700 text-[14px] font-medium leading-relaxed">
-                You have requested to close the account for <strong className="text-gray-900 uppercase">{customerToDelete.full_name}</strong> (A/c No: {customerToDelete.mobile_number}).
+              <p className="text-gray-700 dark:text-gray-300 text-[14px] font-medium leading-relaxed">
+                You have requested to close the account for <strong className="text-gray-900 dark:text-gray-100 uppercase">{customerToDelete.full_name}</strong> (A/c No: {customerToDelete.mobile_number}).
               </p>
               <p className="text-amber-600 text-[13px] font-bold mt-4 bg-amber-50 p-3 rounded border border-amber-100">
                 This will move the account to the Recycle Bin. Ledgers will remain intact, and the mobile number will be freed for new registration.
@@ -219,14 +219,14 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
               )}
             </div>
 
-            <div className="p-4 bg-gray-100 border-t border-gray-200 flex gap-3">
+            <div className="p-4 bg-gray-100 dark:bg-slate-800 border-t border-gray-200 dark:border-slate-700 flex gap-3">
               <button
                 onClick={() => {
                   setCustomerToDelete(null)
                   setErrorMsg('')
                 }}
                 disabled={isPending}
-                className="flex-1 py-2 px-4 bg-white border border-gray-300 text-gray-700 font-bold rounded shadow-sm hover:bg-gray-50 transition-colors disabled:opacity-50"
+                className="flex-1 py-2 px-4 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 text-gray-700 dark:text-gray-300 font-bold rounded shadow-sm hover:bg-gray-50 dark:bg-slate-800/50 transition-colors disabled:opacity-50"
               >
                 CANCEL
               </button>

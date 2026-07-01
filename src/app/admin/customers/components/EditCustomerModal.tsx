@@ -37,7 +37,7 @@ export default function EditCustomerModal({ profile }: { profile: any }) {
     return (
       <button 
         onClick={() => setIsOpen(true)}
-        className="text-sm font-bold text-white bg-[#0099CC] px-4 py-2 rounded-md shadow-sm hover:bg-[#007ba6] flex items-center gap-2"
+        className="text-sm font-bold text-white bg-[#0099CC] dark:bg-cyan-700 px-4 py-2 rounded-md shadow-sm hover:bg-[#007ba6] flex items-center gap-2"
       >
         <Edit className="w-4 h-4" /> Edit Profile
       </button>
@@ -46,9 +46,9 @@ export default function EditCustomerModal({ profile }: { profile: any }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-white rounded-md w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl border-t-4 border-[#0B2E59]">
+      <div className="bg-white dark:bg-slate-900 rounded-md w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl border-t-4 border-[#0B2E59]">
         
-        <div className="bg-[#0B2E59] text-white p-6 flex items-center justify-between sticky top-0 z-10">
+        <div className="bg-[#0B2E59] dark:bg-blue-900 text-white p-6 flex items-center justify-between sticky top-0 z-10">
            <div>
               <h2 className="text-xl font-bold uppercase tracking-wide">Edit Customer Details</h2>
               <p className="text-blue-200 text-xs font-medium">Update account information</p>
@@ -83,8 +83,8 @@ export default function EditCustomerModal({ profile }: { profile: any }) {
                
                {/* Read Only Mobile */}
                <div className="sm:col-span-2">
-                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Registered Mobile No. (Read-Only)</label>
-                  <div className="flex items-center gap-3 p-3 bg-gray-100 border border-gray-300 rounded-md cursor-not-allowed text-gray-500 font-bold">
+                  <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">Registered Mobile No. (Read-Only)</label>
+                  <div className="flex items-center gap-3 p-3 bg-gray-100 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-md cursor-not-allowed text-gray-500 dark:text-gray-400 font-bold">
                      <Phone className="w-5 h-5" />
                      <span>{profile.mobile_number}</span>
                   </div>
@@ -92,7 +92,7 @@ export default function EditCustomerModal({ profile }: { profile: any }) {
                </div>
 
                <div>
-                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">Full Name (English) *</label>
+                  <label className="block text-xs font-bold text-[#0B2E59] dark:text-blue-400 uppercase tracking-wide mb-2">Full Name (English) *</label>
                   <div className="relative">
                     <User className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                     <input 
@@ -101,13 +101,13 @@ export default function EditCustomerModal({ profile }: { profile: any }) {
                       defaultValue={profile.full_name} 
                       required 
                       onBlur={(e) => handleTransliterate(e.target.value, 'editFullNameHi')}
-                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 uppercase"
+                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 dark:border-slate-700 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 dark:text-gray-100 uppercase"
                     />
                   </div>
                </div>
 
                <div>
-                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">पूरा नाम (Hindi)</label>
+                  <label className="block text-xs font-bold text-[#0B2E59] dark:text-blue-400 uppercase tracking-wide mb-2">पूरा नाम (Hindi)</label>
                   <div className="relative">
                     <User className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                     <input 
@@ -115,26 +115,26 @@ export default function EditCustomerModal({ profile }: { profile: any }) {
                       id="editFullNameHi"
                       name="fullNameHi" 
                       defaultValue={profile.full_name_hi || ''} 
-                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900"
+                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 dark:border-slate-700 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 dark:text-gray-100"
                     />
                   </div>
                </div>
 
                <div>
-                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">Secondary Mobile</label>
+                  <label className="block text-xs font-bold text-[#0B2E59] dark:text-blue-400 uppercase tracking-wide mb-2">Secondary Mobile</label>
                   <div className="relative">
                     <Phone className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                     <input 
                       type="text" 
                       name="secondaryMobile" 
                       defaultValue={profile.secondary_mobile || ''} 
-                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900"
+                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 dark:border-slate-700 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 dark:text-gray-100"
                     />
                   </div>
                </div>
 
                <div className="sm:col-span-1">
-                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">Full Address (English)</label>
+                  <label className="block text-xs font-bold text-[#0B2E59] dark:text-blue-400 uppercase tracking-wide mb-2">Full Address (English)</label>
                   <div className="relative">
                     <MapPin className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                     <input 
@@ -142,13 +142,13 @@ export default function EditCustomerModal({ profile }: { profile: any }) {
                       name="address" 
                       defaultValue={profile.address || ''} 
                       onBlur={(e) => handleTransliterate(e.target.value, 'editAddressHi')}
-                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 uppercase"
+                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 dark:border-slate-700 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 dark:text-gray-100 uppercase"
                     />
                   </div>
                </div>
 
                <div className="sm:col-span-1">
-                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">पूरा पता (Hindi)</label>
+                  <label className="block text-xs font-bold text-[#0B2E59] dark:text-blue-400 uppercase tracking-wide mb-2">पूरा पता (Hindi)</label>
                   <div className="relative">
                     <MapPin className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                     <input 
@@ -156,13 +156,13 @@ export default function EditCustomerModal({ profile }: { profile: any }) {
                       id="editAddressHi"
                       name="addressHi" 
                       defaultValue={profile.address_hi || ''} 
-                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900"
+                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 dark:border-slate-700 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 dark:text-gray-100"
                     />
                   </div>
                </div>
 
                <div>
-                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">Occupation (English)</label>
+                  <label className="block text-xs font-bold text-[#0B2E59] dark:text-blue-400 uppercase tracking-wide mb-2">Occupation (English)</label>
                   <div className="relative">
                     <Briefcase className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                     <input 
@@ -170,13 +170,13 @@ export default function EditCustomerModal({ profile }: { profile: any }) {
                       name="occupation" 
                       defaultValue={profile.occupation || ''} 
                       onBlur={(e) => handleTransliterate(e.target.value, 'editOccupationHi')}
-                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 uppercase"
+                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 dark:border-slate-700 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 dark:text-gray-100 uppercase"
                     />
                   </div>
                </div>
 
                <div>
-                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">पेशा (Hindi)</label>
+                  <label className="block text-xs font-bold text-[#0B2E59] dark:text-blue-400 uppercase tracking-wide mb-2">पेशा (Hindi)</label>
                   <div className="relative">
                     <Briefcase className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                     <input 
@@ -184,13 +184,13 @@ export default function EditCustomerModal({ profile }: { profile: any }) {
                       id="editOccupationHi"
                       name="occupationHi" 
                       defaultValue={profile.occupation_hi || ''} 
-                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900"
+                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 dark:border-slate-700 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 dark:text-gray-100"
                     />
                   </div>
                </div>
 
                <div>
-                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">Aadhaar (आधार) <span className="text-gray-400 font-normal normal-case">(At least one is mandatory)</span></label>
+                  <label className="block text-xs font-bold text-[#0B2E59] dark:text-blue-400 uppercase tracking-wide mb-2">Aadhaar (आधार) <span className="text-gray-400 font-normal normal-case">(At least one is mandatory)</span></label>
                   <div className="relative">
                     <FileText className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                     <input 
@@ -200,13 +200,13 @@ export default function EditCustomerModal({ profile }: { profile: any }) {
                       maxLength={12}
                       defaultValue={profile.kyc_document?.match(/Aadhaar: (\d+)/)?.[1] || ''} 
                       placeholder="12-digit Aadhaar No."
-                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 uppercase"
+                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 dark:border-slate-700 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 dark:text-gray-100 uppercase"
                     />
                   </div>
                </div>
 
                <div>
-                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">PAN (पैन) <span className="text-gray-400 font-normal normal-case">(At least one is mandatory)</span></label>
+                  <label className="block text-xs font-bold text-[#0B2E59] dark:text-blue-400 uppercase tracking-wide mb-2">PAN (पैन) <span className="text-gray-400 font-normal normal-case">(At least one is mandatory)</span></label>
                   <div className="relative">
                     <FileText className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                     <input 
@@ -216,13 +216,13 @@ export default function EditCustomerModal({ profile }: { profile: any }) {
                       maxLength={10}
                       defaultValue={profile.kyc_document?.match(/PAN: ([A-Za-z0-9]+)/)?.[1] || ''} 
                       placeholder="e.g. ABCDE1234F"
-                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 uppercase"
+                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 dark:border-slate-700 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 dark:text-gray-100 uppercase"
                     />
                   </div>
                </div>
 
                <div>
-                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">Guardian Name (English)</label>
+                  <label className="block text-xs font-bold text-[#0B2E59] dark:text-blue-400 uppercase tracking-wide mb-2">Guardian Name (English)</label>
                   <div className="relative">
                     <User className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                     <input 
@@ -230,13 +230,13 @@ export default function EditCustomerModal({ profile }: { profile: any }) {
                       name="guardianName" 
                       defaultValue={profile.guardian_name || ''} 
                       onBlur={(e) => handleTransliterate(e.target.value, 'editGuardianNameHi')}
-                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 uppercase"
+                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 dark:border-slate-700 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 dark:text-gray-100 uppercase"
                     />
                   </div>
                </div>
 
                <div>
-                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">अभिभावक का नाम (Hindi)</label>
+                  <label className="block text-xs font-bold text-[#0B2E59] dark:text-blue-400 uppercase tracking-wide mb-2">अभिभावक का नाम (Hindi)</label>
                   <div className="relative">
                     <User className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                     <input 
@@ -244,50 +244,50 @@ export default function EditCustomerModal({ profile }: { profile: any }) {
                       id="editGuardianNameHi"
                       name="guardianNameHi" 
                       defaultValue={profile.guardian_name_hi || ''} 
-                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900"
+                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 dark:border-slate-700 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 dark:text-gray-100"
                     />
                   </div>
                </div>
 
                <div>
-                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">Nominee Details</label>
+                  <label className="block text-xs font-bold text-[#0B2E59] dark:text-blue-400 uppercase tracking-wide mb-2">Nominee Details</label>
                   <div className="relative">
                     <Users className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                     <input 
                       type="text" 
                       name="nomineeDetails" 
                       defaultValue={profile.nominee_details || ''} 
-                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 uppercase"
+                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 dark:border-slate-700 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 dark:text-gray-100 uppercase"
                     />
                   </div>
                </div>
 
                <div className="sm:col-span-2">
-                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">Guarantor Details (Optional)</label>
+                  <label className="block text-xs font-bold text-[#0B2E59] dark:text-blue-400 uppercase tracking-wide mb-2">Guarantor Details (Optional)</label>
                   <div className="relative">
                     <Users className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                     <input 
                       type="text" 
                       name="guarantorOptional" 
                       defaultValue={profile.guarantor_details || ''} 
-                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 uppercase"
+                      className="w-full pl-9 pr-4 py-2.5 border border-gray-300 dark:border-slate-700 rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-gray-900 dark:text-gray-100 uppercase"
                     />
                   </div>
                </div>
 
             </div>
 
-            <div className="flex gap-4 pt-6 border-t border-gray-200 mt-8">
+            <div className="flex gap-4 pt-6 border-t border-gray-200 dark:border-slate-700 mt-8">
                <button 
                  type="button" 
                  onClick={() => setIsOpen(false)}
-                 className="flex-1 px-4 py-3 border border-gray-300 bg-white text-gray-700 font-bold rounded-md hover:bg-gray-50 transition-colors"
+                 className="flex-1 px-4 py-3 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-700 dark:text-gray-300 font-bold rounded-md hover:bg-gray-50 dark:bg-slate-800/50 transition-colors"
                >
                  CANCEL
                </button>
                <button 
                  type="submit" 
-                 className="flex-1 px-4 py-3 bg-[#0B2E59] text-white font-bold rounded-md hover:bg-[#071f3e] transition-colors"
+                 className="flex-1 px-4 py-3 bg-[#0B2E59] dark:bg-blue-900 text-white font-bold rounded-md hover:bg-[#071f3e] transition-colors"
                >
                  SAVE CHANGES
                </button>
