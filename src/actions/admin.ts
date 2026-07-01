@@ -194,6 +194,7 @@ export async function getAllCustomers() {
     .from('users_profile')
     .select('id, full_name, mobile_number')
     .eq('role', 'customer')
+    .not('full_name', 'ilike', '[CLOSED:%')
     .order('full_name', { ascending: true })
     
   if (error) {
@@ -233,7 +234,7 @@ export async function deleteCustomer(customerId: string) {
     // 1. Fetch current profile to get mobile number
     const { data: profile } = await supabaseAdmin
       .from('users_profile')
-      .select('mobile_number')
+      .select('mobile_number, full_name')
       .eq('id', customerId)
       .single()
       
@@ -250,15 +251,21 @@ export async function deleteCustomer(customerId: string) {
       return { error: 'Failed to update authentication record.' }
     }
     
-    // 3. Soft Delete Profile (Change Role)
+    // 3. Soft Delete Profile (Fake 10-digit mobile, store real one in name)
+    const fakeMobile = '000' + Math.floor(1000000 + Math.random() * 9000000).toString()
+    const closedName = `[CLOSED: ${profile.mobile_number}] ${profile.full_name}`
+    
     const { error: profileError } = await supabaseAdmin
       .from('users_profile')
-      .update({ role: 'closed' })
+      .update({ 
+        mobile_number: fakeMobile,
+        full_name: closedName
+      })
       .eq('id', customerId)
       
     if (profileError) {
       console.error('Error soft deleting profile:', profileError)
-      return { error: 'Failed to close customer account.' }
+      return { error: `DB Error: ${profileError.message}` }
     }
     
     revalidatePath('/admin', 'layout')
@@ -362,7 +369,7 @@ export async function getClosedCustomers() {
   const { data, error } = await supabaseAdmin
     .from('users_profile')
     .select('id, full_name, mobile_number')
-    .eq('role', 'closed')
+    .ilike('full_name', '[CLOSED:%')
     .order('full_name', { ascending: true })
     
   if (error) {
@@ -379,14 +386,20 @@ export async function restoreCustomer(customerId: string) {
   try {
     const { data: profile } = await supabaseAdmin
       .from('users_profile')
-      .select('mobile_number')
+      .select('mobile_number, full_name')
       .eq('id', customerId)
       .single()
       
     if (!profile) return { error: 'Customer not found.' }
 
-    // Restore original email
-    const originalEmail = `${profile.mobile_number}@rsspp.local`
+    // Restore original mobile from full_name "[CLOSED: 1234567890] Original Name"
+    const match = profile.full_name.match(/\[CLOSED: (\d+)\] (.*)/)
+    if (!match) return { error: 'Invalid closed account format.' }
+    
+    const originalMobile = match[1]
+    const originalName = match[2]
+    const originalEmail = `${originalMobile}@rsspp.local`
+    
     const { error: authError } = await supabaseAdmin.auth.admin.updateUserById(customerId, {
       email: originalEmail
     })
@@ -398,7 +411,10 @@ export async function restoreCustomer(customerId: string) {
     
     const { error: profileError } = await supabaseAdmin
       .from('users_profile')
-      .update({ role: 'customer' })
+      .update({ 
+        mobile_number: originalMobile,
+        full_name: originalName
+      })
       .eq('id', customerId)
       
     if (profileError) {

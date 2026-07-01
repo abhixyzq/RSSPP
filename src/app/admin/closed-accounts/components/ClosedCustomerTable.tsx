@@ -117,16 +117,21 @@ export default function ClosedCustomerTable({ customers }: { customers: Customer
                     </td>
                   </tr>
                 ) : (
-                  filteredCustomers.map((customer, index) => (
+                   filteredCustomers.map((customer, index) => {
+                      const match = customer.full_name.match(/\[CLOSED: (\d+)\] (.*)/)
+                      const displayName = match ? match[2] : customer.full_name
+                      const displayMobile = match ? match[1] : customer.mobile_number
+
+                      return (
                       <tr key={customer.id} className="border-b border-gray-50 hover:bg-gray-50/80 transition-colors group">
                          <td className="p-4 text-gray-400 font-bold w-12 text-center group-hover:text-gray-600 transition-colors">
                             {(index + 1).toString().padStart(3, '0')}
                          </td>
                          <td className="p-4 font-bold text-gray-600 uppercase">
-                            {customer.full_name}
+                            {displayName}
                          </td>
                          <td className="p-4 font-bold text-gray-600">
-                            {customer.mobile_number}
+                            {displayMobile}
                          </td>
                          <td className="p-4 text-center">
                             <span className="px-3 py-1 rounded-full text-xs font-bold shadow-sm bg-gray-100 text-gray-600 border border-gray-200">
@@ -151,7 +156,8 @@ export default function ClosedCustomerTable({ customers }: { customers: Customer
                             </div>
                          </td>
                       </tr>
-                   ))
+                   )
+                   })
                  )}
              </tbody>
           </table>
