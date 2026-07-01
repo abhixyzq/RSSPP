@@ -45,8 +45,8 @@ export default function LandingPage() {
       <main className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 flex-1 flex flex-col justify-center py-8 lg:py-0 lg:min-h-0 w-full">
         
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          {/* Left: Typography */}
-          <div className="space-y-8 relative">
+          {/* Left: Typography (Hidden on mobile) */}
+          <div className="hidden lg:block space-y-8 relative">
             {/* Decorative crosshair */}
             <div className="absolute -top-12 -left-8 w-4 h-4 border-t border-l border-cyan-500/50"></div>
             
@@ -83,8 +83,8 @@ export default function LandingPage() {
         </div>
       </main>
 
-      {/* Key Features Minimalist Bar */}
-      <section className="relative z-10 border-t border-white/5 bg-black/20 backdrop-blur-md shrink-0">
+      {/* Key Features Minimalist Bar (Hidden on mobile) */}
+      <section className="hidden lg:block relative z-10 border-t border-white/5 bg-black/20 backdrop-blur-md shrink-0">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 py-6 lg:py-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="flex items-start gap-4">
