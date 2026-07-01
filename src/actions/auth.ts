@@ -70,7 +70,7 @@ export async function login(prevState: any, formData: FormData) {
 export async function adminLogin(prevState: any, formData: FormData) {
   const supabase = await createClient()
 
-  const adminId = formData.get('adminId') as string
+  const adminId = (formData.get('adminId') as string)?.trim()?.toLowerCase()
   const password = formData.get('password') as string
 
   if (!adminId || !password) {
@@ -93,13 +93,16 @@ export async function adminLogin(prevState: any, formData: FormData) {
   // Verify if the user is actually an admin
   const { data: { user } } = await supabase.auth.getUser()
   if (user) {
-    const { data: profile } = await supabase
+    const { createAdminClient } = await import('@/utils/supabase/admin')
+    const adminSupabase = createAdminClient()
+    
+    const { data: profile } = await adminSupabase
       .from('users_profile')
       .select('role')
       .eq('id', user.id)
       .single()
 
-    if (profile?.role !== 'admin') {
+    if (profile?.role?.toLowerCase() !== 'admin') {
       await supabase.auth.signOut()
       return { error: 'Access Denied: You do not have administrator privileges.' }
     }
