@@ -262,7 +262,7 @@ export default function AddCustomerForm() {
                </div>
                <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Aadhaar (आधार) <span className="text-gray-400 font-normal normal-case">(Optional)</span></label>
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Aadhaar (आधार) <span className="text-gray-400 font-normal normal-case">(At least one is mandatory)</span></label>
                     <input 
                       type="text" 
                       name="aadhaar" 
@@ -274,7 +274,7 @@ export default function AddCustomerForm() {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">PAN (पैन) <span className="text-gray-400 font-normal normal-case">(Optional)</span></label>
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">PAN (पैन) <span className="text-gray-400 font-normal normal-case">(At least one is mandatory)</span></label>
                     <input 
                       type="text" 
                       name="pan" 

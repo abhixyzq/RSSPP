@@ -190,7 +190,7 @@ export default function EditCustomerModal({ profile }: { profile: any }) {
                </div>
 
                <div>
-                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">Aadhaar (आधार)</label>
+                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">Aadhaar (आधार) <span className="text-gray-400 font-normal normal-case">(At least one is mandatory)</span></label>
                   <div className="relative">
                     <FileText className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                     <input 
@@ -206,7 +206,7 @@ export default function EditCustomerModal({ profile }: { profile: any }) {
                </div>
 
                <div>
-                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">PAN (पैन)</label>
+                  <label className="block text-xs font-bold text-[#0B2E59] uppercase tracking-wide mb-2">PAN (पैन) <span className="text-gray-400 font-normal normal-case">(At least one is mandatory)</span></label>
                   <div className="relative">
                     <FileText className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                     <input 

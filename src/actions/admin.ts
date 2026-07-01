@@ -18,6 +18,11 @@ export async function createCustomer(prevState: any, formData: FormData) {
   const addressHi = formData.get('addressHi') as string
   const aadhaar = formData.get('aadhaar') as string
   const pan = formData.get('pan') as string
+  
+  if (!aadhaar && !pan) {
+    return { error: 'KYC Required: Please provide either Aadhaar or PAN, or both.' }
+  }
+  
   let kycDocument = ''
   if (aadhaar || pan) {
     kycDocument = `Aadhaar: ${aadhaar || 'N/A'} | PAN: ${(pan || 'N/A').toUpperCase()}`
@@ -307,6 +312,11 @@ export async function updateCustomerDetails(prevState: any, formData: FormData) 
   
   const aadhaar = formData.get('aadhaar') as string
   const pan = formData.get('pan') as string
+  
+  if (!aadhaar && !pan) {
+    return { error: 'KYC Required: Please provide either Aadhaar or PAN, or both.' }
+  }
+
   let kycDocument = ''
   if (aadhaar || pan) {
     kycDocument = `Aadhaar: ${aadhaar || 'N/A'} | PAN: ${(pan || 'N/A').toUpperCase()}`
