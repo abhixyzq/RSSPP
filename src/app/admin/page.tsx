@@ -1,6 +1,7 @@
 import { getVillageTotals } from '@/actions/admin'
-import { Wallet, Landmark, Users, TrendingUp, Building, BarChart3, Clock, AlertTriangle, ArrowRight, UserPlus, BookOpen, Activity, Zap } from 'lucide-react'
+import { Wallet, Landmark, Users, TrendingUp, Building, BarChart3, Clock, AlertTriangle, ArrowRight, UserPlus, BookOpen, Activity, Zap, History, ArrowUpRight, ArrowDownRight } from 'lucide-react'
 import Link from 'next/link'
+import { createAdminClient } from '@/utils/supabase/admin'
 
 // Helper to format currency
 const formatCurrency = (amount: number) => {
@@ -14,6 +15,14 @@ const formatCurrency = (amount: number) => {
 
 export default async function AdminDashboard() {
   const totals = await getVillageTotals()
+  const supabase = createAdminClient()
+  
+  // Fetch 5 most recent transactions
+  const { data: recentTxs } = await supabase
+    .from('transactions')
+    .select('*, users_profile(full_name)')
+    .order('created_at', { ascending: false })
+    .limit(5)
 
   const stats = [
     {
@@ -177,45 +186,63 @@ export default async function AdminDashboard() {
           </div>
         </div>
 
-        {/* Corporate Notice Board Upgrade */}
+        {/* Recent Transactions Module */}
         <div className="lg:col-span-2">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 flex items-center justify-center border border-amber-500/20">
-               <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500/20 to-blue-500/20 flex items-center justify-center border border-indigo-500/20">
+               <History className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
             </div>
             <h2 className="text-lg font-black text-gray-900 dark:text-white uppercase tracking-wider">
-              System Bulletins
+              Recent Transactions
             </h2>
           </div>
 
-          <div className="bg-white/60 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-3xl shadow-lg p-6 relative overflow-hidden h-[330px]">
+          <div className="bg-white/60 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-3xl shadow-lg p-6 relative overflow-hidden h-[330px] flex flex-col">
              {/* Decorative background element */}
-             <div className="absolute -top-24 -right-24 w-64 h-64 bg-amber-400/5 dark:bg-amber-400/10 rounded-full blur-3xl pointer-events-none"></div>
+             <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-indigo-400/5 dark:bg-indigo-400/10 rounded-full blur-3xl pointer-events-none"></div>
              
-             <ul className="space-y-4 relative z-10">
-                <li className="flex gap-5 p-5 bg-white/80 dark:bg-white/5 backdrop-blur-md border border-gray-200 dark:border-white/10 rounded-2xl hover:border-amber-500/30 transition-colors group">
-                   <div className="relative mt-1 shrink-0">
-                     <span className="absolute inset-0 w-3 h-3 rounded-full bg-cyan-400 animate-ping opacity-75"></span>
-                     <div className="relative w-3 h-3 rounded-full bg-cyan-500" />
-                   </div>
-                   <div>
-                      <p className="text-[13px] font-black text-gray-900 dark:text-white uppercase tracking-wide group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">Advanced Analytics Module</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1.5 font-medium leading-relaxed">Detailed financial reports, growth charts, and collection trends are currently under development and will be deployed in the next core banking update.</p>
-                      <div className="mt-3 inline-block px-3 py-1 bg-cyan-50 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 text-[10px] font-bold uppercase rounded-full tracking-widest border border-cyan-200 dark:border-cyan-500/20">Upcoming Feature</div>
-                   </div>
-                </li>
-                
-                <li className="flex gap-5 p-5 bg-white/80 dark:bg-white/5 backdrop-blur-md border border-gray-200 dark:border-white/10 rounded-2xl hover:border-amber-500/30 transition-colors group">
-                   <div className="relative mt-1 shrink-0">
-                     <div className="w-3 h-3 rounded-full bg-amber-500" />
-                   </div>
-                   <div>
-                      <p className="text-[13px] font-black text-gray-900 dark:text-white uppercase tracking-wide group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">System Maintenance</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1.5 font-medium leading-relaxed">End of day (EOD) processing should be verified daily to ensure ledger accuracy.</p>
-                      <div className="mt-3 inline-block px-3 py-1 bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 text-[10px] font-bold uppercase rounded-full tracking-widest border border-amber-200 dark:border-amber-500/20">Operational Guideline</div>
-                   </div>
-                </li>
-             </ul>
+             <div className="flex-1 overflow-y-auto scrollbar-hide relative z-10 pr-2">
+               <div className="space-y-3">
+                  {recentTxs && recentTxs.length > 0 ? (
+                    recentTxs.map((tx: any) => {
+                      const isCredit = tx.transaction_type.startsWith('JAMA')
+                      return (
+                        <div key={tx.id} className="flex items-center justify-between p-4 bg-white/80 dark:bg-white/5 backdrop-blur-md border border-gray-100 dark:border-white/5 rounded-2xl hover:border-indigo-500/30 transition-colors group">
+                           <div className="flex items-center gap-4">
+                              <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${isCredit ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400'}`}>
+                                {isCredit ? <ArrowDownRight className="w-5 h-5" /> : <ArrowUpRight className="w-5 h-5" />}
+                              </div>
+                              <div className="flex flex-col">
+                                <span className="text-[13px] font-bold text-gray-900 dark:text-white">{tx.users_profile?.full_name || 'Unknown User'}</span>
+                                <span className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mt-0.5">
+                                  {new Date(tx.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                                </span>
+                              </div>
+                           </div>
+                           <div className="text-right">
+                              <span className={`text-sm font-black tracking-wide ${isCredit ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                                {isCredit ? '+' : '-'}{formatCurrency(Number(tx.amount))}
+                              </span>
+                              <div className="text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase mt-1 tracking-wider">
+                                {tx.transaction_type.replace(/_/g, ' ')}
+                              </div>
+                           </div>
+                        </div>
+                      )
+                    })
+                  ) : (
+                    <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400 font-semibold text-sm">
+                      No recent transactions found.
+                    </div>
+                  )}
+               </div>
+             </div>
+             
+             <div className="pt-4 mt-2 border-t border-gray-100 dark:border-white/10 text-center relative z-10 shrink-0">
+               <Link href="/admin/transaction" className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 uppercase tracking-wider transition-colors inline-flex items-center gap-1">
+                 View All Ledger Entries <ArrowRight className="w-4 h-4" />
+               </Link>
+             </div>
           </div>
         </div>
 
