@@ -203,6 +203,27 @@ export default function ForgotPasswordPage() {
                     {isPending ? 'Verifying...' : 'Verify OTP'}
                     {!isPending && <CheckCircle2 className="w-3.5 h-3.5 ml-1" />}
                   </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setErrorMsg('')
+                      const fd = new FormData()
+                      fd.append('adminId', email)
+                      startTransition(async () => {
+                        const res = await requestAdminPasswordReset(null, fd)
+                        if (res?.error) {
+                          setErrorMsg(res.error)
+                        } else {
+                          setErrorMsg('A new OTP has been sent to your email.')
+                        }
+                      })
+                    }}
+                    disabled={isPending}
+                    className="w-full mt-3 flex items-center justify-center text-[10px] uppercase tracking-[0.15em] font-medium text-slate-500 hover:text-slate-800 dark:text-gray-400 dark:hover:text-cyan-400 transition-colors disabled:opacity-50"
+                  >
+                    Didn't receive code? Resend OTP
+                  </button>
                 </form>
               )}
 
