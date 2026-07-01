@@ -49,14 +49,17 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
       {/* Top Navigation */}
       <div className="flex items-center justify-between mb-6">
         <div>
-           <h1 className="text-2xl font-bold text-[#0B2E59] uppercase">Account Holders</h1>
+           <h1 className="text-2xl font-bold text-[#0B2E59] uppercase flex items-center gap-2">
+             <span>Account Holders</span>
+             <span className="normal-case text-lg text-gray-500">(खाताधारक)</span>
+           </h1>
         </div>
         <div className="flex gap-3">
            <button className="flex items-center gap-2 text-sm font-bold text-gray-600 bg-white px-4 py-2 rounded-md shadow-sm border border-gray-200 hover:bg-gray-50">
-             <Printer className="w-4 h-4" /> Print List
+             <Printer className="w-4 h-4" /> <span>Print List <span className="normal-case text-xs opacity-70 ml-1">(सूची प्रिंट करें)</span></span>
            </button>
            <button className="flex items-center gap-2 text-sm font-bold text-white bg-[#0B2E59] px-4 py-2 rounded-md shadow-sm hover:bg-[#071f3e]">
-             <Download className="w-4 h-4" /> Export CSV
+             <Download className="w-4 h-4" /> <span>Export CSV <span className="normal-case text-xs opacity-70 ml-1">(CSV डाउनलोड करें)</span></span>
            </button>
         </div>
       </div>
@@ -70,8 +73,11 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
                 <Building className="w-8 h-8 text-[#0B2E59]" />
              </div>
              <div>
-                <h1 className="text-2xl font-bold uppercase tracking-wide">Customer Database</h1>
-                <p className="text-blue-200 text-sm font-medium tracking-wide">Core Banking System • Account Register</p>
+                <h1 className="text-2xl font-bold uppercase tracking-wide flex items-center gap-2">
+                  <span>Customer Database</span>
+                  <span className="text-lg normal-case font-medium text-blue-200">(ग्राहक डेटाबेस)</span>
+                </h1>
+                <p className="text-blue-200 text-sm font-medium tracking-wide">Core Banking System • Account Register <span className="opacity-80">(कोर बैंकिंग सिस्टम • खाता रजिस्टर)</span></p>
              </div>
           </div>
           
@@ -79,7 +85,7 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
              <Search className="absolute left-3 top-2.5 w-5 h-5 text-[#0B2E59]" />
              <input
                type="text"
-               placeholder="Search by name or Account No..."
+               placeholder="Search by name or Account No (नाम या खाता नंबर से खोजें)..."
                value={searchTerm}
                onChange={(e) => setSearchTerm(e.target.value)}
                className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#082243] rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-[#0B2E59] placeholder-[#0B2E59]/50 shadow-inner"
@@ -89,11 +95,13 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
 
         {/* Status Strip */}
         <div className="bg-gray-100 p-3 border-b border-gray-300 flex justify-between items-center px-6">
-           <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">
-             Showing {filteredCustomers.length} Accounts
+           <span className="text-xs font-bold text-gray-600 uppercase tracking-wider flex items-center gap-2">
+             <span>Showing {filteredCustomers.length} Accounts</span>
+             <span className="normal-case opacity-70">({filteredCustomers.length} खाते दिखा रहे हैं)</span>
            </span>
-           <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">
-             Branch: MAIN
+           <span className="text-xs font-bold text-gray-600 uppercase tracking-wider flex items-center gap-2">
+             <span>Branch: MAIN</span>
+             <span className="normal-case opacity-70">(शाखा: मुख्य)</span>
            </span>
         </div>
 
@@ -112,8 +120,9 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
              <tbody className="bg-white">
                 {filteredCustomers.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="p-10 text-center text-gray-500 font-bold uppercase border border-gray-200">
-                      No Records Found.
+                    <td colSpan={5} className="p-10 text-center text-gray-500 font-bold uppercase border border-gray-200 flex flex-col items-center gap-1">
+                      <span>No Records Found.</span>
+                      <span className="normal-case text-gray-400 text-sm">(कोई रिकॉर्ड नहीं मिला)</span>
                     </td>
                   </tr>
                 ) : (
@@ -139,14 +148,22 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
                                  onClick={() => router.push(`/admin/customers/${customer.id}`)}
                                  className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-[12px] font-bold rounded-lg shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5"
                                >
-                                 <BookOpen className="w-3.5 h-3.5" /> Statement
+                                 <BookOpen className="w-3.5 h-3.5" /> 
+                                 <div className="flex flex-col text-left leading-tight">
+                                   <span>Statement</span>
+                                   <span className="text-[9px] font-medium opacity-80">(विवरण)</span>
+                                 </div>
                                </button>
                                <button
                                  onClick={() => setCustomerToDelete(customer)}
                                  className="flex items-center gap-1.5 px-4 py-2 bg-white border border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 text-[12px] font-bold rounded-lg shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5"
                                  title="Close Account"
                                >
-                                 <Trash2 className="w-3.5 h-3.5" /> Close A/c
+                                 <Trash2 className="w-3.5 h-3.5" /> 
+                                 <div className="flex flex-col text-left leading-tight">
+                                   <span>Close A/c</span>
+                                   <span className="text-[9px] font-medium opacity-80">(खाता बंद करें)</span>
+                                 </div>
                                </button>
                             </div>
                          </td>
@@ -157,9 +174,12 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
           </table>
         </div>
         
-        <div className="p-4 bg-gray-50 border-t border-gray-200 text-center">
+        <div className="p-4 bg-gray-50 border-t border-gray-200 text-center flex flex-col items-center gap-1">
            <p className="text-[11px] text-gray-500 font-medium uppercase tracking-wide">
               *** END OF DATABASE ***
+           </p>
+           <p className="text-[10px] text-gray-400 font-medium tracking-wide">
+              (डेटाबेस समाप्त)
            </p>
         </div>
 

@@ -16,7 +16,7 @@ export default async function CustomersPage() {
             <Users className="w-8 h-8 text-blue-600" />
             Customer Directory (ग्राहक सूची)
           </h1>
-          <p className="text-gray-500 font-medium mt-1">Manage all registered accounts securely.</p>
+          <p className="text-gray-500 font-medium mt-1">Manage all registered accounts securely. <span className="text-sm opacity-80">(सभी पंजीकृत खातों का सुरक्षित प्रबंधन करें)</span></p>
         </div>
         
         {/* Actions */}
