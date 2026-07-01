@@ -9,6 +9,7 @@ export default async function LedgerEntryPage() {
     .from('users_profile')
     .select('id, full_name, mobile_number')
     .eq('role', 'customer')
+    .not('full_name', 'ilike', '[CLOSED:%')
     .order('full_name', { ascending: true })
 
   if (error) {

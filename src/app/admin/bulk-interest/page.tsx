@@ -7,11 +7,11 @@ export const revalidate = 0
 export default async function BulkInterestPage() {
   const supabase = createAdminClient()
 
-  // Fetch all profiles
   const { data: profiles, error: profileError } = await supabase
     .from('users_profile')
     .select('*')
     .eq('role', 'customer')
+    .not('full_name', 'ilike', '[CLOSED:%')
     .order('created_at', { ascending: false })
 
   if (profileError) {
