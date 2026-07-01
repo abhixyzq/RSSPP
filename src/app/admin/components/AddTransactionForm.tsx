@@ -2,8 +2,8 @@
 
 import { useActionState, useEffect, useRef, useState } from 'react'
 import { useFormStatus } from 'react-dom'
-import { addTransaction } from '@/actions/admin'
-import { ArrowDownToLine, ArrowUpFromLine, FileText, AlertCircle, CheckCircle2, Search, Check, Building, ShieldCheck, IndianRupee, ArrowRight } from 'lucide-react'
+import { addTransaction, getCustomerBalance } from '@/actions/admin'
+import { ArrowDownToLine, ArrowUpFromLine, FileText, AlertCircle, CheckCircle2, Search, Check, Building, ShieldCheck, IndianRupee, ArrowRight, Loader2, Wallet, Landmark } from 'lucide-react'
 
 type Customer = {
   id: string
@@ -58,6 +58,29 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
   const [txType, setTxType] = useState('JAMA_DEPOSIT') 
   const [amountInput, setAmountInput] = useState('')
   const [showSuccessOverlay, setShowSuccessOverlay] = useState(false)
+  
+  // Balance States
+  const [jamaBal, setJamaBal] = useState<number | null>(null)
+  const [nikasiBal, setNikasiBal] = useState<number | null>(null)
+  const [isFetchingBal, setIsFetchingBal] = useState(false)
+
+  // Fetch balance when customer changes
+  useEffect(() => {
+    if (selectedCustomerId) {
+      setIsFetchingBal(true)
+      getCustomerBalance(selectedCustomerId).then((balances) => {
+        setJamaBal(balances.jamaBal)
+        setNikasiBal(balances.nikasiBal)
+        setIsFetchingBal(false)
+      }).catch(err => {
+        console.error('Failed to fetch balance', err)
+        setIsFetchingBal(false)
+      })
+    } else {
+      setJamaBal(null)
+      setNikasiBal(null)
+    }
+  }, [selectedCustomerId])
 
   useEffect(() => {
     if (state?.success) {
@@ -248,6 +271,25 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
                         <div>
                            <p className="font-extrabold text-gray-900 dark:text-slate-100 uppercase text-lg">{selectedCustomer.full_name}</p>
                            <p className="text-sm font-bold text-gray-500 dark:text-gray-300">A/C No: {selectedCustomer.mobile_number}</p>
+                           
+                           {/* Balance Display */}
+                           <div className="mt-2 flex items-center gap-3">
+                             {isFetchingBal ? (
+                               <div className="flex items-center gap-2 text-blue-600">
+                                 <Loader2 className="w-3 h-3 animate-spin" />
+                                 <span className="text-xs font-bold uppercase tracking-wider">Fetching...</span>
+                               </div>
+                             ) : jamaBal !== null ? (
+                               <>
+                                 <span className="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded flex items-center gap-1 border border-green-200 shadow-sm">
+                                   <Wallet className="w-3 h-3" /> JAMA: ₹{new Intl.NumberFormat('en-IN').format(jamaBal)}
+                                 </span>
+                                 <span className="bg-red-100 text-red-800 text-xs font-bold px-2 py-1 rounded flex items-center gap-1 border border-red-200 shadow-sm">
+                                   <Landmark className="w-3 h-3" /> NIKASI: ₹{new Intl.NumberFormat('en-IN').format(nikasiBal || 0)}
+                                 </span>
+                               </>
+                             ) : null}
+                           </div>
                         </div>
                      </div>
                      <button 

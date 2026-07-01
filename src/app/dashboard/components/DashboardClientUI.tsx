@@ -75,6 +75,7 @@ export default function DashboardClientUI({
   // Calculate Running Balances
   let currentJamaBal = 0
   let currentNikasiBal = 0
+  let currentEarnedInterestBal = 0
   
   const transactionsWithBalance = [...transactions].reverse().map(tx => {
      let runningBalance = 0
@@ -84,10 +85,21 @@ export default function DashboardClientUI({
      if (tx.transaction_type.startsWith('JAMA')) {
         if (tx.transaction_type === 'JAMA_DEPOSIT' || tx.transaction_type === 'JAMA_PRINCIPAL') {
            currentJamaBal += amt
-        } else if (tx.transaction_type === 'JAMA_WITHDRAWAL') {
-           currentJamaBal -= amt
         } else if (tx.transaction_type === 'JAMA_EARNED_INTEREST') {
            earnedInterest = amt
+           currentEarnedInterestBal += amt
+        } else if (tx.transaction_type === 'JAMA_WITHDRAWAL') {
+           if (currentEarnedInterestBal > 0) {
+             if (amt <= currentEarnedInterestBal) {
+               currentEarnedInterestBal -= amt
+             } else {
+               const remainder = amt - currentEarnedInterestBal
+               currentEarnedInterestBal = 0
+               currentJamaBal -= remainder
+             }
+           } else {
+             currentJamaBal -= amt
+           }
         }
         runningBalance = currentJamaBal
      } else {

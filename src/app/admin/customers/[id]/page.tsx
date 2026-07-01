@@ -22,19 +22,30 @@ export default async function CustomerProfilePage({
   
   let currentJamaBalance = 0;
   let totalJamaInterest = 0; // Total Interest Earned on Deposits
+  let currentJamaInterestBal = 0; // The actual unwithdrawn interest bucket
 
   const jamaTransactions = allTx.filter(t => t.transaction_type.startsWith('JAMA')).map(tx => {
     let earnedInterest = 0;
+    const amt = Number(tx.amount);
 
     if (tx.transaction_type === 'JAMA_DEPOSIT' || tx.transaction_type === 'JAMA_PRINCIPAL') {
-      // eslint-disable-next-line react-hooks/immutability
-      currentJamaBalance += Number(tx.amount);
-    } else if (tx.transaction_type === 'JAMA_WITHDRAWAL') {
-      // eslint-disable-next-line react-hooks/immutability
-      currentJamaBalance -= Number(tx.amount);
+      currentJamaBalance += amt;
     } else if (tx.transaction_type === 'JAMA_EARNED_INTEREST') {
-      earnedInterest = Number(tx.amount);
+      earnedInterest = amt;
       totalJamaInterest += earnedInterest;
+      currentJamaInterestBal += earnedInterest;
+    } else if (tx.transaction_type === 'JAMA_WITHDRAWAL') {
+      if (currentJamaInterestBal > 0) {
+        if (amt <= currentJamaInterestBal) {
+          currentJamaInterestBal -= amt;
+        } else {
+          const remainder = amt - currentJamaInterestBal;
+          currentJamaInterestBal = 0;
+          currentJamaBalance -= remainder;
+        }
+      } else {
+        currentJamaBalance -= amt;
+      }
     }
     
     return { ...tx, runningBalance: currentJamaBalance, earnedInterest };

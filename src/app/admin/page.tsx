@@ -42,14 +42,6 @@ export default async function AdminDashboard() {
       description: 'Total Nikasi disbursed by branch',
     },
     {
-      name: "Today's Collection",
-      value: formatCurrency(totals.todaysCollection),
-      icon: TrendingUp,
-      color: 'text-blue-600 dark:text-blue-400',
-      bgColor: 'bg-blue-50 dark:bg-blue-900/20',
-      description: 'Net deposits received today',
-    },
-    {
       name: 'Active Accounts',
       value: totals.activeCustomers.toString(),
       icon: Users,
@@ -91,7 +83,7 @@ export default async function AdminDashboard() {
         </h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
         {stats.map((stat) => (
           <div
             key={stat.name}

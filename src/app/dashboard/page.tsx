@@ -54,10 +54,20 @@ export default async function CustomerDashboard() {
     if (tx.transaction_type.startsWith('JAMA')) {
       if (tx.transaction_type === 'JAMA_DEPOSIT' || tx.transaction_type === 'JAMA_PRINCIPAL') {
         runningJamaBalance += amt
-      } else if (tx.transaction_type === 'JAMA_WITHDRAWAL') {
-        runningJamaBalance -= amt
       } else if (tx.transaction_type === 'JAMA_EARNED_INTEREST') {
         totalEarnedInterest += amt
+      } else if (tx.transaction_type === 'JAMA_WITHDRAWAL') {
+        if (totalEarnedInterest > 0) {
+          if (amt <= totalEarnedInterest) {
+            totalEarnedInterest -= amt
+          } else {
+            const remainder = amt - totalEarnedInterest
+            totalEarnedInterest = 0
+            runningJamaBalance -= remainder
+          }
+        } else {
+          runningJamaBalance -= amt
+        }
       }
     }
     

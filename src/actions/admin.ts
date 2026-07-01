@@ -126,6 +126,16 @@ export async function addTransaction(prevState: any, formData: FormData) {
     return { error: 'Invalid transaction type.' }
   }
 
+  // 1. Calculate current balances before allowing a withdrawal
+  const balances = await getCustomerBalance(userId)
+  
+  if (type === 'JAMA_WITHDRAWAL' && amount > balances.jamaBal) {
+    return { error: `Insufficient Balance. Current Jama Balance is ₹${balances.jamaBal}. You cannot withdraw ₹${amount}.` }
+  }
+
+  // Note: NIKASI_LOAN (giving a new loan) might not have a strict mathematical limit in the DB, 
+  // but if you want to enforce one later, you can do it here.
+
   const { error } = await supabaseAdmin
     .from('transactions')
     .insert({
@@ -142,6 +152,53 @@ export async function addTransaction(prevState: any, formData: FormData) {
 
   revalidatePath('/admin', 'layout')
   return { success: 'Transaction recorded successfully!' }
+}
+
+export async function getCustomerBalance(userId: string) {
+  const supabaseAdmin = createAdminClient()
+  
+  const { data: transactions } = await supabaseAdmin
+    .from('transactions')
+    .select('amount, transaction_type, transaction_date')
+    .eq('user_id', userId)
+    .order('transaction_date', { ascending: true }) // Chronological order is critical for bucketing
+
+  let jamaBal = 0
+  let earnedInterest = 0
+  let nikasiBal = 0
+
+  transactions?.forEach(tx => {
+    const amt = Number(tx.amount)
+    
+    // Jama Calculations
+    if (tx.transaction_type === 'JAMA_DEPOSIT' || tx.transaction_type === 'JAMA_PRINCIPAL') {
+      jamaBal += amt
+    } else if (tx.transaction_type === 'JAMA_EARNED_INTEREST') {
+      earnedInterest += amt
+    } else if (tx.transaction_type === 'JAMA_WITHDRAWAL') {
+      // Prioritize deducting from Earned Interest first
+      if (earnedInterest > 0) {
+        if (amt <= earnedInterest) {
+          earnedInterest -= amt
+        } else {
+          const remainder = amt - earnedInterest
+          earnedInterest = 0
+          jamaBal -= remainder
+        }
+      } else {
+        jamaBal -= amt
+      }
+    } 
+    // Nikasi Calculations
+    else if (tx.transaction_type === 'NIKASI_LOAN' || tx.transaction_type === 'NIKASI_PRINCIPAL') {
+      nikasiBal += amt
+    } else if (tx.transaction_type === 'NIKASI_REPAY_PRINCIPAL') {
+      nikasiBal -= amt
+    }
+  })
+
+  // Return the combined withdrawable total for validation
+  return { jamaBal: jamaBal + earnedInterest, nikasiBal }
 }
 
 export async function getVillageTotals() {
@@ -180,10 +237,10 @@ export async function getVillageTotals() {
     const amount = Number(tx.amount)
     
     // Deposit Account (JAMA)
-    if (tx.transaction_type === 'JAMA_DEPOSIT') {
+    if (tx.transaction_type === 'JAMA_DEPOSIT' || tx.transaction_type === 'JAMA_EARNED_INTEREST' || tx.transaction_type === 'JAMA_PRINCIPAL') {
       totalJama += amount
       const txDate = new Date(tx.transaction_date)
-      if (txDate >= today) todaysCollection += amount
+      if (txDate >= today && tx.transaction_type === 'JAMA_DEPOSIT') todaysCollection += amount
     } else if (tx.transaction_type === 'JAMA_WITHDRAWAL') {
       totalJama -= amount
       const txDate = new Date(tx.transaction_date)
