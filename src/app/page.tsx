@@ -20,10 +20,7 @@ export default function LandingPage() {
       {/* Minimalist Navigation */}
       <nav className="relative z-50 w-full pt-6 pb-4 px-6 lg:px-12 flex justify-between items-center shrink-0">
         <div className="flex items-center gap-3">
-          <div className="relative">
-            <ShieldCheck className="w-6 h-6 text-cyan-600 dark:text-cyan-400 transition-colors" />
-            <div className="absolute inset-0 bg-cyan-400/50 blur-md rounded-full -z-10"></div>
-          </div>
+          <img src="/logo.png" alt="Logo" className="w-10 h-10 object-contain drop-shadow-sm" />
           <span className="text-lg font-medium tracking-widest text-slate-900 dark:text-white transition-colors">RSSPP<span className="text-cyan-600 dark:text-cyan-400">.</span></span>
         </div>
         
