@@ -21,12 +21,12 @@ export default function LandingPage() {
       <nav className="relative z-50 w-full pt-6 pb-4 px-6 lg:px-12 flex justify-between items-center shrink-0">
         <div className="flex items-center gap-3">
           <img src="/logo.png" alt="Logo" className="w-10 h-10 object-contain drop-shadow-sm" />
-          <span className="text-lg font-medium tracking-widest text-slate-900 dark:text-white transition-colors">RSSPP<span className="text-cyan-600 dark:text-cyan-400">.</span></span>
+          <span className="text-lg font-medium tracking-widest text-slate-900 dark:text-white transition-colors">अपना स्वयं सहायता समूह<span className="text-cyan-600 dark:text-cyan-400">.</span></span>
         </div>
         
         <div className="hidden md:flex items-center gap-8 text-xs uppercase tracking-[0.2em] font-medium text-slate-500 dark:text-gray-500">
-          <a href="#platform" className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">Platform</a>
-          <a href="#security" className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">Security</a>
+          <a href="#platform" className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">प्लेटफॉर्म</a>
+          <a href="#security" className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">सुरक्षा</a>
         </div>
 
         <div className="flex items-center gap-4">
@@ -35,7 +35,7 @@ export default function LandingPage() {
             href="/admin-login" 
             className="hidden md:block text-xs uppercase tracking-[0.15em] font-medium text-slate-500 dark:text-gray-500 hover:text-slate-900 dark:hover:text-white transition-colors"
           >
-            Admin
+            एडमिन
           </Link>
         </div>
       </nav>
@@ -54,23 +54,23 @@ export default function LandingPage() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
               </div>
-              <span className="text-[10px] uppercase tracking-[0.2em] font-medium text-cyan-600 dark:text-cyan-400">Live System</span>
+              <span className="text-[10px] uppercase tracking-[0.2em] font-medium text-cyan-600 dark:text-cyan-400">लाइव सिस्टम</span>
             </div>
 
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-light tracking-tight text-slate-900 dark:text-white leading-[1.1] transition-colors">
-              Smart <span className="font-medium text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-500">Finance</span> <br />
-              for Modern Users
+              स्मार्ट <span className="font-medium text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-500">फाइनेंस</span> <br />
+              आधुनिक उपयोगकर्ताओं के लिए
             </h1>
 
             <p className="text-sm sm:text-base text-slate-600 dark:text-gray-400 font-light leading-relaxed max-w-md tracking-wide transition-colors">
-              Manage your money with simple, secure, and intelligent financial solutions. Built for fast transactions and reliable management.
+              सरल, सुरक्षित और बुद्धिमान वित्तीय समाधानों के साथ अपने धन का प्रबंधन करें। तेज़ लेनदेन और विश्वसनीय प्रबंधन के लिए निर्मित।
             </p>
 
             <div className="flex items-center gap-6 pt-4">
               {/* Fake UI Tag */}
               <div className="hidden sm:flex items-center gap-2 text-[10px] uppercase tracking-[0.1em] text-slate-500 dark:text-gray-500 transition-colors">
                 <div className="w-1 h-1 rounded-full bg-cyan-500/50"></div>
-                v2.0.4 Online
+                v2.0.4 ऑनलाइन
               </div>
             </div>
           </div>
@@ -89,22 +89,22 @@ export default function LandingPage() {
             <div className="flex items-start gap-4">
               <div className="mt-1 w-1.5 h-1.5 rounded-full bg-cyan-500 shadow-[0_0_10px_#22d3ee]"></div>
               <div>
-                <h4 className="text-sm font-medium text-slate-900 dark:text-white tracking-widest uppercase mb-2 transition-colors">Modern Wallet</h4>
-                <p className="text-xs text-slate-600 dark:text-gray-500 font-light leading-relaxed transition-colors">Smart finance solutions built to simplify digital payments and manage assets efficiently.</p>
+                <h4 className="text-sm font-medium text-slate-900 dark:text-white tracking-widest uppercase mb-2 transition-colors">आधुनिक वॉलेट</h4>
+                <p className="text-xs text-slate-600 dark:text-gray-500 font-light leading-relaxed transition-colors">डिजिटल भुगतान को सरल बनाने और संपत्तियों को कुशलतापूर्वक प्रबंधित करने के लिए निर्मित स्मार्ट वित्त समाधान।</p>
               </div>
             </div>
             <div className="flex items-start gap-4">
               <div className="mt-1 w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_10px_#3b82f6]"></div>
               <div>
-                <h4 className="text-sm font-medium text-slate-900 dark:text-white tracking-widest uppercase mb-2 transition-colors">Seamless Transfer</h4>
-                <p className="text-xs text-slate-600 dark:text-gray-500 font-light leading-relaxed transition-colors">Secure digital payments made simple for modern cooperative society members.</p>
+                <h4 className="text-sm font-medium text-slate-900 dark:text-white tracking-widest uppercase mb-2 transition-colors">निर्बाध ट्रांसफर</h4>
+                <p className="text-xs text-slate-600 dark:text-gray-500 font-light leading-relaxed transition-colors">आधुनिक सहकारी समिति के सदस्यों के लिए सुरक्षित डिजिटल भुगतान को सरल बनाया गया है।</p>
               </div>
             </div>
             <div className="flex items-start gap-4">
               <div className="mt-1 w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-white shadow-[0_0_10px_#94a3b8] dark:shadow-[0_0_10px_#ffffff]"></div>
               <div>
-                <h4 className="text-sm font-medium text-slate-900 dark:text-white tracking-widest uppercase mb-2 transition-colors">Total Security</h4>
-                <p className="text-xs text-slate-600 dark:text-gray-500 font-light leading-relaxed transition-colors">Encrypted data vaults and strictly enforced KYC protocols for peace of mind.</p>
+                <h4 className="text-sm font-medium text-slate-900 dark:text-white tracking-widest uppercase mb-2 transition-colors">पूर्ण सुरक्षा</h4>
+                <p className="text-xs text-slate-600 dark:text-gray-500 font-light leading-relaxed transition-colors">मन की शांति के लिए एन्क्रिप्टेड डेटा वॉल्ट और सख्ती से लागू केवाईसी प्रोटोकॉल।</p>
               </div>
             </div>
           </div>
