@@ -54,8 +54,10 @@ export async function login(prevState: any, formData: FormData) {
       .eq('id', user.id)
       .single()
 
+    // STRICT ADMIN CHECK: If they are admin, they MUST use the admin portal
     if (profile?.role === 'admin') {
-      redirectPath = '/admin'
+      await supabase.auth.signOut()
+      return { error: 'Admin accounts must use the dedicated Admin Portal (/admin-login) to sign in.' }
     }
   }
 
