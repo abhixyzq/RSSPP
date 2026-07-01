@@ -3,7 +3,7 @@ import { ArrowRight, ChevronRight, Coins, ShieldCheck, Activity, Zap, Cpu } from
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-[#030712] font-sans text-gray-300 selection:bg-cyan-500/30 selection:text-cyan-100 overflow-x-hidden relative">
+    <div className="h-screen bg-[#030712] font-sans text-gray-300 selection:bg-cyan-500/30 selection:text-cyan-100 overflow-hidden relative flex flex-col">
       
       {/* Dynamic Background Effects */}
       <div className="fixed inset-0 z-0 pointer-events-none">
@@ -16,7 +16,7 @@ export default function LandingPage() {
       </div>
 
       {/* Minimalist Navigation */}
-      <nav className="relative z-50 w-full pt-8 px-6 lg:px-12 flex justify-between items-center">
+      <nav className="relative z-50 w-full pt-6 pb-4 px-6 lg:px-12 flex justify-between items-center shrink-0">
         <div className="flex items-center gap-3">
           <div className="relative">
             <ShieldCheck className="w-6 h-6 text-cyan-400" />
@@ -51,7 +51,7 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <main className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 pt-32 pb-24 min-h-[90vh] flex flex-col justify-center">
+      <main className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 flex-1 flex flex-col justify-center min-h-0 w-full">
         
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left: Typography */}
@@ -149,8 +149,8 @@ export default function LandingPage() {
       </main>
 
       {/* Key Features Minimalist Bar */}
-      <section className="relative z-10 border-t border-white/5 bg-black/20 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 py-12">
+      <section className="relative z-10 border-t border-white/5 bg-black/20 backdrop-blur-md shrink-0">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 py-6 lg:py-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="flex items-start gap-4">
               <div className="mt-1 w-1.5 h-1.5 rounded-full bg-cyan-500 shadow-[0_0_10px_#22d3ee]"></div>
