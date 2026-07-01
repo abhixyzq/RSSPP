@@ -17,7 +17,7 @@ export default async function LedgerEntryPage() {
   }
 
   return (
-    <div className="-m-4 sm:-m-8">
+    <div>
       <AddTransactionForm customers={customers || []} />
     </div>
   )
