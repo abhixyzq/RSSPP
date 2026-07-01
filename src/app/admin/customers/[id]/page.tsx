@@ -69,7 +69,7 @@ export default async function CustomerProfilePage({
          </Link>
          
          <div className="flex gap-3 w-full sm:w-auto">
-            <EditCustomerModal profile={profile} />
+            {!profile.isClosed && <EditCustomerModal profile={profile} />}
             <button className="flex items-center gap-2 text-sm font-bold text-gray-600 bg-white px-4 py-2 rounded-md shadow-sm border border-gray-200 hover:bg-gray-50">
              <Printer className="w-4 h-4" /> Print
            </button>
@@ -115,8 +115,12 @@ export default async function CustomerProfilePage({
             <div className="space-y-3">
                <div className="grid grid-cols-3">
                   <span className="text-sm text-gray-500 font-bold uppercase col-span-1">Status</span>
-                  <span className="text-sm font-bold text-green-700 col-span-2 flex items-center gap-1">
-                     <CheckCircle className="w-4 h-4" /> ACTIVE
+                  <span className="text-sm font-bold col-span-2 flex items-center gap-1">
+                     {profile.isClosed ? (
+                       <span className="text-red-700 flex items-center gap-1"><X className="w-4 h-4" /> CLOSED (बंद)</span>
+                     ) : (
+                       <span className="text-green-700 flex items-center gap-1"><CheckCircle className="w-4 h-4" /> ACTIVE</span>
+                     )}
                   </span>
                </div>
                <div className="grid grid-cols-3">

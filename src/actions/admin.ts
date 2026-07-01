@@ -216,6 +216,15 @@ export async function getCustomerDetails(customerId: string) {
     
   if (profileError) return { error: 'Customer not found' }
   
+  if (profile.full_name && profile.full_name.startsWith('[CLOSED:')) {
+    const match = profile.full_name.match(/\[CLOSED: (\d+)\] (.*)/)
+    if (match) {
+      profile.mobile_number = match[1]
+      profile.full_name = match[2]
+      profile.isClosed = true
+    }
+  }
+  
   const { data: transactions, error: txError } = await supabaseAdmin
     .from('transactions')
     .select('*')

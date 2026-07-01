@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import { Search, Trash2, RotateCcw, AlertTriangle, Loader2, Archive } from 'lucide-react'
+import { Search, Trash2, RotateCcw, AlertTriangle, Loader2, Archive, Eye } from 'lucide-react'
 import { permanentDeleteCustomer, restoreCustomer } from '@/actions/admin'
 
 type Customer = {
@@ -140,6 +140,13 @@ export default function ClosedCustomerTable({ customers }: { customers: Customer
                          </td>
                          <td className="p-4 text-right">
                             <div className="flex items-center justify-end gap-2">
+                               <button
+                                 onClick={() => router.push(`/admin/customers/${customer.id}`)}
+                                 className="flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-[12px] font-bold rounded-lg shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5"
+                                 title="View Account Details"
+                               >
+                                 <Eye className="w-3.5 h-3.5" /> Details
+                               </button>
                                <button
                                  onClick={() => setCustomerToRestore(customer)}
                                  className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white text-[12px] font-bold rounded-lg shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5"
