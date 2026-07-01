@@ -11,7 +11,7 @@ export default async function CustomerDashboard() {
   } = await supabase.auth.getUser()
 
   if (!user) {
-    redirect('/login')
+    redirect('/')
   }
 
   // 2. Fetch their name and details
@@ -22,7 +22,7 @@ export default async function CustomerDashboard() {
     .single()
 
   if (profileError || !profile) {
-    redirect('/login')
+    redirect('/')
   }
 
   if (profile.role === 'admin') {

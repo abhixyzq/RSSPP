@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { ArrowRight, ChevronRight, Coins, ShieldCheck, Activity, Zap, Cpu } from 'lucide-react'
+import CustomerLogin from './components/CustomerLogin'
 
 export default function LandingPage() {
   return (
@@ -37,16 +38,6 @@ export default function LandingPage() {
           >
             Admin
           </Link>
-          <Link 
-            href="/login" 
-            className="group relative inline-flex items-center justify-center gap-3 bg-white/5 border border-white/10 hover:border-cyan-500/50 hover:bg-cyan-500/10 px-5 py-2.5 rounded-full text-xs font-medium uppercase tracking-[0.15em] text-white transition-all overflow-hidden"
-          >
-            <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-cyan-400/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
-            Platform
-            <div className="w-5 h-5 rounded-full bg-white text-black flex items-center justify-center group-hover:bg-cyan-400 transition-colors">
-              <ChevronRight className="w-3 h-3" />
-            </div>
-          </Link>
         </div>
       </nav>
 
@@ -77,16 +68,6 @@ export default function LandingPage() {
             </p>
 
             <div className="flex items-center gap-6 pt-4">
-              <Link 
-                href="/login" 
-                className="group relative inline-flex items-center justify-center gap-4 bg-white/5 border border-white/10 hover:border-cyan-500/50 hover:bg-cyan-500/10 px-6 py-3 rounded-full text-xs font-medium uppercase tracking-[0.2em] text-white transition-all"
-              >
-                Start
-                <div className="w-6 h-6 rounded-full bg-white text-black flex items-center justify-center group-hover:bg-cyan-400 transition-colors">
-                  <ArrowRight className="w-3 h-3" />
-                </div>
-              </Link>
-              
               {/* Fake UI Tag */}
               <div className="hidden sm:flex items-center gap-2 text-[10px] uppercase tracking-[0.1em] text-gray-500">
                 <div className="w-1 h-1 rounded-full bg-cyan-500/50"></div>
@@ -95,55 +76,9 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Right: Floating Tech Elements */}
-          <div className="relative h-[400px] lg:h-[600px] w-full perspective-1000">
-            {/* Central abstract wallet/cards */}
-            <div className="absolute inset-0 flex items-center justify-center">
-               <div className="relative w-64 h-80 transform-gpu preserve-3d group">
-                  {/* Glowing core */}
-                  <div className="absolute inset-0 bg-cyan-500/20 blur-3xl rounded-full"></div>
-                  
-                  {/* Floating glass panel 1 */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-2xl backdrop-blur-xl transform-gpu rotate-y-[-20deg] rotate-x-[10deg] translate-x-[-20px] translate-y-[-20px] shadow-[0_0_50px_rgba(34,211,238,0.15)] flex items-center justify-center animate-[float_6s_ease-in-out_infinite]">
-                    <div className="w-16 h-1 bg-white/20 rounded-full absolute top-6"></div>
-                    <Cpu className="w-16 h-16 text-cyan-400/50" />
-                  </div>
-                  
-                  {/* Floating glass panel 2 */}
-                  <div className="absolute inset-0 bg-gradient-to-bl from-cyan-900/40 to-black/40 border border-cyan-500/30 rounded-2xl backdrop-blur-md transform-gpu rotate-y-[15deg] rotate-x-[5deg] translate-x-[30px] translate-y-[30px] shadow-[0_0_50px_rgba(0,0,0,0.5)] flex flex-col justify-end p-6 animate-[float_8s_ease-in-out_infinite_reverse]">
-                    <div className="w-full flex justify-between items-end">
-                      <div className="space-y-2">
-                        <div className="w-8 h-1 bg-cyan-400/50 rounded-full"></div>
-                        <div className="text-xl font-light text-white tracking-widest">**** 4092</div>
-                      </div>
-                      <div className="w-8 h-8 rounded-full border border-cyan-400/50 flex items-center justify-center">
-                        <Zap className="w-4 h-4 text-cyan-400" />
-                      </div>
-                    </div>
-                  </div>
-               </div>
-            </div>
-
-            {/* Floating Tags */}
-            <div className="absolute top-[20%] right-[10%] bg-black/60 backdrop-blur-md border border-white/10 rounded-full px-4 py-2 flex items-center gap-3 animate-[float_5s_ease-in-out_infinite]">
-              <div className="w-2 h-2 rounded-full bg-white shadow-[0_0_10px_#fff]"></div>
-              <span className="text-[10px] uppercase tracking-[0.15em] font-medium text-white">Secure System</span>
-            </div>
-
-            <div className="absolute bottom-[30%] left-[5%] bg-black/60 backdrop-blur-md border border-white/10 rounded-xl p-4 flex items-center gap-4 animate-[float_7s_ease-in-out_infinite_1s]">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_#22d3ee]"></div>
-                  <span className="text-[10px] uppercase tracking-[0.1em] text-gray-400">Performance</span>
-                </div>
-                <div className="text-xl font-light text-white">135K<span className="text-cyan-400">%</span></div>
-              </div>
-              <Activity className="w-8 h-8 text-cyan-500/50" />
-            </div>
-            
-            <div className="absolute top-[40%] left-[80%] text-white/20">
-               <div className="h-[100px] w-px bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
-            </div>
+          {/* Right: Customer Login Component */}
+          <div className="relative w-full flex items-center justify-center">
+             <CustomerLogin />
           </div>
         </div>
       </main>
