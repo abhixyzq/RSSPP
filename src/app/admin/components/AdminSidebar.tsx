@@ -33,7 +33,7 @@ export default function AdminSidebar({ profileName }: { profileName: string }) {
       {/* Mobile Top Header (Visible only on small screens) */}
       <div className="md:hidden bg-white/50 dark:bg-black/30 backdrop-blur-xl border-b border-gray-200/50 dark:border-white/5 h-16 flex items-center justify-between px-4 sticky top-0 z-40 w-full transition-colors duration-500">
         <div className="flex items-center gap-3">
-          <img src="/logo.png" alt="Logo" className="w-10 h-10 object-contain drop-shadow-sm" />
+          <img src="/logo.png" alt="Logo" className="w-10 h-10 object-cover rounded-full border border-gray-200 dark:border-white/15 shadow-sm" />
           <span className="text-[14px] font-bold tracking-tight text-gray-900 dark:text-white leading-tight">Apna Sang<br/>Sahayata Samuh</span>
         </div>
         <button onClick={() => setIsOpen(!isOpen)} className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 rounded-md transition-colors">
@@ -54,7 +54,7 @@ export default function AdminSidebar({ profileName }: { profileName: string }) {
         
         {/* Desktop Brand Area */}
         <div className="hidden md:flex h-[72px] items-center gap-3 px-6 border-b border-gray-200/50 dark:border-white/5 shrink-0">
-          <img src="/logo.png" alt="Logo" className="w-10 h-10 object-contain drop-shadow-sm" />
+          <img src="/logo.png" alt="Logo" className="w-10 h-10 object-cover rounded-full border border-gray-200 dark:border-white/15 shadow-sm" />
           <div className="flex flex-col justify-center">
             <span className="text-[14px] font-bold tracking-tight text-gray-900 dark:text-white leading-tight">Apna Sang Sahayata</span>
             <span className="text-[11px] font-semibold uppercase tracking-widest text-cyan-600 dark:text-cyan-400 mt-0.5">Control Panel</span>
