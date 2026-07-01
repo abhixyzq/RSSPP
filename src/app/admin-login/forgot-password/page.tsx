@@ -245,6 +245,35 @@ export default function ForgotPasswordPage() {
         </div>
       </main>
 
+      {/* Key Features Bar */}
+      <section className="relative z-10 border-t border-slate-200 dark:border-white/5 bg-white/50 dark:bg-black/20 backdrop-blur-md shrink-0 transition-colors duration-500">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 py-6 lg:py-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            <div className="flex items-start gap-4">
+              <div className="mt-1 w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_10px_#ef4444]"></div>
+              <div>
+                <h4 className="text-sm font-medium text-slate-900 dark:text-white tracking-widest uppercase mb-2 transition-colors">Member Control</h4>
+                <p className="text-xs text-slate-600 dark:text-gray-500 font-light leading-relaxed transition-colors">Register new members, manage status, and oversee society parameters effortlessly.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <div className="mt-1 w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_10px_#f59e0b]"></div>
+              <div>
+                <h4 className="text-sm font-medium text-slate-900 dark:text-white tracking-widest uppercase mb-2 transition-colors">Bulk Interest</h4>
+                <p className="text-xs text-slate-600 dark:text-gray-500 font-light leading-relaxed transition-colors">Calculate and deposit monthly interest in bulk across all member ledger accounts dynamically.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <div className="mt-1 w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-white shadow-[0_0_10px_#94a3b8] dark:shadow-[0_0_10px_#ffffff]"></div>
+              <div>
+                <h4 className="text-sm font-medium text-slate-900 dark:text-white tracking-widest uppercase mb-2 transition-colors">Audit Ledger</h4>
+                <p className="text-xs text-slate-600 dark:text-gray-500 font-light leading-relaxed transition-colors">Full society ledger audits, jama-nikasi tracking, and exportable financial reports.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes shimmer {
           100% { transform: translateX(100%); }
