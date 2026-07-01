@@ -2,8 +2,9 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import { Search, Building, Trash2, BookOpen, AlertTriangle, Loader2, Download, Printer } from 'lucide-react'
+import { Search, Building, Trash2, BookOpen, AlertTriangle, Loader2, Download } from 'lucide-react'
 import { deleteCustomer } from '@/actions/admin'
+import ExportCSVButton from '../../components/ExportCSVButton'
 
 type Customer = {
   id: string
@@ -28,6 +29,13 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
     )
   })
 
+  const exportData = filteredCustomers.map(c => ({
+    "Account Number": c.mobile_number,
+    "Full Name": c.full_name,
+    "KYC Status": c.kyc_document ? 'Verified' : 'Pending',
+    "Account ID": c.id
+  }))
+
   const handleDelete = async () => {
     if (!customerToDelete) return
     setErrorMsg('')
@@ -44,7 +52,7 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
   }
 
   return (
-    <div className="w-full print:hidden">
+    <div className="w-full">
       
       {/* Top Navigation */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
@@ -55,12 +63,11 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
            </h1>
         </div>
         <div className="flex flex-wrap gap-3">
-           <button onClick={() => window.print()} className="flex items-center gap-2 text-sm font-bold text-gray-600 bg-white px-4 py-2 rounded-md shadow-sm border border-gray-200 hover:bg-gray-50 w-full sm:w-auto justify-center">
-             <Printer className="w-4 h-4" /> <span>Print List <span className="normal-case text-xs opacity-70 ml-1">(सूची प्रिंट करें)</span></span>
-           </button>
-           <button className="flex items-center gap-2 text-sm font-bold text-white bg-[#0B2E59] px-4 py-2 rounded-md shadow-sm hover:bg-[#071f3e]">
-             <Download className="w-4 h-4" /> <span>Export CSV <span className="normal-case text-xs opacity-70 ml-1">(CSV डाउनलोड करें)</span></span>
-           </button>
+           <ExportCSVButton 
+              data={exportData}
+              filename="customer_directory.csv"
+              label={<><Download className="w-4 h-4" /> <span>Export CSV <span className="normal-case text-xs opacity-70 ml-1">(CSV डाउनलोड करें)</span></span></>}
+           />
         </div>
       </div>
 

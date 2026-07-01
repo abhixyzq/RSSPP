@@ -3,7 +3,7 @@
 import { useActionState, useEffect, useRef } from 'react'
 import { useFormStatus } from 'react-dom'
 import { createCustomer } from '@/actions/admin'
-import { AlertCircle, CheckCircle2, Building, User, Phone, MapPin, Lock, FileText, Users, Printer } from 'lucide-react'
+import { AlertCircle, CheckCircle2, Building, User, Phone, MapPin, Lock, FileText, Users } from 'lucide-react'
 
 function SubmitBtn() {
   const { pending } = useFormStatus()
@@ -54,9 +54,6 @@ export default function AddCustomerForm() {
         <div>
            <h1 className="text-2xl font-bold text-[#0B2E59] uppercase">New Account Registration</h1>
         </div>
-        <button type="button" onClick={() => window.print()} className="hidden sm:flex items-center gap-2 text-sm font-bold text-gray-600 bg-white px-4 py-2 rounded-md shadow-sm border border-gray-200 hover:bg-gray-50">
-          <Printer className="w-4 h-4" /> Print Form
-        </button>
       </div>
 
       <div className="bg-white shadow-md border border-gray-300 max-w-5xl mx-auto">

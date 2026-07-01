@@ -3,8 +3,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Download, Building, CheckCircle, ArrowDownToLine, ArrowUpFromLine, Wallet, CreditCard, Activity, X } from 'lucide-react'
 import EditCustomerModal from '../components/EditCustomerModal'
-import PrintButton from '../../components/PrintButton'
-import PrintPassbook from '../components/PrintPassbook'
+import ExportCSVButton from '../../components/ExportCSVButton'
 
 export default async function CustomerProfilePage({
   params,
@@ -60,9 +59,15 @@ export default async function CustomerProfilePage({
     })
     .reverse();
 
+    const exportData = allTx.map((tx: any) => ({
+      Date: new Date(tx.transaction_date).toLocaleDateString('en-IN'),
+      Type: tx.transaction_type.replace(/_/g, ' '),
+      Amount: tx.amount,
+      Description: tx.description || ''
+    }))
+
   return (
-    <>
-    <div className="print:hidden max-w-[1200px] mx-auto pb-20 p-4 sm:p-8 font-sans">
+    <div className="max-w-[1200px] mx-auto pb-20 p-4 sm:p-8 font-sans">
       
       {/* Header Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
@@ -73,7 +78,7 @@ export default async function CustomerProfilePage({
          
          <div className="flex gap-3 w-full sm:w-auto">
             {!profile.isClosed && <EditCustomerModal profile={profile} />}
-            <PrintButton />
+            <ExportCSVButton data={exportData} filename={`${profile.full_name}_passbook.csv`} label={<><Download className="w-4 h-4" /> Export CSV</>} />
          </div>
       </div>
 
@@ -295,15 +300,5 @@ export default async function CustomerProfilePage({
 
       </div>
     </div>
-
-    <PrintPassbook 
-      profile={profile}
-      jamaTransactions={jamaTransactions}
-      nikasiTransactions={nikasiTransactions}
-      currentJamaBalance={currentJamaBalance}
-      currentNikasiBalance={currentNikasiBalance}
-      totalJamaInterest={totalJamaInterest}
-    />
-    </>
   )
 }

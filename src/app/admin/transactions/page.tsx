@@ -1,7 +1,6 @@
 import { createAdminClient } from '@/utils/supabase/admin'
-import { History, Printer, ArrowUpRight, ArrowDownRight, Search, FileText } from 'lucide-react'
-import PrintTransactionLedger from './PrintTransactionLedger'
-import PrintButton from '../components/PrintButton'
+import { History, ArrowUpRight, ArrowDownRight, Search, FileText, Download } from 'lucide-react'
+import ExportCSVButton from '../components/ExportCSVButton'
 
 // Helper to format currency
 const formatCurrency = (amount: number) => {
@@ -25,9 +24,18 @@ export default async function TransactionsPage() {
     .order('transaction_date', { ascending: false })
     .limit(100)
 
+  // Map data for CSV export
+  const csvData = (transactions || []).map((tx: any) => ({
+    Date: new Date(tx.transaction_date).toLocaleDateString('en-IN'),
+    Time: new Date(tx.transaction_date).toLocaleTimeString('en-IN'),
+    Customer_Name: tx.users_profile?.full_name || 'Unknown',
+    Transaction_Type: tx.transaction_type,
+    Amount: tx.amount,
+    Description: tx.description || ''
+  }))
+
   return (
-    <>
-    <div className="w-full font-sans relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20 print:hidden">
+    <div className="w-full font-sans relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
       
       {/* Header */}
       <div className="bg-white/40 dark:bg-black/40 backdrop-blur-2xl p-6 md:p-8 rounded-3xl border border-white/40 dark:border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 shadow-lg">
@@ -42,7 +50,11 @@ export default async function TransactionsPage() {
               </p>
            </div>
         </div>
-        <PrintButton label={<><Printer className="w-4 h-4" /> Print Ledger</>} />
+        <ExportCSVButton 
+          data={csvData} 
+          filename="ledger_transactions.csv" 
+          label={<><Download className="w-4 h-4" /> Export Ledger to CSV</>} 
+        />
       </div>
 
       {/* Transactions Table */}
@@ -119,8 +131,6 @@ export default async function TransactionsPage() {
         </div>
       </div>
     </div>
-    
-    <PrintTransactionLedger transactions={transactions || []} />
-    </>
   )
 }
+

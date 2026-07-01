@@ -1,6 +1,5 @@
 import { getAllCustomers } from '@/actions/admin'
 import CustomerTable from './components/CustomerTable'
-import PrintCustomerList from './components/PrintCustomerList'
 import { Users, Search, UserPlus } from 'lucide-react'
 import Link from 'next/link'
 
@@ -37,7 +36,6 @@ export default async function CustomersPage() {
       </div>
       
       <CustomerTable customers={customers || []} />
-      <PrintCustomerList customers={customers || []} />
     </div>
   )
 }
