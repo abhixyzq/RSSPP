@@ -119,6 +119,31 @@ export async function requestAdminPasswordReset(prevState: any, formData: FormDa
 
   const email = adminId.includes('@') ? adminId : `${adminId}@rsspp.local`
 
+  const { createAdminClient } = await import('@/utils/supabase/admin')
+  const supabaseAdmin = createAdminClient()
+
+  // Find user by email
+  const { data: usersData, error: usersError } = await supabaseAdmin.auth.admin.listUsers()
+  if (usersError) return { error: 'Failed to verify administrator identity.' }
+
+  const targetUser = usersData.users.find(u => u.email === email)
+  
+  if (!targetUser) {
+    // Show generic error to avoid email enumeration, but wait, this is admin login so it's fine
+    return { error: 'Admin account not found for this ID.' }
+  }
+
+  // Check role in users_profile
+  const { data: profile } = await supabaseAdmin
+    .from('users_profile')
+    .select('role')
+    .eq('id', targetUser.id)
+    .single()
+
+  if (profile?.role !== 'admin') {
+    return { error: 'Access Denied: This ID does not have administrator privileges.' }
+  }
+
   const { error } = await supabase.auth.resetPasswordForEmail(email)
 
   if (error) {
