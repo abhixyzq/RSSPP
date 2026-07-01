@@ -49,23 +49,23 @@ export default function LandingPage() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
               </div>
-              <span className="text-[10px] uppercase tracking-[0.2em] font-medium text-cyan-600 dark:text-cyan-400">Live System</span>
+              <span className="text-[10px] uppercase tracking-[0.2em] font-medium text-cyan-600 dark:text-cyan-400">Digital Ledger</span>
             </div>
 
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-light tracking-tight text-slate-900 dark:text-white leading-[1.1] transition-colors">
-              Smart <span className="font-medium text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-500">Finance</span> <br />
-              for Modern Users
+              Smart <span className="font-medium text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-500">Passbook</span> <br />
+              for Cooperative Societies
             </h1>
 
             <p className="text-sm sm:text-base text-slate-600 dark:text-gray-400 font-light leading-relaxed max-w-md tracking-wide transition-colors">
-              Manage your money with simple, secure, and intelligent financial solutions. Built for fast transactions and reliable management.
+              Track savings (Jama), loans (Udhaar), and dynamic interest payouts with complete mathematical transparency. Built for modern cooperative societies.
             </p>
 
             <div className="flex items-center gap-6 pt-4">
               {/* Fake UI Tag */}
               <div className="hidden sm:flex items-center gap-2 text-[10px] uppercase tracking-[0.1em] text-slate-500 dark:text-gray-500 transition-colors">
                 <div className="w-1 h-1 rounded-full bg-cyan-500/50"></div>
-                v2.0.4 Online
+                v2.0.4 Active
               </div>
             </div>
           </div>
@@ -84,22 +84,22 @@ export default function LandingPage() {
             <div className="flex items-start gap-4">
               <div className="mt-1 w-1.5 h-1.5 rounded-full bg-cyan-500 shadow-[0_0_10px_#22d3ee]"></div>
               <div>
-                <h4 className="text-sm font-medium text-slate-900 dark:text-white tracking-widest uppercase mb-2 transition-colors">Modern Wallet</h4>
-                <p className="text-xs text-slate-600 dark:text-gray-500 font-light leading-relaxed transition-colors">Smart finance solutions built to simplify digital payments and manage assets efficiently.</p>
+                <h4 className="text-sm font-medium text-slate-900 dark:text-white tracking-widest uppercase mb-2 transition-colors">Digital Passbook</h4>
+                <p className="text-xs text-slate-600 dark:text-gray-500 font-light leading-relaxed transition-colors">Members can view their Jama & Udhaar balances, transaction logs, and accrued interest in real-time.</p>
               </div>
             </div>
             <div className="flex items-start gap-4">
               <div className="mt-1 w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_10px_#3b82f6]"></div>
               <div>
-                <h4 className="text-sm font-medium text-slate-900 dark:text-white tracking-widest uppercase mb-2 transition-colors">Seamless Transfer</h4>
-                <p className="text-xs text-slate-600 dark:text-gray-500 font-light leading-relaxed transition-colors">Secure digital payments made simple for modern cooperative society members.</p>
+                <h4 className="text-sm font-medium text-slate-900 dark:text-white tracking-widest uppercase mb-2 transition-colors">Interest Payouts</h4>
+                <p className="text-xs text-slate-600 dark:text-gray-500 font-light leading-relaxed transition-colors">Admin-controlled dynamic interest calculations for deposits and loan statements.</p>
               </div>
             </div>
             <div className="flex items-start gap-4">
               <div className="mt-1 w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-white shadow-[0_0_10px_#94a3b8] dark:shadow-[0_0_10px_#ffffff]"></div>
               <div>
-                <h4 className="text-sm font-medium text-slate-900 dark:text-white tracking-widest uppercase mb-2 transition-colors">Total Security</h4>
-                <p className="text-xs text-slate-600 dark:text-gray-500 font-light leading-relaxed transition-colors">Encrypted data vaults and strictly enforced KYC protocols for peace of mind.</p>
+                <h4 className="text-sm font-medium text-slate-900 dark:text-white tracking-widest uppercase mb-2 transition-colors">Secure & Trustworthy</h4>
+                <p className="text-xs text-slate-600 dark:text-gray-500 font-light leading-relaxed transition-colors">Secure password-protected member logins and a dedicated admin panel to build community trust.</p>
               </div>
             </div>
           </div>
