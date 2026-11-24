@@ -13,6 +13,9 @@ const formatCurrency = (amount: number) => {
   }).format(amount)
 }
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function AdminDashboard() {
   const totals = await getVillageTotals()
   const supabase = createAdminClient()
@@ -120,7 +123,7 @@ export default async function AdminDashboard() {
           </div>
           
           <div className="flex flex-col gap-3">
-             <Link href="/admin/transaction" className="group flex items-center justify-between p-4 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl shadow-sm hover:border-[#0B2E59] dark:hover:border-blue-500 transition-colors">
+             <Link href="/admin/ledger" className="group flex items-center justify-between p-4 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl shadow-sm hover:border-[#0B2E59] dark:hover:border-blue-500 transition-colors">
                <div className="flex items-center gap-4">
                   <div className="w-10 h-10 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
                     <Activity className="w-5 h-5 text-blue-600 dark:text-blue-400" />

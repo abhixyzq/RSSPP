@@ -151,24 +151,54 @@ export async function addTransaction(prevState: any, formData: FormData) {
   }
 
   revalidatePath('/admin', 'layout')
+  revalidatePath('/admin')
+  revalidatePath('/admin/ledger')
+  revalidatePath('/admin/transactions')
   return { success: 'Transaction recorded successfully!' }
 }
 
 export async function getCustomerBalance(userId: string) {
   const supabaseAdmin = createAdminClient()
   
-  const { data: transactions } = await supabaseAdmin
-    .from('transactions')
-    .select('amount, transaction_type, transaction_date')
-    .eq('user_id', userId)
-    .order('transaction_date', { ascending: true }) // Chronological order is critical for bucketing
+  const PAGE_SIZE = 1000
+  let from = 0
+  let hasMore = true
+  const transactions: { amount: number; transaction_type: string; transaction_date: string }[] = []
+
+  while (hasMore) {
+    const to = from + PAGE_SIZE - 1
+    const { data: batch, error } = await supabaseAdmin
+      .from('transactions')
+      .select('amount, transaction_type, transaction_date')
+      .eq('user_id', userId)
+      .order('transaction_date', { ascending: true }) // Chronological order is critical for bucketing
+      .range(from, to)
+
+    if (error) {
+      console.error('Customer balance query error:', error)
+      break
+    }
+
+    if (!batch || batch.length === 0) {
+      break
+    }
+
+    transactions.push(...batch)
+
+    if (batch.length < PAGE_SIZE) {
+      hasMore = false
+    } else {
+      from += PAGE_SIZE
+    }
+  }
 
   let jamaBal = 0
   let earnedInterest = 0
   let nikasiBal = 0
 
-  transactions?.forEach(tx => {
-    const amt = Number(tx.amount)
+  transactions.forEach(tx => {
+    const amt = Number(tx.amount) || 0
+    if (isNaN(amt) || amt <= 0) return
     
     // Jama Calculations
     if (tx.transaction_type === 'JAMA_DEPOSIT' || tx.transaction_type === 'JAMA_PRINCIPAL') {
@@ -204,56 +234,85 @@ export async function getCustomerBalance(userId: string) {
 export async function getVillageTotals() {
   const supabaseAdmin = createAdminClient()
 
-  // 1. Get all transactions to compute sums
-  const { data: transactions, error: txError } = await supabaseAdmin
-    .from('transactions')
-    .select('amount, transaction_type, transaction_date')
-
-  // 2. Get customer count
-  const { count: customerCount, error: countError } = await supabaseAdmin
-    .from('users_profile')
-    .select('*', { count: 'exact', head: true })
-    .eq('role', 'customer')
-
-  if (txError || countError) {
-    console.error('Error fetching totals', txError, countError)
-    return {
-      totalJama: 0,
-      totalNikasi: 0,
-      activeCustomers: 0,
-      todaysCollection: 0
-    }
-  }
+  // Fetch all transactions in batches to overcome PostgREST default 1000-row limit
+  const PAGE_SIZE = 1000
+  let from = 0
+  let hasMore = true
 
   let totalJama = 0
   let totalNikasi = 0
   let todaysCollection = 0
-  
+
   // Get start of today in local time for comparison
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 
-  transactions?.forEach(tx => {
-    const amount = Number(tx.amount)
-    
-    // Deposit Account (JAMA)
-    if (tx.transaction_type === 'JAMA_DEPOSIT' || tx.transaction_type === 'JAMA_EARNED_INTEREST' || tx.transaction_type === 'JAMA_PRINCIPAL') {
-      totalJama += amount
-      const txDate = new Date(tx.transaction_date)
-      if (txDate >= today && tx.transaction_type === 'JAMA_DEPOSIT') todaysCollection += amount
-    } else if (tx.transaction_type === 'JAMA_WITHDRAWAL') {
-      totalJama -= amount
-      const txDate = new Date(tx.transaction_date)
-      if (txDate >= today) todaysCollection -= amount
+  while (hasMore) {
+    const to = from + PAGE_SIZE - 1
+    const { data: batch, error: txError } = await supabaseAdmin
+      .from('transactions')
+      .select('amount, transaction_type, transaction_date')
+      .range(from, to)
+
+    if (txError) {
+      console.error('Error fetching transactions batch:', txError)
+      break
     }
-    // Loan Account (NIKASI)
-    else if (tx.transaction_type === 'NIKASI_LOAN') {
-      totalNikasi += amount
-    } else if (tx.transaction_type === 'NIKASI_REPAY_PRINCIPAL') {
-      totalNikasi -= amount
+
+    if (!batch || batch.length === 0) {
+      break
     }
-    // Note: NIKASI_REPAY_INTEREST does not affect totalNikasi (Principal)
-  })
+
+    for (const tx of batch) {
+      const amount = Number(tx.amount) || 0
+      if (isNaN(amount) || amount <= 0) continue
+
+      // Deposit Account (JAMA)
+      if (
+        tx.transaction_type === 'JAMA_DEPOSIT' ||
+        tx.transaction_type === 'JAMA_EARNED_INTEREST' ||
+        tx.transaction_type === 'JAMA_PRINCIPAL'
+      ) {
+        totalJama += amount
+        const txDate = new Date(tx.transaction_date)
+        if (txDate >= today && tx.transaction_type === 'JAMA_DEPOSIT') {
+          todaysCollection += amount
+        }
+      } else if (tx.transaction_type === 'JAMA_WITHDRAWAL') {
+        totalJama -= amount
+        const txDate = new Date(tx.transaction_date)
+        if (txDate >= today) {
+          todaysCollection -= amount
+        }
+      }
+      // Loan Account (NIKASI)
+      else if (
+        tx.transaction_type === 'NIKASI_LOAN' ||
+        tx.transaction_type === 'NIKASI_PRINCIPAL'
+      ) {
+        totalNikasi += amount
+      } else if (tx.transaction_type === 'NIKASI_REPAY_PRINCIPAL') {
+        totalNikasi -= amount
+      }
+    }
+
+    if (batch.length < PAGE_SIZE) {
+      hasMore = false
+    } else {
+      from += PAGE_SIZE
+    }
+  }
+
+  // 2. Get customer count (excluding closed accounts)
+  const { count: customerCount, error: countError } = await supabaseAdmin
+    .from('users_profile')
+    .select('*', { count: 'exact', head: true })
+    .eq('role', 'customer')
+    .not('full_name', 'ilike', '[CLOSED:%')
+
+  if (countError) {
+    console.error('Error fetching customer count:', countError)
+  }
 
   return {
     totalJama,

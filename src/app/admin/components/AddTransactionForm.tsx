@@ -1,6 +1,7 @@
 'use client'
 
 import { useActionState, useEffect, useRef, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { useFormStatus } from 'react-dom'
 import { addTransaction, getCustomerBalance } from '@/actions/admin'
 import { ArrowDownToLine, ArrowUpFromLine, FileText, AlertCircle, CheckCircle2, Search, Check, Building, ShieldCheck, IndianRupee, ArrowRight, Loader2, Wallet, Landmark } from 'lucide-react'
@@ -49,6 +50,7 @@ function SubmitBtn({ typeSelected, customerId, amount }: { typeSelected: string,
 }
 
 export default function AddTransactionForm({ customers }: { customers: Customer[] }) {
+  const router = useRouter()
   const [state, formAction] = useActionState(addTransaction, null)
   const formRef = useRef<HTMLFormElement>(null)
   
@@ -113,6 +115,7 @@ export default function AddTransactionForm({ customers }: { customers: Customer[
       }
 
       formRef.current?.reset()
+      router.refresh()
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setSearchQuery('')
       // eslint-disable-next-line react-hooks/set-state-in-effect

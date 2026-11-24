@@ -23,19 +23,40 @@ export default async function BulkInterestPage() {
     )
   }
 
-  // Fetch all JAMA transactions
-  const { data: transactions, error: txError } = await supabase
-    .from('transactions')
-    .select('*')
-    .like('transaction_type', 'JAMA_%')
+  // Fetch all JAMA transactions with pagination to prevent PostgREST 1000-row limit truncation
+  const PAGE_SIZE = 1000
+  let from = 0
+  let hasMore = true
+  const transactions: any[] = []
 
-  if (txError) {
-    return (
-      <div className="p-8 text-center text-red-600">
-        <h2 className="text-xl font-bold">Failed to load transactions</h2>
-        <p>{txError.message}</p>
-      </div>
-    )
+  while (hasMore) {
+    const to = from + PAGE_SIZE - 1
+    const { data: batch, error: txError } = await supabase
+      .from('transactions')
+      .select('*')
+      .like('transaction_type', 'JAMA_%')
+      .range(from, to)
+
+    if (txError) {
+      return (
+        <div className="p-8 text-center text-red-600">
+          <h2 className="text-xl font-bold">Failed to load transactions</h2>
+          <p>{txError.message}</p>
+        </div>
+      )
+    }
+
+    if (!batch || batch.length === 0) {
+      break
+    }
+
+    transactions.push(...batch)
+
+    if (batch.length < PAGE_SIZE) {
+      hasMore = false
+    } else {
+      from += PAGE_SIZE
+    }
   }
 
   // Pre-calculate running balances for everyone
