@@ -17,15 +17,17 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export default async function AdminDashboard() {
-  const totals = await getVillageTotals()
   const supabase = createAdminClient()
   
-  // Fetch 5 most recent transactions
-  const { data: recentTxs } = await supabase
-    .from('transactions')
-    .select('*, users_profile(full_name)')
-    .order('transaction_date', { ascending: false })
-    .limit(5)
+  // Fetch totals and 5 most recent transactions concurrently
+  const [totals, { data: recentTxs }] = await Promise.all([
+    getVillageTotals(),
+    supabase
+      .from('transactions')
+      .select('*, users_profile(full_name)')
+      .order('transaction_date', { ascending: false })
+      .limit(5)
+  ])
 
   const stats = [
     {

@@ -33,7 +33,7 @@ export default async function BulkInterestPage() {
     const to = from + PAGE_SIZE - 1
     const { data: batch, error: txError } = await supabase
       .from('transactions')
-      .select('*')
+      .select('user_id, amount, transaction_type, transaction_date')
       .like('transaction_type', 'JAMA_%')
       .range(from, to)
 

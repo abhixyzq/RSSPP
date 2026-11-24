@@ -234,7 +234,23 @@ export async function getCustomerBalance(userId: string) {
 export async function getVillageTotals() {
   const supabaseAdmin = createAdminClient()
 
-  // Fetch all transactions in batches to overcome PostgREST default 1000-row limit
+  // 1. High-Performance Fast Path: Use PostgreSQL RPC if created
+  try {
+    const { data: rpcData, error: rpcError } = await supabaseAdmin.rpc('get_branch_totals')
+    if (!rpcError && rpcData && typeof rpcData === 'object') {
+      const parsed = rpcData as Record<string, any>
+      return {
+        totalJama: Number(parsed.totalJama) || 0,
+        totalNikasi: Number(parsed.totalNikasi) || 0,
+        activeCustomers: Number(parsed.activeCustomers) || 0,
+        todaysCollection: Number(parsed.todaysCollection) || 0,
+      }
+    }
+  } catch {
+    // Graceful fallback to batch query if RPC function is not installed yet
+  }
+
+  // 2. Resilient Fallback: Fetch in batches of 1000 to overcome PostgREST limit
   const PAGE_SIZE = 1000
   let from = 0
   let hasMore = true

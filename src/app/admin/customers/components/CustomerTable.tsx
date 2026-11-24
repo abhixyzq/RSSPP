@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import { Search, Building, Trash2, BookOpen, AlertTriangle, Loader2, Download } from 'lucide-react'
+import { Search, Building, Trash2, BookOpen, AlertTriangle, Loader2, Download, ChevronLeft, ChevronRight } from 'lucide-react'
 import { deleteCustomer } from '@/actions/admin'
 import ExportCSVButton from '../../components/ExportCSVButton'
 
@@ -16,6 +16,8 @@ type Customer = {
 
 export default function CustomerTable({ customers }: { customers: Customer[] }) {
   const [searchTerm, setSearchTerm] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 25
   const [customerToDelete, setCustomerToDelete] = useState<Customer | null>(null)
   const [isPending, startTransition] = useTransition()
   const [errorMsg, setErrorMsg] = useState('')
@@ -29,6 +31,12 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
       (c.kyc_document && c.kyc_document.toLowerCase().includes(searchLower))
     )
   })
+
+  const totalPages = Math.max(1, Math.ceil(filteredCustomers.length / itemsPerPage))
+  const paginatedCustomers = filteredCustomers.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  )
 
   const exportData = filteredCustomers.map(c => ({
     "Account Number": c.mobile_number,
@@ -95,7 +103,10 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
                type="text"
                placeholder="Search by name or Account No (नाम या खाता नंबर से खोजें)..."
                value={searchTerm}
-               onChange={(e) => setSearchTerm(e.target.value)}
+               onChange={(e) => {
+                 setSearchTerm(e.target.value)
+                 setCurrentPage(1)
+               }}
                className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-[#0B1120] border border-[#082243] rounded-md focus:ring-2 focus:ring-[#0099CC] focus:outline-none text-[14px] font-bold text-[#0B2E59] dark:text-blue-400 placeholder-[#0B2E59]/50 shadow-inner"
              />
           </div>
@@ -104,12 +115,11 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
         {/* Status Strip */}
         <div className="bg-gray-100 dark:bg-slate-700/50 p-3 border-b border-gray-300 dark:border-slate-600 flex justify-between items-center px-6">
            <span className="text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider flex items-center gap-2">
-             <span>Showing {filteredCustomers.length} Accounts</span>
-             <span className="normal-case opacity-70">({filteredCustomers.length} खाते दिखा रहे हैं)</span>
+             <span>Showing {filteredCustomers.length === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1} - {Math.min(currentPage * itemsPerPage, filteredCustomers.length)} of {filteredCustomers.length} Accounts</span>
+             <span className="normal-case opacity-70">({filteredCustomers.length} खाते)</span>
            </span>
            <span className="text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider flex items-center gap-2">
-             <span>Branch: MAIN</span>
-             <span className="normal-case opacity-70">(शाखा: मुख्य)</span>
+             <span>Page {currentPage} of {totalPages}</span>
            </span>
         </div>
 
@@ -126,7 +136,7 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
                 </tr>
              </thead>
              <tbody className="bg-white dark:bg-[#0B1120]">
-                {filteredCustomers.length === 0 ? (
+                {paginatedCustomers.length === 0 ? (
                   <tr>
                     <td colSpan={5} className="p-10 text-center text-gray-500 dark:text-gray-300 font-bold uppercase border border-gray-200 dark:border-slate-600 flex flex-col items-center gap-1">
                       <span>No Records Found.</span>
@@ -134,10 +144,10 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
                     </td>
                   </tr>
                 ) : (
-                  filteredCustomers.map((customer, index) => (
+                  paginatedCustomers.map((customer, index) => (
                       <tr key={customer.id} className="border-b border-gray-50 dark:border-slate-800 hover:bg-blue-50/30 dark:hover:bg-slate-800/50 transition-colors group">
                          <td className="p-4 text-gray-400 font-bold w-12 text-center group-hover:text-blue-500 transition-colors">
-                            {(index + 1).toString().padStart(3, '0')}
+                            {((currentPage - 1) * itemsPerPage + index + 1).toString().padStart(3, '0')}
                          </td>
                          <td className="p-4 font-bold text-[#0B2E59] dark:text-blue-400 uppercase">
                             {customer.full_name}
@@ -187,13 +197,33 @@ export default function CustomerTable({ customers }: { customers: Customer[] }) 
           </table>
         </div>
         
-        <div className="p-4 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-200 dark:border-slate-600 text-center flex flex-col items-center gap-1">
-           <p className="text-[11px] text-gray-500 dark:text-gray-300 font-medium uppercase tracking-wide">
-              *** END OF DATABASE ***
-           </p>
-           <p className="text-[10px] text-gray-400 font-medium tracking-wide">
-              (डेटाबेस समाप्त)
-           </p>
+        {/* Pagination Controls */}
+        <div className="p-4 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-200 dark:border-slate-600 flex flex-col sm:flex-row items-center justify-between gap-3">
+           <div className="text-xs text-gray-500 dark:text-gray-300 font-medium">
+             Page <strong className="text-gray-800 dark:text-white">{currentPage}</strong> of <strong className="text-gray-800 dark:text-white">{totalPages}</strong> (Total {filteredCustomers.length} Customers)
+           </div>
+
+           {totalPages > 1 && (
+             <div className="flex items-center gap-2">
+               <button
+                 type="button"
+                 onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                 disabled={currentPage === 1}
+                 className="px-3 py-1.5 text-xs font-bold bg-white dark:bg-[#0B1120] border border-gray-300 dark:border-slate-600 rounded-md disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors flex items-center gap-1 text-[#0B2E59] dark:text-blue-400"
+               >
+                 <ChevronLeft className="w-4 h-4" /> Previous (पिछला)
+               </button>
+
+               <button
+                 type="button"
+                 onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                 disabled={currentPage === totalPages}
+                 className="px-3 py-1.5 text-xs font-bold bg-white dark:bg-[#0B1120] border border-gray-300 dark:border-slate-600 rounded-md disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors flex items-center gap-1 text-[#0B2E59] dark:text-blue-400"
+               >
+                 Next (अगला) <ChevronRight className="w-4 h-4" />
+               </button>
+             </div>
+           )}
         </div>
 
       </div>
